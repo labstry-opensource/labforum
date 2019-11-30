@@ -1,0 +1,56 @@
+@import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.2/css/fontawesome.min.css");
+
+a{
+  text-decoration: none;
+  color:black;
+}
+:focus {
+  outline: #08f auto 2px;
+}
+
+/* When mouse is detected, ALL focused elements have outline removed. */
+/* You could apply this selector only to buttons, if you wanted. */
+body.using-mouse :focus {
+  outline: none;
+}
+
+.btn{
+  &.transparent-btn{
+    border: none;
+    background: none;
+  }
+
+  &.blue-btn{
+    color: #00c5ff;
+  }
+}
+
+body{
+  margin:0;
+}
+
+.standard-width-wrapper{
+  width: 95%;
+  margin: 0 auto;
+}
+
+.general-card-wrapper{
+  margin-top: 30px;
+  margin-bottom: 30px;
+  padding: 10px;
+  box-shadow: 2px 2px 4px 4px #ACACAC;
+  border-radius: 25px;
+
+}
+
+.general-card-padding{
+  padding: 10px;
+}
+
+.modal-open{
+  overflow: hidden;
+}
+//Variables
+
+$max-mobile-width : 768px;
+
