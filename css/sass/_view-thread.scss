@@ -1,0 +1,133 @@
+.thread-total-wrapper{
+	width: 98%;
+	margin: 0 auto;
+
+	.reply-title-card{
+		padding: 20px;
+		font-size: 16px;
+	}
+
+	.come-in {
+	  transform: translateX(200px);
+	  animation: come-in 0.8s ease forwards;
+	}
+	@keyframes come-in {
+  		to { transform: translateX(0); }
+	}
+}
+.thread-content-wrapper{
+	.thread-display{
+		position: sticky;
+		top: 0.5rem;
+
+		margin: 30px auto 0 auto;
+		background-color: rgba(75,210,1, 0.97);
+		border-radius: 25px;
+		box-sizing: border-box;
+		box-shadow: 2px 0px 0px 0px grey; 
+
+	}
+	
+	.thread-display-wrapper{
+		color: white;
+		font-size: 20px!important;
+		font-weight: normal!important;
+		padding:20px;
+	}
+
+	.thread-avatar, .topic-details-wrapper{
+		display: inline-block;
+		vertical-align: middle;
+
+		div{
+			display: block;
+		}
+
+		.author-name{
+			font-size: 14px;
+		}
+
+		.avatar-image{
+			max-width: 90px;
+		}
+	}
+	.topic-content-card{
+		min-height: 200px;
+		box-shadow: 2px 2px 4px 4px #ACACAC;
+		box-sizing: border-box;
+		border-radius: 25px;
+
+		.topic-content-wrapper{
+			padding: 20px;
+		}
+	}
+}
+
+.reply-all-wrapper{
+	position: relative;
+
+	.reply-title-card{
+		color: #00c5ff;
+		position: sticky;
+		top: 50px;
+	}
+}
+.reply-outer-wrapper{
+	border-radius: 25px;
+	box-shadow: 2px 2px 4px 4px grey;
+	box-sizing: border-box;
+	margin: 20px auto;
+
+	.thread-display-wrapper{
+		color: white;
+		font-size: 20px!important;
+		font-weight: normal!important;
+		padding:20px;
+		background-color: #005cff;
+		border-radius: 25px;
+		position:sticky;
+		top: 55px;
+	}
+
+	.thread-avatar, .topic-details-wrapper{
+		display: inline-block;
+		vertical-align: middle;
+
+		div{
+			display: block;
+		}
+
+		.author-name{
+			font-size: 14px;
+		}
+
+		.avatar-image{
+			max-width: 120px;
+		}
+	}
+	.avatar-image{
+		max-width: 120px;
+	}
+
+	.reply-wrapper{
+		min-height: 200px;
+	}
+
+	.reply-content-wrapper{
+		padding: 20px;
+	}
+
+}
+.reply-compose-box{
+	border-radius: 25px;
+	box-shadow: 2px 2px 4px 4px #ACACAC;
+	.reply-title-input-wrapper{
+		background-color: orange;
+		input{
+			border: none;
+			background: transparent;
+			padding: 30px;
+			font-size: 18px;
+		}
+	}
+}

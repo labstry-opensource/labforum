@@ -1,0 +1,25 @@
+.roles-wrapper{
+  padding: 10px;
+}
+
+.user-role-title-wrapper{
+  padding: 30px 10px;
+  font-size: 24px;
+  border-bottom: 1px solid #999;
+  .role-name-input{
+    border: none;
+    background: transparent;
+    border-bottom: 1px solid #fff;
+  }
+}
+.role-card-internal-wrapper{
+  .role-button-group{
+    margin-top: 20px;
+    margin-bottom: 20px;
+    .btn{
+      &.active{
+        background: orange;
+      }
+    }
+  }
+}

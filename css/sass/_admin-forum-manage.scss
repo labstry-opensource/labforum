@@ -1,0 +1,57 @@
+.admin-manage-titlecard{
+  width: 100%;
+  background: #377796;
+  padding: 12px 30px;
+  a{
+    display: inline-block;
+    color: white;
+    font-size: 11px;
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+}
+.management-one-stage-container{
+  display: none;
+  &.active{
+    display: block;
+  }
+}
+.admin-manage-cardwrapper{
+  border-radius:18px;
+  box-shadow: 2px 2px 4px 4px #ACACAC;
+  overflow: hidden;
+  margin: 20px 0;
+
+
+  .manage-title{
+    padding: 40px;
+    background-color: #0092ff;
+    border-bottom: 1px solid #ACACAC;
+    color: #fff;
+  }
+  .admin-manage-link-wrapper{
+    background-color: #0092ff;
+    padding: 10px;
+  }
+  .link{
+    padding-left: 15px;
+    padding-right: 15px;
+    display: inline-block;
+    text-decoration:none;
+    color:#fff;
+    height:40px;
+    line-height: 40px;
+    text-align:left;
+    border-bottom: 10px;
+  }
+  .active{
+    background-color: #fff;
+    color: #00c5ff;
+    border-radius: 25px;
+  }
+  @media screen and (min-width: $max-mobile-width){
+    .link{
+      text-align: center!important;
+    }
+  }
+}

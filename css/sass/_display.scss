@@ -1,0 +1,64 @@
+.d-none{
+  display: none;
+}
+.d-inline{
+  display: inline;
+}
+.d-inline-block{
+  display: inline-block;
+}
+.d-flex{
+  display: flex;
+}
+.d-block{
+  display: block;
+}
+
+@for $i from 1 to 12{
+  .order-#{$i}{
+    order : #{$i};
+  }
+}
+
+@media screen and (min-width: 768px){
+  .d-tab-none {
+    display: none;
+  }
+  .d-tab-inline-block{
+    display: inline-block;
+  }
+  .d-tab-flex{
+    display: flex;
+  }
+  .d-tab-inline{
+    display: inline;
+  }
+  .d-tab-block{
+    display: block;
+  }
+}
+
+@media screen and (min-width: 992px) {
+  .d-desk-none{
+    display:none;
+  }
+  .d-desk-inline{
+    display: inline;
+  }
+  .d-desk-inline-block{
+    display: inline-block;
+  }
+  .d-desk-flex{
+    display: flex;
+  }
+  .d-desk-block{
+    display: block;
+  }
+
+  @for $i from 1 to 12{
+    .order-desk-#{$i}{
+      order : #{$i};
+    }
+  }
+}
+

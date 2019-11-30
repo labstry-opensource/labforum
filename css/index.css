@@ -1,0 +1,46 @@
+/* Searchbox stylesheet*/
+.searchbox{
+    display: inline-block;
+    outline: none;
+}
+.fakesubheader{
+    display:none;
+    min-height:150px;
+    line-height: 100px;
+}
+.searchform{
+    margin:0 auto;
+}
+
+/* Searchbar */
+/* Modulise Search Bar Style */
+  .searchbarwrapper{
+    width:500px;
+    margin: 0 auto;
+    white-space:nowrap;
+  }
+  #close{
+    display: inline-block;
+  }
+  .searchbox{
+	display:inline-block;
+	width:350px;
+  }
+  @media screen and (max-width: 480px){
+  	.searchbarwrapper{
+  		width:98%;
+  	}
+   	.searchbox{
+  		width: 80%;
+  	}
+
+  }
+  
+  .searchinline{
+    display:inline-block;
+    vertical-align: middle;
+  }
+.buttonimg{
+  width:40px;
+  height:40px;
+}
