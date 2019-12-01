@@ -8,7 +8,6 @@ error_reporting(E_ALL);
 <meta name='viewport' content='width=device-width, initial-scale=1.0'/>
 <head>
 <style type="text/css">
-<style>
 .title{
 	display:block;
 	padding:40px; 
