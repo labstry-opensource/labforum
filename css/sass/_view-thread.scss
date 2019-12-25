@@ -121,13 +121,13 @@
 .reply-compose-box{
 	border-radius: 25px;
 	box-shadow: 2px 2px 4px 4px #ACACAC;
-	.reply-title-input-wrapper{
-		background-color: orange;
-		input{
-			border: none;
-			background: transparent;
-			padding: 30px;
-			font-size: 18px;
-		}
+}
+.reply-title-input-wrapper{
+	background-color: orange;
+	input{
+		border: none;
+		background: transparent;
+		padding: 30px;
+		font-size: 18px;
 	}
 }

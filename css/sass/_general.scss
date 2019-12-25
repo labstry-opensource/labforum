@@ -1,4 +1,3 @@
-@import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.2/css/fontawesome.min.css");
 
 a{
   text-decoration: none;
@@ -50,7 +49,10 @@ body{
 .modal-open{
   overflow: hidden;
 }
-//Variables
 
+//Variables
+$sm-min-width: 576px;
+$md-min-width: 768px;
+$lg-min-width: 992px;
 $max-mobile-width : 768px;
 

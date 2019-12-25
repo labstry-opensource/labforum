@@ -1,2 +1,232 @@
 @import "display";
-@import "widget-header";
+
+header{
+  position: relative;
+  .link-container{
+    list-style: none;
+    opacity: 0;
+    height: 0px;
+    display: none;
+    will-change: transition;
+    padding-left: 45px;
+    transition: all .5s ease-in-out;
+    &.link-container-shown{
+      height: 250px;
+      opacity: 1;
+      display: block;
+    }
+  }
+}
+
+/*Implementation of burger icon and header */
+.header-placeholder{
+  height: 300px;
+}
+.header-wrapper{
+  background-color: #4BD2B0;
+  will-change: transition;
+  height: 300px;
+  border-radius: 0 0 25px 25px;
+
+  &.header-wrapper-expanded{
+    height: 100vh !important;
+    transition: all .5s ease-in-out;
+    .header-right-btn-wrapper{
+      opacity: 0;
+      visibility: hidden;
+    }
+  }
+  &.header-wrapper-collapsing{
+    transition: all .5s ease-in-out;
+  }
+}
+.header-right-btn-wrapper{
+  right: 15px;
+  bottom: 15px;
+  opacity: 1;
+  visibility: visible;
+  transition: all .5s ease-in-out;
+  will-change: transition;
+  svg{
+    width: 1.25rem;
+  }
+}
+.header-el-wrapper{
+  width: 100% ;
+  position: relative;
+  height: 300px;
+  &.header-el-wrapper-expanded{
+    height: 50px !important;
+    transition: all .5s ease-in-out;
+  }
+  &.header-el-collapsing{
+    transition: all .5s ease-in-out;
+  }
+}
+.header-el-wrapper a{
+  color: white;
+}
+.dropdown-btn{
+  padding: 15px;
+}
+.burger-icon {
+  position: relative;
+  width: 15px;
+  height: 15px;
+}
+.burger-icon span {
+  display: block;
+  position: absolute;
+  height: 2px;
+  width: 100%;
+  background-color: #fff;
+  -webkit-transform: rotate(0deg);
+  -ms-transform: rotate(0deg);
+  -moz-transform: rotate(0deg);
+  -o-transform: rotate(0deg);
+  transform: rotate(0deg);
+  -webkit-transition: .25s ease-in-out;
+  -moz-transition: .25s ease-in-out;
+  -o-transition: .25s ease-in-out;
+  transition: .25s ease-in-out;
+}
+.burger-icon .icon-dash-1 {
+  top: 5px;
+}
+.burger-icon .icon-dash-2 {
+  top: 10px;
+}
+.burger-menu-active .icon-dash-1{
+  -webkit-transform: rotate(135deg);
+  -ms-transform: rotate(135deg);
+  -moz-transform: rotate(135deg);
+  -o-transform: rotate(135deg);
+  transform: rotate(135deg);
+}
+.burger-menu-active .icon-dash-2{
+  top: 5px;
+  -webkit-transform: rotate(45deg);
+  -moz-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  -o-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+/*End burger implementation */
+
+/*Search implementation */
+.search-toggle-modal{
+  top: 250px;
+  left: 0;
+  right: 0;
+  height: 50px;
+  position: fixed;
+  transform: translateX(100%);
+  transition: transform .5s ease-in-out;
+  border-radius: 0 0 25px 25px;
+
+  .search-toggle-container{
+    background: #3CA78D;
+    border-radius: 25px;
+  }
+
+  &.search-toggle-modal-shown{
+    transform: translateX(0%);
+  }
+  .search-input-text{
+    background: transparent;
+    border: none;
+    height: 50px;
+    color: white;
+    width: calc(100% - 100px);
+    outline: none;
+  }
+}
+.search-submit-btn{
+  svg{
+    width: 1em;
+  }
+}
+.search-result-container{
+  border-radius: 24px;
+  overflow: hidden;
+  .search-links{
+    background-color: #00c5ff;
+    color: white;
+    position: relative;
+    text-decoration: none;
+    &:after{
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background-color: #fff;
+    }
+  }
+}
+.search-result-outer-container{
+  position: fixed;
+  overflow-y: scroll;
+  top: 50px;
+  left: 0;
+  width: 100%;
+  background: rgba(0,0,0,.2)
+}
+
+
+@media screen and (min-width: 768px) {
+  .search-toggle-modal{
+    top: 0;
+  }
+  .search-result-outer-container{
+    height: calc(100vh - 50px);
+  }
+}
+
+
+/*End search implementation*/
+
+@media screen and (min-width: 768px) {
+  .header-el-wrapper{
+    height: 50px;
+    &.header-el-wrapper-expanded{
+      height: 50px;
+    }
+  }
+  .header-placeholder{
+    height: 50px;
+  }
+  .header-wrapper{
+    height: auto;
+    &.header-wrapper-expanded{
+      height: auto !important;
+    }
+  }
+  .header-right-btn-wrapper {
+    top: 50%;
+    bottom: unset;
+    transform: translateY(-50%);
+    svg{
+      width: 1rem;
+    }
+  }
+  header{
+    .link-container{
+      padding-left: 0;
+      &.link-container-shown{
+        height: auto !important;
+      }
+    }
+  }
+}
+
+
+@media screen and (min-width: 991px){
+  .header-el-wrapper{
+    height: 50px;
+    &.header-el-wrapper-expanded{
+      height: 300px !important;
+    }
+  }
+}

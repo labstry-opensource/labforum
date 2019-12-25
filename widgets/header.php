@@ -62,7 +62,7 @@ if(!isset($search_target)){
 
 ?>
 
-<div class="header-wrapper show-when-loaded">
+<div class="header-wrapper">
     <div class="link-wrapper">
         <div class="hamburger-layer">
             <button type="button" class="btn dropdown-btn">
@@ -139,7 +139,7 @@ if(!isset($search_target)){
 <div id="toggleSearchOverlay" class="toggle-search-overlay"></div>
 
 
-<!--<script src="js/toggle.js?v=<?php echo filemtime("js/toggle.js")?>"></script>-->
+<!--<script src="js/toggle.js?v=<?php echo filemtime("js/toggle.min.js")?>"></script>-->
 
 <script>
     var isSearchToggled = false;
