@@ -1,0 +1,151 @@
+<?php
+
+if(!isset($meta)){
+    $meta = array(
+        'keywords' => 'Labstry, 論壇, AI, Android ROM, 生活方式, 分享, 討論, 電腦, 程式開發',
+        'description' => 'Labstry is a forum for all range of topics ranging from programming to lifestyle.',
+        'viewport' => 'width=device-width, initial-scale=1.0'
+    );
+}
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
+header("Content-Type:text/html;charset=utf-8");  
+session_start();
+require_once('connect.php');
+require_once('ranking.php');
+include_once(dirname(__FILE__)."/classes/Essentials.php");
+include_once("maintainance.php");
+include_once(@$_SERVER['DOCUMENT_ROOT']."/classes/Users.php");
+include_once("classes/UserRoles.php");
+include_once("classes/Sign.php");
+
+
+$essentials = new Essentials($meta);
+
+
+
+$role = new UserRoles($pdoconnect);
+$users = new Users($pdoconnect, "");
+$sign = new Sign($pdoconnect);
+
+if(@$_SESSION['id'])
+    $role->getUserRole(@$_SESSION['id']);
+
+$essentials->getHeader();
+?>
+
+<style>
+.show-when-loaded{
+    display: none;
+}
+.name{
+  color:white;
+  padding: 20px;
+  font-size: 16px;
+}
+.oneliner{
+    vertical-align: top;
+    display: inline-block;
+}
+.horizontal-btn{
+    padding-left: 50px;
+    padding-right: 50px;
+    display: inline-block;
+}
+.divider{
+	width: 100%;
+	height: 2px;
+	background-color: #ACACAC;
+}
+pre {
+    white-space: pre-wrap;
+}
+ @media screen and (max-width: 480px){
+    .roledisplay{
+      text-align: left;
+    }
+    .detailsdiv, .avatarpic{
+      vertical-align: middle;
+      display: inline-block;
+    }
+  }
+  </style>
+
+  <div class="container">
+      <?php
+
+      ?>
+  </div>
+  <div class="standard-wrapper home-content-wrapper">
+      <?php
+      if(@$_SESSION['username']) {
+          $users->getUserPropById(@$_SESSION['id']);
+          $user_details = array(
+              'profile' => $users->profilepic,
+              'username' => @$_SESSION['username'],
+              'rank_name' => $role->role_name,
+              'signed_in_today' => $sign->checkIfSigned(@$_SESSION['id']),
+              'rights' => 0,
+              'continuous_checkin' => $sign->checkContinousSign(@$_SESSION['id']),
+          );
+      }
+      include "widgets/landing-greetings-card3.php";
+      include "widgets/thread-loader.php";
+      ?>
+      <?php
+      //One time query
+      $users->getNewestUser();
+      $newuser = $users->username;
+      $newuserid = $users->userid;
+      $numusers = $users->getUserCount();
+      $numthreads = $pdotoolkit->rowCounterWithLimit($pdoconnect, "threads");
+      ?>
+      <div class="divider"></div>
+
+      <div class="card">
+          <div class="intro" style="display:block;background-color:#add8e6; padding: 20px; height: 50px">Statistic</div>
+          <div class="contentpreview" style="width: 100%; padding: 20px;">
+              <div>The site has <?php echo $numusers; ?> users.</div>
+              <div>Newcomer: <a href="account/profile.php?id=<?php echo $newuserid; ?>"><?php echo $newuser; ?></a></div>
+              <div>A total of <?php echo $numthreads; ?> threads.</div>
+          </div>
+      </div>
+  </div>
+
+
+
+  </body>
+</html>
+<?php
+  if(@$_GET['action'] == 'checkin'){
+    //deprecated for finding id through database !!!!
+
+    //We should protect our code by checking whether user have signed
+    //We MUST USE PREPARED STATEMENT HERE TO PREVENT INJECTION
+    $id = @$_SESSION['id'];
+    $signstatsql = "SELECT COUNT(*) FROM checkin WHERE id = ? AND TO_DAYS(checkindate) = TO_DAYS(NOW())";
+    $times = $pdotoolkit->rowCounterWithPara($pdoconnect, $signstatsql, $id);
+    if(!$times){
+      $signstmt = $pdoconnect->prepare("INSERT INTO checkin(id, checkindate) VALUES(?, NOW())");
+      $signstmt->bindParam(1, $id);
+      $signstmt->execute();
+      $checkincount = $pdotoolkit->rowCounterWithLimit($pdoconnect, "continuouscheckin", "id=".$id);
+
+      //When we found a continuous record for checkin, then our action is to update it. Otherwise, we will insert a new record
+      if(!$checkincount) $contstmt = "INSERT INTO continuouscheckin(id, times) VALUES(?, '1')";
+      else $contstmt = "UPDATE continuouscheckin SET times = times + 1 WHERE id = ?";
+
+      $contchkin = $pdoconnect->prepare($contstmt);
+      $contchkin->bindParam(1, $id);
+      $contchkin->execute();
+    }
+    echo "<script>window.location='index.php';</script>";
+    header("Location: index.php");
+  }
+  if(@$_GET['action']== "logout"){
+    session_destroy();
+    echo "<script>window.location='index.php';</script> ";
+  }
+?>

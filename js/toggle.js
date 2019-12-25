@@ -1,87 +1,63 @@
-//A toggle script for opening the primary menu
-
-//define
-var mobile_max = 767;
-var tablet_min = 768;
-var tablet_max = 991.98;
-var desktop_min = 992;
-
-
 //Toggle Overlay
 $(document).on('click', '.dropdown-btn',  function(){
-    if($('.burger-icon').hasClass('burger-menu-active')){
-        $('.burger-icon').removeClass("burger-menu-active");
-    }else{
-        $('.burger-icon').addClass("burger-menu-active");
-    }
+    $('.burger-icon').toggleClass('burger-menu-active');
     togglePrimaryMenu();
-    toggleSearchOverlay();
+    setTimeout(function(){
+        $('.header-wrapper').toggleClass('header-wrapper-collapsing');
+        $('.header-el-wrapper').toggleClass('header-el-collapsing');
+    }, 500);
 });
-$(document).on('click', '.search-div-btn', function(){
-    toggleSearchOverlay();
-    togglePrimaryMenu();
-    if(!isInSearchMode()){
-        enterSearchMode();
-    }else{
-        leaveSearchMode();
+
+$(document).on('click', '.search-btn-toggle', function () {
+    if($('.search-toggle-modal').hasClass('search-toggle-modal-shown')){
+        resetTitle();
+        $('.search-toggle-modal').removeClass('search-toggle-modal-shown');
+    } else{
+        setTitle('Search');
+        $('.search-toggle-modal').addClass('search-toggle-modal-shown');
     }
-})
-
-//Toggle Hamburger Menu on or off
-$('.search-input').on('focusin', function(){
-    enterSearchMode();
+    toggleHamburgerSwitch();
+    $('.header-right-btn-wrapper').toggleClass('d-none');
 });
-$('.header-search-close-btn').on('click', function(){
-    leaveSearchMode();
-    $('.search-result-provider').html("");
-    $('.search-input').val("");
-})
 
+$(document).on('submit','.rGf',function(e){
+    e.preventDefault();
+    var t=$(this);
+    $.ajax({
+        url: t.attr('action'),
+        method: t.attr('method'),
+        data: t.serialize(),
+        success: function(d){
+            var tmpl = $.templates('#sRBar');
+            $('.search-result-container').html(tmpl.render(d));
+        }
+    })
+});
 
 function togglePrimaryMenu(){
-    $('.header-link-wrapper').toggleClass('primary-menu-show');
-}
-function toggleSearchOverlay() {
-    if($(".toggle-search-overlay").hasClass('active')){
-        $(".toggle-search-overlay").removeClass('active');
-        $('.general-header-content-wrapper').removeClass('general-link-active');
-        $('.under-hamburger-layer').toggleClass('under-hamburger-layer-active');
-        $('body').removeClass("modal-open");
-        $('.header-link').removeClass("link-hidden");
-    }else{
-        $(".toggle-search-overlay").addClass('active');
-        $('.general-header-content-wrapper').addClass('general-link-active');
-        $('.under-hamburger-layer').toggleClass('under-hamburger-layer-active');
-        $('body').addClass("modal-open");
-        $('.header-link').addClass("link-hidden");
-    }
-    isSearchToggled = !isSearchToggled;
+    $('.link-container').toggleClass('link-container-shown');
+    $('.header-el-wrapper').toggleClass('header-el-wrapper-expanded').toggleClass('header-el-collapsing');
+    $('.header-wrapper').toggleClass('header-wrapper-expanded').toggleClass('header-wrapper-collapsing');
 }
 
-function enterSearchMode(){
-    if(window.matchMedia("(min-width: "+ desktop_min+ "px)").matches) {
-        //lg mode
-        $('.link-wrapper').addClass('deactivate');
-        $('.header-wrapper').addClass('header-expanded');
-    }else{
-        $('.hamburger-layer').addClass('deactivate');
-        $('.header-search-close-btn').addClass('header-search-close-btn-shown')
-
-    }
-}
-function isInSearchMode(){
-    return $('.link-wrapper').hasClass('deactivate') || $('.hamburger-layer').hasClass('deactivate');
+function toggleHamburgerSwitch() {
+    $('.dropdown-btn').toggleClass('d-none');
 }
 
-function leaveSearchMode() {
-    if(window.matchMedia("(min-width: "+ desktop_min+ "px)").matches) {
-        //lg mode
-        $('.link-wrapper').removeClass('deactivate');
-        $('.header-wrapper').removeClass('header-expanded');
-    }else{
-        $('.hamburger-layer').removeClass('deactivate');
-        $('.header-search-close-btn').removeClass('header-search-close-btn-shown')
-    }
-
-
+function setTitle(name, link){
+    link = link || '#';
+    $('.title-name').text(name).attr('href', link);
+}
+function resetTitle(){
+    $('.title-name').text('Labstry Forum').attr('href', '/forum');
+}
+$(window).ready(function(){
+    set100vh();
+});
+$(window).on('resize', function(){
+    set100vh();
+})
+function set100vh(){
+    $('.real-vh-100').height($(window).innerHeight());
+    $('.real-vh-min-100').css('min-height', $(window).innerHeight() + 'px');
 }

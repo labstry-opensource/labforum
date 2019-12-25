@@ -11,14 +11,6 @@ if(!isset($user_details) || !@$_SESSION['username']) {
     );
     $display_links = array(
         array(
-            'href'=> '/login.php?target=forum',
-            'description' => '登入'
-        ),
-        array(
-            'href'=> '/register.php?target=forum',
-            'description' => '註冊'
-        ),
-        array(
             'href'=> 'forumlist.php',
             'description' => 'Forum Lists'
         ),
@@ -26,6 +18,10 @@ if(!isset($user_details) || !@$_SESSION['username']) {
 }else if(@$_SESSION['username']){
     $is_logged_in = true;
     $display_links = array(
+        array(
+            'href'=> 'forumlist.php',
+            'description' => 'Forum Lists'
+        ),
         array(
             'href'=> 'account.php',
             'description' => 'Account Settings'
@@ -45,8 +41,8 @@ if(!isset($user_details) || !@$_SESSION['username']) {
     }
 }
 $greetings= array(
-    'Experience Labstry Forum',
-    'Have a nice day'
+    'Guest',
+    '<a href="/login.php">Login</a>'
 );
 ?>
 
@@ -55,6 +51,8 @@ $greetings= array(
         <?php if($is_logged_in === true){?>
             <img class="oneliner" src="<?php echo $user_details['profile'] ?>" style="border-radius: 25px; height: 120px; width: 120px;" />
         <?php } ?>
+
+
         <div class="name oneliner">
             <div style="display: block;">
                 <?php echo ($is_logged_in === true)? $user_details['username'] : $greetings[0];?>
@@ -64,20 +62,22 @@ $greetings= array(
             </div>
         </div>
     </div>
-    <div class="onelinewrapper" style="line-height: 50px; white-space: nowrap; overflow: scroll; height: 50px; padding-top: 20px;">
+    <div class="row py-3">
         <?php if($is_logged_in === true){ //Logged in ?>
-            <div class="oneliner cardlink horizontal-btn">
-                <?php if($user_details['signed_in_today']){ ?>
-                    連續簽到 <span class="counter" data-count="<?php echo $user_details['continuous_checkin']; ?>">0</span> 次
-                <?php } else { ?>
-                    <a href='<?php echo @$_SERVER['PHP_SELF']; ?>?action=checkin' class=''>簽到</a>
-                <?php } ?>
+            <div class="col-12 col-md-4 col-lg">
+                <div class="cardlink p-4">
+                    <?php if($user_details['signed_in_today']){ ?>
+                        連續簽到 <span class="counter" data-count="<?php echo $user_details['continuous_checkin']; ?>">0</span> 次
+                    <?php } else { ?>
+                        <a href='<?php echo @$_SERVER['PHP_SELF']; ?>?action=checkin' class=''>簽到</a>
+                    <?php } ?>
+                </div>
             </div>
-        <?php }
-        foreach ($display_links as $link){?>
+        <?php } ?>
+        <?php foreach ($display_links as $link){?>
             <a href="<?php echo $link['href']?>"
-               class="oneliner refreshable cardlink horizontal-btn ">
-                <div class="cardtext"><?php echo $link['description']?></div>
+               class="col-12 col-md-4 col-lg">
+                <div class="cardtext p-4"><?php echo $link['description']?></div>
             </a>
         <?php }?>
     </div>
