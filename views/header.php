@@ -3,7 +3,6 @@ if(session_id() === '' || !isset($_SESSION)) {
     //Session might not be started. Check before starting it.
     session_start();
 }
-
 if(!isset($home_url))$home_url = '/forum/';
 
 if(!isset($links)){
@@ -52,6 +51,9 @@ if(!isset($links)){
         );
     }
 }
+if(!isset($opt_in_script)){
+    $opt_in_script = null;
+}
 
 ?>
 
@@ -71,6 +73,8 @@ if(!isset($links)){
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jsrender/1.0.5/jsrender.min.js"></script>
     <script src="<?php echo $home_url?>js/toggle.js?<?php echo filemtime(dirname(__FILE__).'/../js/toggle.js')?>"></script>
+    <?php foreach($opt_in_script as $script){?><script src="<?php echo $script; ?>"></script><?php } ?>
+
     <!-- css -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.1/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="<?php echo $home_url?>css/stylesheets/main.css?<?php echo filemtime(dirname(__FILE__).'/../css/stylesheets/main.css')?>"/>
@@ -91,13 +95,14 @@ if(!isset($links)){
                     <a href="/forum/index.php" class="title-name text-decoration-none">Labstry Forum</a>
                 </div>
                 <div class="header-right-btn-wrapper position-absolute" style="">
-                    <a class="btn d-inline" style="color: white" href="/login.php">
-                        <!-- user inline img -->
-                        <svg class="svg-inline--fa fa-user fa-w-14" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="user" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg="">
-                            <path fill="#fff" d="M224 256c70.7 0 128-57.3 128-128S294.7 0 224 0 96 57.3 96 128s57.3 128 128 128zm89.6 32h-16.7c-22.2 10.2-46.9 16-72.9 16s-50.6-5.8-72.9-16h-16.7C60.2 288 0 348.2 0 422.4V464c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48v-41.6c0-74.2-60.2-134.4-134.4-134.4z"></path>
-                        </svg>
-                        <span class="px-1 align-middle"><?php echo isset($_SESSION['username']) ? $_SESSION['username'] : 'Login' ?></span>
-                    </a>
+                    <?php if(!@$_SESSION['username']){?>
+                        <a class="btn d-inline" style="color: white" href="/login.php">
+                            <!-- user inline img -->
+                            <svg class="svg-inline--fa fa-user fa-w-14" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="user" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg="">
+                                <path fill="#fff" d="M224 256c70.7 0 128-57.3 128-128S294.7 0 224 0 96 57.3 96 128s57.3 128 128 128zm89.6 32h-16.7c-22.2 10.2-46.9 16-72.9 16s-50.6-5.8-72.9-16h-16.7C60.2 288 0 348.2 0 422.4V464c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48v-41.6c0-74.2-60.2-134.4-134.4-134.4z"></path>
+                            </svg>
+                        </a>
+                    <?php } ?>
                     <a href="<?php echo $home_url?>/register.php" class="btn d-inline">
                         <svg class="svg-inline--fa fa-user-plus fa-w-16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512">
                             <path fill="#fff" d="M624 208h-64v-64c0-8.8-7.2-16-16-16h-32c-8.8 0-16 7.2-16 16v64h-64c-8.8 0-16 7.2-16 16v32c0 8.8 7.2 16 16 16h64v64c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16v-64h64c8.8 0 16-7.2 16-16v-32c0-8.8-7.2-16-16-16zm-400 48c70.7 0 128-57.3 128-128S294.7 0 224 0 96 57.3 96 128s57.3 128 128 128zm89.6 32h-16.7c-22.2 10.2-46.9 16-72.9 16s-50.6-5.8-72.9-16h-16.7C60.2 288 0 348.2 0 422.4V464c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48v-41.6c0-74.2-60.2-134.4-134.4-134.4z"/></svg>
@@ -131,16 +136,18 @@ if(!isset($links)){
         </div>
         <div class="modal-wrapper search-result-outer-container real-vh-100" style="">
             <div class="container py-2">
-                <div class="search-result-container row"></div>
+                <div class="search-result-container"></div>
             </div>
         </div>
     </div>
 </div>
 <div class="header-placeholder"></div>
 <script id="sRBar" type="text/x-jsrender">
-    <a class="col-12 search-links py-3" href="/forum/thread.php?id={{:topic_id}}">
-        <div class="thread-name">{{:topic_name}}</div>
-    </div>
+    <a class="row" href="/forum/thread.php?id={{:topic_id}}">
+        <div class="col-12 col-md-7 search-links py-3" ><span class="thread-name">{{:topic_name}}</span></div>
+        div.col-12.col-
+    </a>
+
 </script>
 
 
