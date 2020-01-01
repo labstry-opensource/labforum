@@ -1,6 +1,5 @@
 ﻿<?php
-require_once("connect.php");
-require_once(@$_SERVER["DOCUMENT_ROOT"]."/forum/classes/UserRoles.php");
+require_once(dirname(__FILE__)."/classes/UserRoles.php");
 
 $userrole = new UserRoles($pdoconnect);
 $userrole->getUserRole(@$_SESSION["id"]);

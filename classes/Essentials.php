@@ -5,7 +5,7 @@ class Essentials
 {
     public $meta = array();
     public $module_list = array();
-    public $home_url = '/forum/';
+    public $home_url = '/labstry_forum/';
     public $opt_in_script;
 
     public function __construct($meta, $module_list = null, $opt_in_script = null)

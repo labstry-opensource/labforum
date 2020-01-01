@@ -1,6 +1,6 @@
 <?php
 if (! isset($thread_url)) {
-    $thread_url = '/forum/api/get-home-threads.php';
+    $thread_url ='api/get-home-threads.php';
 }
 ?>
 <style>

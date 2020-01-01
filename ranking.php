@@ -1,5 +1,4 @@
 <?php
-require_once('connect.php');
 if(session_status() == PHP_SESSION_NONE) session_start();
 if($user = @$_SESSION['username']){
 	//CHECK IF HE/SHE IS BLOCKED

@@ -4,7 +4,7 @@ if (session_id() === '' || ! isset($_SESSION)) {
     session_start();
 }
 if (! isset($home_url))
-    $home_url = '/forum/';
+    $home_url = '/labstry_forum/';
 
 if (! isset($links)) {
     $links = array(

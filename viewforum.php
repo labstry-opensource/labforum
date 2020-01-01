@@ -3,16 +3,8 @@ session_start();
 require_once("connect.php");
 require_once("ranking.php");
 $fid = @$_GET['id'];
-$rightcheck = mysqli_query($connect, "SELECT rights FROM subforum WHERE fid=".$fid.";");
-$req_right = (mysqli_fetch_assoc($rightcheck))['rights'];
-if($rights >= $req_right){
-	//Limit threads displaying in one page
-	if(@$_GET['page']) $page = @$_GET['page'];
-	else $page = 1;
-	//Get the start thread and end thread for one page
-	$startdisp = ($page - 1) * 10 ;
-	$enddisp = ($page * 10 ) - 1;
 ?>
+
 <html>
 <meta name='viewport' content='width=device-width, initial-scale=1.0'>
 <meta name='description' content='Labstry 論壇是一個全方位的論壇。用戶可以在此討論多方面的話題。話題涵蓋用戶的生活方式到有關電腦程式開發等相關的話題'/>
@@ -173,11 +165,3 @@ echo "\n</div>\n";
 ?>
 
 </html>
-
-<?php
-}else{
-	echo "<html>\n<head>\n<Title>No Rights</Title>\n</head>\n<body>\n";
-	echo "You don't have rights to view this subforum\n";
-	echo "</body>\n</html>";
-}
-?>

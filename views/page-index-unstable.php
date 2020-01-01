@@ -17,13 +17,7 @@ error_reporting(E_ALL);
 
 header("Content-Type:text/html;charset=utf-8");
 session_start();
-require_once (dirname(__FILE__) . '/connect.php');
-require_once (dirname(__FILE__) . '/ranking.php');
-include_once (dirname(__FILE__) . "/classes/Essentials.php");
-include_once (dirname(__FILE__) . '/maintainance.php');
-include_once (dirname(__FILE__) . '/classes/Users.php');
-include_once (dirname(__FILE__) . '/classes/UserRoles.php');
-include_once (dirname(__FILE__) . '/classes/Sign.php');
+
 
 $essentials = new Essentials($meta, null, $opt_in_script);
 
@@ -33,9 +27,9 @@ $sign = new Sign($pdoconnect);
 
 if (@$_SESSION['id'])
     $role->getUserRole(@$_SESSION['id']);
-
-$essentials->getHeader();
-?>
+    
+    $essentials->getHeader();
+    ?>
 
 <style>
 .name{
