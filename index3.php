@@ -107,24 +107,22 @@ pre {
           <div class="contentpreview" style="width: 100%; padding: 20px;">
               <div>The site has <?php
 
-echo $numusers;
+            echo $numusers;
             ?> users.</div>
               <div>Newcomer: <a href="account/profile.php?id=<?php
 
-echo $newuserid;
+            echo $newuserid;
             ?>"><?php
 
-echo $newuser;
+            echo $newuser;
             ?></a></div>
               <div>A total of <?php
 
-echo $numthreads;
+            echo $numthreads;
             ?> threads.</div>
           </div>
       </div>
   </div>
-
-
 
   </body>
 </html>
