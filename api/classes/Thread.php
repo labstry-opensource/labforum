@@ -138,7 +138,7 @@ class Thread
         return json_encode($stmt->fetch(PDO::FETCH_ASSOC));
     }
 
-    public function numberOfReplies($tid)
+    public function getNumberOfReplies($tid)
     {
         $stmt = $this->pdoconnect->prepare("SELECT COUNT(*) 'reply_count' FROM replies WHERE topic_id = ?");
         $stmt->bindValue(1, $tid, PDO::PARAM_INT);

@@ -1,57 +1,50 @@
 <?php
-if(session_id() === '' || !isset($_SESSION)) {
-    //Session might not be started. Check before starting it.
+if (session_id() === '' || ! isset($_SESSION)) {
+    // Session might not be started. Check before starting it.
     session_start();
 }
-if(!isset($home_url))$home_url = '/forum/';
+if (! isset($home_url))
+    $home_url = '/forum/';
 
-if(!isset($links)){
+if (! isset($links)) {
     $links = array(
         'title' => array(
             'name' => 'Labstry Forum',
-            'link' => $home_url,
+            'link' => $home_url
         ),
         'page_links' => array(
             array(
                 "title" => "Labstry FocusSight",
-                "link" => "/focussight/index.php",
+                "link" => "/focussight/index.php"
             ),
             array(
                 "title" => "Labstry General",
-                "link" => "/forum/viewforum.php",
-            ),
+                "link" => "/forum/viewforum.php"
+            )
         )
     );
-    if(!isset($_SESSION['username'])){
-        array_push($links['page_links'],
-            array(
-                "title" => "Login",
-                "link" => "/login.php?target=/forum/index.php",
-            )
-        );
-        array_push($links['page_links'],
-            array(
-                "title" => "Register",
-                "link" => "/register.php?target=forum",
-            )
-        );
-    }else{
-        //The user is logged in, thus session is set
-        array_push($links['page_links'],
-            array(
-                "title" => $_SESSION["username"],
-                "link" => "/forum/account/profile.php?id=".$_SESSION["id"],
-            )
-        );
-        array_push($links['page_links'],
-            array(
-                "title" => "Logout",
-                "link" => "/forum/index.php?action=logout",
-            )
-        );
+    if (! isset($_SESSION['username'])) {
+        array_push($links['page_links'], array(
+            "title" => "Login",
+            "link" => "/login.php?target=/forum/index.php"
+        ));
+        array_push($links['page_links'], array(
+            "title" => "Register",
+            "link" => "/register.php?target=forum"
+        ));
+    } else {
+        // The user is logged in, thus session is set
+        array_push($links['page_links'], array(
+            "title" => $_SESSION["username"],
+            "link" => "/forum/account/profile.php?id=" . $_SESSION["id"]
+        ));
+        array_push($links['page_links'], array(
+            "title" => "Logout",
+            "link" => "/forum/index.php?action=logout"
+        ));
     }
 }
-if(!isset($opt_in_script)){
+if (! isset($opt_in_script)) {
     $opt_in_script = null;
 }
 
@@ -62,23 +55,49 @@ if(!isset($opt_in_script)){
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
-          content="<?php echo (isset($meta['viewport'])) ? $meta['viewport'] : 'width=device-width, initial-scale=1.0' ?>">
+          content="<?php
+
+        echo (isset($meta['viewport'])) ? $meta['viewport'] : 'width=device-width, initial-scale=1.0'?>">
     <meta name="keywords"
-          content="<?php echo (isset($meta['keywords'])) ? $meta['keywords'] : '' ?>">
+          content="<?php
+
+        echo (isset($meta['keywords'])) ? $meta['keywords'] : ''?>">
     <meta name="description"
-          content="<?php echo (isset($meta['description'])) ? $meta['description'] : '' ?>">
+          content="<?php
+
+        echo (isset($meta['description'])) ? $meta['description'] : ''?>">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Labstry Forum </title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jsrender/1.0.5/jsrender.min.js"></script>
-    <script src="<?php echo $home_url?>js/toggle.js?<?php echo filemtime(dirname(__FILE__).'/../js/toggle.js')?>"></script>
-    <?php foreach($opt_in_script as $script){?><script src="<?php echo $script; ?>"></script><?php } ?>
+    <script src="<?php
+
+    echo $home_url?>js/toggle.js?<?php
+
+    echo filemtime(dirname(__FILE__) . '/../js/toggle.js')?>"></script>
+    <?php
+
+    foreach ($opt_in_script as $script) {
+        ?><script src="<?php
+
+        echo $script;
+        ?>"></script><?php
+    }
+    ?>
 
     <!-- css -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.1/css/bootstrap.min.css"/>
-    <link rel="stylesheet" href="<?php echo $home_url?>css/stylesheets/main.css?<?php echo filemtime(dirname(__FILE__).'/../css/stylesheets/main.css')?>"/>
-    <link rel="stylesheet" href="<?php echo $home_url?>css/stylesheets/header.css?<?php echo filemtime(dirname(__FILE__).'/../css/stylesheets/header.css')?>"/>
+    <link rel="stylesheet" href="<?php
+
+    echo $home_url?>css/stylesheets/main.css?<?php
+
+    echo filemtime(dirname(__FILE__) . '/../css/stylesheets/main.css')?>"/>
+    <link rel="stylesheet" href="<?php
+
+    echo $home_url?>css/stylesheets/header.css?<?php
+
+    echo filemtime(dirname(__FILE__) . '/../css/stylesheets/header.css')?>"/>
 </head>
 <body>
 <div class="nav-search-wrapper w-100" style="position:fixed; top: 0; overflow-x: hidden; z-index: 1400">
@@ -95,15 +114,22 @@ if(!isset($opt_in_script)){
                     <a href="/forum/index.php" class="title-name text-decoration-none">Labstry Forum</a>
                 </div>
                 <div class="header-right-btn-wrapper position-absolute" style="">
-                    <?php if(!@$_SESSION['username']){?>
+                    <?php
+
+                    if (! @$_SESSION['username']) {
+                        ?>
                         <a class="btn d-inline" style="color: white" href="/login.php">
                             <!-- user inline img -->
                             <svg class="svg-inline--fa fa-user fa-w-14" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="user" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg="">
                                 <path fill="#fff" d="M224 256c70.7 0 128-57.3 128-128S294.7 0 224 0 96 57.3 96 128s57.3 128 128 128zm89.6 32h-16.7c-22.2 10.2-46.9 16-72.9 16s-50.6-5.8-72.9-16h-16.7C60.2 288 0 348.2 0 422.4V464c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48v-41.6c0-74.2-60.2-134.4-134.4-134.4z"></path>
                             </svg>
                         </a>
-                    <?php } ?>
-                    <a href="<?php echo $home_url?>/register.php" class="btn d-inline">
+                    <?php
+                    }
+                    ?>
+                    <a href="<?php
+
+                    echo $home_url?>/register.php" class="btn d-inline">
                         <svg class="svg-inline--fa fa-user-plus fa-w-16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512">
                             <path fill="#fff" d="M624 208h-64v-64c0-8.8-7.2-16-16-16h-32c-8.8 0-16 7.2-16 16v64h-64c-8.8 0-16 7.2-16 16v32c0 8.8 7.2 16 16 16h64v64c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16v-64h64c8.8 0 16-7.2 16-16v-32c0-8.8-7.2-16-16-16zm-400 48c70.7 0 128-57.3 128-128S294.7 0 224 0 96 57.3 96 128s57.3 128 128 128zm89.6 32h-16.7c-22.2 10.2-46.9 16-72.9 16s-50.6-5.8-72.9-16h-16.7C60.2 288 0 348.2 0 422.4V464c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48v-41.6c0-74.2-60.2-134.4-134.4-134.4z"/></svg>
                     </a>
@@ -115,11 +141,20 @@ if(!isset($opt_in_script)){
                 </div>
             </div>
             <ul class="container link-container mb-0">
-                <?php foreach($links['page_links'] as $page_link){ ?>
+                <?php
+
+                foreach ($links['page_links'] as $page_link) {
+                    ?>
                     <li class="d-block d-md-inline-block color-white p-3 px-lg-5">
-                        <a href="<?php echo $page_link['link']?>" style="color:#fff" class="text-decoration-none"><?php echo $page_link['title']?></a>
+                        <a href="<?php
+
+                    echo $page_link['link']?>" style="color:#fff" class="text-decoration-none"><?php
+
+                    echo $page_link['title']?></a>
                     </li>
-                <?php } ?>
+                <?php
+                }
+                ?>
             </ul>
         </header>
     </nav>
@@ -154,9 +189,41 @@ if(!isset($opt_in_script)){
 <script>
     //On scroll must be inline
     var n = $('nav');
+    var currentId = '';
+    var previousPosition = '';
+    
     $(window).on('scroll', function(){
         handleScrollDown($(window));
+
     });
+
+    $(window).on('scroll.scrollspy', function(){
+        var scrollTop = $(this).scrollTop();
+        var pushedel = $('.pushed-el-cards');
+
+        if(scrollTop - previousPosition >=0){
+            for(var i = pushedel.length - 1; i>=0 ; i--){
+                var el_id = $(pushedel[i]).attr('id');
+                if($('#' + el_id).offset().top <= scrollTop){
+					currentId = el_id;
+					setTitle($('#'+ el_id).data('title'));
+					break;
+                }
+            }
+        }else{
+            $.each(pushedel, function(item) {
+                var el_id = $(this).attr('id');
+
+                if($('#' + el_id).offset().top >= scrollTop){
+                    currentId =  el_id;
+                    resetTitle();
+                    return false;
+                }
+            });
+        }
+        previousPosition = $(this).scrollTop();
+    });
+    
     $('.search-result-outer-container').on('scroll', function() {
         var r = $('.search-result-outer-container');
         handleScrollDown(r);
@@ -186,4 +253,5 @@ if(!isset($opt_in_script)){
             el.height($(window).innerHeight() - 50);
         }
     }
+   
 </script>
