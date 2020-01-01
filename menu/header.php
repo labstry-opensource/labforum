@@ -1,14 +1,12 @@
 <?php
-require_once(@$_SERVER['DOCUMENT_ROOT']."/forum/connect.php");
-require_once(@$_SERVER['DOCUMENT_ROOT'].'/forum/ranking.php');
-require_once @$_SERVER['DOCUMENT_ROOT']."/classes/LoginPolicy.php";
+//require_once dirname(__FILE__)."/../classes/LoginPolicy.php";
 
-$policy = new LoginPolicy($pdoconnect, "" , "");
+//$policy = new LoginPolicy($pdoconnect, "" , "");
 
 if(!isset($_SESSION)) session_start();
   //This value is to check whether it's in maintainance state
   $testmode = false;
-  require_once(@$_SERVER['DOCUMENT_ROOT']."/forum/testmodule.php");
+  //require_once(@$_SERVER['DOCUMENT_ROOT']."/forum/testmodule.php");
 
 
 ?>

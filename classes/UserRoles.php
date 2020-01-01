@@ -1,6 +1,6 @@
 <?php
 
-include_once(@$_SERVER['DOCUMENT_ROOT']."/classes/Users.php");
+//include_once(dirname(__FILE__)."/classes/Users.php");
 
 class UserRoles{
     public $pdoconnect;
