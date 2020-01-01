@@ -14,9 +14,9 @@ $roles = new UserRoles($pdoconnect);
 $roles->getUserRole(@$_SESSION['id']);
 
 if($roles->rights >= 90){
-    include_once 'views/page-index-unstable.php';
+    include_once dirname(__FILE__) . '/views/page-index-unstable.php';
 }else{
-    include_once 'views/page-index-stable.php';
+    include_once dirname(__FILE__) . '/views/page-index-stable.php';
 }
 
 
