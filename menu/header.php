@@ -1,5 +1,5 @@
 <?php
-//require_once dirname(__FILE__)."/../classes/LoginPolicy.php";
+require_once dirname(__FILE__)."/../../classes/LoginPolicy.php";
 
 //$policy = new LoginPolicy($pdoconnect, "" , "");
 
@@ -86,7 +86,7 @@ if(!isset($_SESSION)) session_start();
     <a class="menuitem expanditem" href="/focussight/index.php">FocusSight</a>
 	  <a class="menuitem expanditem" href="/forum/viewforum.php?id=1">Labstry General</a>
 <?php 
-    if(@$_SESSION['username'] && $policy->validateUser(@$_SESSION['username'])){
+    if(@$_SESSION['id']){
 ?>
   	<a class="menuitem expanditem" href="/forum/account/profile.php?id=<?php echo @$_SESSION['id']; ?>"><?php echo @$_SESSION['username']?></a>
 	  <a class="menuitem expanditem" href="/forum/index.php?action=logout">Logout</a>

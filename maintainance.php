@@ -1,5 +1,7 @@
 ﻿<?php
+if(!isset($_SESSION)) session_start();
 require_once(dirname(__FILE__)."/classes/UserRoles.php");
+
 
 $userrole = new UserRoles($pdoconnect);
 $userrole->getUserRole(@$_SESSION["id"]);
@@ -56,7 +58,9 @@ a{
 <h1 style='text-align: center; font-size: 20px; margin-top: 40px;color:white;'>
 對唔住，Forum 正在更新中...</br>
 由於<?php
-	$details = mysqli_fetch_assoc(mysqli_query($connect, "SELECT * FROM maintainance"));
+    $statement =  $pdoconnect->prepare("SELECT * FROM maintainance");
+    $statement->execute();
+    $details = $statement->fetch(PDO::FETCH_ASSOC);
     	echo $details['reason'];
     ?>
 ，因此論壇暫時無法使用</br>
@@ -72,7 +76,11 @@ a{
 
 </body>
 <?php
-	$now = mysqli_fetch_assoc(mysqli_query($connect, "SELECT NOW()"))['NOW()'];
+    $statment = $pdoconnect->prepare("SELECT NOW() 'now");
+    $statment->execute();
+    $now_arr = $statment->fetch(PDO::FETCH_ASSOC);
+	$now = $now_arr['now'];
+	echo $now;
 	
 	$diff = strtotime($now) - strtotime($details['e_date']);
 	

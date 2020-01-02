@@ -34,7 +34,7 @@ a{
 
 
 <?php
-require_once("ranking.php");
+require_once(dirname(__FILE__).'/classes/UserRoles.php');
 /* If the class is search, DO NOT PUT A REAL <a ON THEM, 
 /* In other words, put '#' on href of search <a>
 /*
@@ -119,7 +119,8 @@ if($viewpage == "thread"){
 }
 
 if($viewpage == "viewforum"){
-  require_once('ranking.php');
+  require_once(dirname(__FILE__).'/../classes/UserRoles.php');
+  
   echo "<div class='bgwrapper' style='white-space:nowrap;background-color: #4BD2B0; width:100%;border-radius:0px 0px 15px 15px'>";
   //left button
   echo "\n\t<a href='#' class='button left' style='display:inline-block;height:100px;'>";
@@ -180,98 +181,11 @@ if($viewpage == "postedit"){
         echo "</div>";
 }
 
-//These are shop related
-if($viewpage == "Personal"){
-  echo "<div class='submenu' style='overflow:hidden; background-color: #4BD2B0; clear:both; width: 100%; height: 100px;'>";
-  echo  "<div class='useraction'> 
-       <a style='text-decoration:none;' class='submenuitem' href='cart.php'>
-      \n\t<img src='menu/images/Cart.png' class='icon' />
-      \n\t<div style='text-align:center;text-decoration:none'>購物車&ensp;Cart</div>
-      </a></div>";
-  echo  "<div class='useraction'>
-      <a style='text-decoration:none;' class='submenuitem' href='list.php'>
-      \n\t<img src='menu/images/time.png' class='icon' />
-      \n\t<div style='text-align:center;text-decoration:none'>購買記錄&ensp;Purchases</div>
-      </a></div>";
-  echo  "<div class='useraction'>
-      <a style='text-decoration:none;' class='submenuitem' href='status.php'>
-      \n\t<img src='menu/images/truck.png' class='icon' />
-      \n\t<div style='text-align:center;text-decoration:none'>商品狀態&ensp;Shipping status</div>
-      </a></div>";
-  echo   "</div>";
-}
-
-if($viewpage == "ShopIndex"){
-  echo "<div class='submenu' style='overflow:hidden;background-color: #4BD2B0; clear:both; width: 100%; height: 100px;'>";
-  echo  "<div class='useraction'>
-            <a style='text-decoration:none;color:white;' class='submenuitem' href='index.php'>
-            <img src='menu/images/hot.png' class='icon' />
-            <div style='text-align:center;text-decoration:none'>熱門商品&ensp;Hot items</div>
-            </a>
-        </div>";
-  echo  "<div class='useraction'>
-	<a style='text-decoration:none;color:white;' class='submenuitem' href='catagory.php'>
-	<img src='menu/images/catagory.png' class='icon' />
-	<div style='text-align:center;text-decoration:none'>類別&ensp;Catagories</div>
-	</a>
-	</div>";
-  echo  "<div class='useraction search'>
-            <a style='text-decoration:none;color:white;' class='submenuitem' href='#'>
-            <img src='menu/images/Search.png' class='icon' />
-            <div style='text-align:center;text-decoration:none'>搜尋&ensp;Search</div>
-            </a>
-        </div>";
-  echo  "<div class='useraction'>
-            <a style='text-decoration:none;color:white;' class='submenuitem' href='cart.php'>
-            <img src='menu/images/Cart.png' class='icon' />
-            <div style='text-align:center;'>購物車&ensp;Cart</div>
-            </a>
-        </div>";
-
-  echo   "</div>";
-}
 
 
 
-  if($viewpage == "catagories"){
-	require_once("connect_shopping.php");
-	echo "<div style='background-color: #4BD2B0;margin:0'>";
-	  
 
-   /*echo  "\n\t<div class='useraction'>                                   
-          \n\t\t<a class='submenuitem' href='catagory.php'>
-          \n\t\t<img src='menu/images/All.png' class='icon'  style='max-height:64px;max-width:64px;'/>
-          \n\t\t<div style='text-align:center'>全部&ensp;All</div>
-          \n\t\t</a>
-          \n\t</div>";*/
-		  
-		  
-          $query = mysqli_query($shoppingconnect,"select cname,cid,image from catagory");
-          echo "<div uk-slider>
-              <div class='uk-margin uk-text-center' style='margin:0px;'>
-                  <div class='uk-inline-block uk-width-xxlarge'>
-                      <div class='uk-slider-container uk-light'>
-                          <ul class='uk-slider-items uk-child-width-1-2 uk-child-width-1-3@s uk-child-width-1-6@m '>
-               ";
-               echo "
-                      <li>
-                      <a href='catagory.php' style='text-decoration:none;'>
-                      <img src='menu/images/All.png' style='max-height:64px;max-width:64px;'/>
-                      <div style='font-size:12px;text-align:center;text-decoration:none;'>全部ALL</div>
-                      </a>
-                      </li>
-               ";
-               while($result = mysqli_fetch_assoc($query)){
-                  $cname = $result['cname'];
-                  $cid = $result['cid'];
-                  $image= $result['image'];
-                   echo "<li>
-                      <a href='viewcatagory.php?viewitem=".$result['cid']."' style='text-decoration:none;'>
-                      <img src='".$result['image']."' style='max-height:64px;max-width:64px;'/>
-                      <div style='font-size:12px;text-align:center;text-decoration:none;'>".$cname."</div>
-                      </a>
-                      </li>";
-              }
+  
                             
           echo "       </ul>
                       </div>

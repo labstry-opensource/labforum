@@ -1,7 +1,13 @@
 <?php
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+
+require_once(dirname(__FILE__).'/classes/connect.php');
+require_once(dirname(__FILE__).'/classes/UserRoles.php');
+
+if(!isset($_SESSION)) session_start();
+$id = isset($_SESSION['id']) ? @$_SESSION['id'] : 0;
+
+$roles= new UserRoles($pdoconnect);
+$rights = $roles->getUserRole($id);
 ?>
 <html>
 <link rel="stylesheet" href="menu/dynamicmenu.css"/>
@@ -117,9 +123,7 @@ error_reporting(E_ALL);
 <?php
 
 header("Content-Type:text/html;charset=utf-8");
-session_start();
-require('connect.php');
-require_once('ranking.php');
+
 //Check for permission
 if(@$_GET['mode'] == 'edit' && $tid=@$_GET['id']){
 	if(!$myedit){
