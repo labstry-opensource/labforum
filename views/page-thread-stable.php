@@ -124,7 +124,7 @@ if($threadprop->descript != ""){
 </style>
 
 <body onload="Design();">
-<?php include_once("menu/header.php");?>
+<?php include_once(dirname(__FILE__)."/../menu/header.php");?>
 <!--- div class="operationprovider">
 
 
@@ -132,7 +132,6 @@ if($threadprop->descript != ""){
 <?php
 //Use parameter to get the appropiate header
 $viewpage = "thread";
-include_once(dirname(__FILE__)."/menu/subheader.php");
 ?>
 <div class="wrapper">
 	<div class="card">

@@ -11,12 +11,8 @@ if (! isset($opt_in_script)) {
         'https://cdnjs.cloudflare.com/ajax/libs/jquery-timeago/1.6.7/jquery.timeago.min.js'
     );
 }
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
 
 header("Content-Type:text/html;charset=utf-8");
-session_start();
 
 
 $essentials = new Essentials($meta, null, $opt_in_script);

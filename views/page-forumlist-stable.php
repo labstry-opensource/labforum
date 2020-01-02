@@ -1,10 +1,12 @@
 <?php
+if(!isset($_SESSION)) session_start();
 
-session_start();
-require_once('connect.php');
-require_once(dirname(__FILE__)."/../classes/Forum.php");
+$id = isset($_SESSION['id']) ? @$_SESSION['id'] : 0;
 
 $forum = new Forum($pdoconnect);
+$roles = new UserRoles($pdoconnect);
+$roles->getUserRole($id);
+$rights = $roles->rights;
 
 $gids = $forum->getForumListId();
 
@@ -66,7 +68,8 @@ $gids = $forum->getForumListId();
 <body>
 <?php
 include("menu/header.php");
-require_once("ranking.php");
+
+
 ?>
 <div class='showtag'>
 	<div class="cardtitle">版塊列表</div>
