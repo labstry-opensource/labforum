@@ -59,20 +59,16 @@ if(!isset($user_details) || !@$_SESSION['username']) {
 </style>
 
 <section class="landing-greetings-card text-white">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
-        <path fill="#00c5ff" fill-opacity="1"
-              d="M0,224L60,224C120,224,240,224,360,186.7C480,149,600,75,720,48C840,21,960,43,1080,48C1200,53,1320,43,1380,37.3L1440,32L1440,320L1380,320C1320,320,1200,320,1080,320C960,320,840,320,720,320C600,320,480,320,360,320C240,320,120,320,60,320L0,320Z"></path>
-    </svg>
-    <div class="greeting-content" style="background-color: #00c5ff; min-height: 100px; margin-top: -.25rem; margin-bottom: -.25rem">
-        <div class=container>
+    <div class="greeting-content d-flex align-items-center" style="background-color: #0099ff; min-height: 400px; ">
+        <div class="container">
             <div class="row">
-                <div class="col-7 col-md-6">
+                <div class="col-12">
                     <h2 class="h3">Welcome, <span><?php echo $user_details['username']?></span>.</h2>
                     <div><?php echo $user_details['rank_name']?></div>
                 </div>
-                <div class="col-5 col-md-6 forum-shortcut">
+                <div class="col-12 pt-5">
                     <div class="row">
-                        <a href="forumlist.php" class="d-flex col-12 align-items-center text-decoration-none">
+                        <a href="forumlist.php" class="d-flex col-12 col-md align-items-center text-decoration-none">
                             <img style="height: 50px" class="align-center" src="/forum/images/menu/discussion.png" alt="">
                             <div class="align-middle text-white">Forum Listing</div>
                         </a>
@@ -85,8 +81,7 @@ if(!isset($user_details) || !@$_SESSION['username']) {
         </div>
     </div>
 
-    <svg style="background-color: #00c5ff" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
-        <path fill="#fff" fill-opacity="1"
-              d="M0,224L60,224C120,224,240,224,360,186.7C480,149,600,75,720,48C840,21,960,43,1080,48C1200,53,1320,43,1380,37.3L1440,32L1440,320L1380,320C1320,320,1200,320,1080,320C960,320,840,320,720,320C600,320,480,320,360,320C240,320,120,320,60,320L0,320Z"></path>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
+          <path fill="#0099ff" fill-opacity="1" d="M0,224L80,197.3C160,171,320,117,480,101.3C640,85,800,107,960,106.7C1120,107,1280,85,1360,74.7L1440,64L1440,0L1360,0C1280,0,1120,0,960,0C800,0,640,0,480,0C320,0,160,0,80,0L0,0Z"></path>
     </svg>
 </section>
