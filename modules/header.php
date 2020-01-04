@@ -111,7 +111,9 @@ if (! isset($opt_in_script)) {
                             <span class="icon-dash icon-dash-2"></span>
                         </div>
                     </a>
-                    <a href="/forum/index.php" class="title-name text-decoration-none">Labstry Forum</a>
+                    <a href="/forum/index.php" class="title-name text-decoration-none">
+                        <h1 class="h6 mb-0 font-weight-normal">Labstry Forum</h1>
+                    </a>
                 </div>
                 <div class="header-right-btn-wrapper position-absolute" style="">
                     <?php

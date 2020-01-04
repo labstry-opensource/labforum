@@ -51,6 +51,10 @@ $thread_url  = $thread_details['thread-url'];
 
 </style>
 <div data-title="Featured" id="featured" class="pushed-el-cards">
+    <div class="container">
+        <div class="text-center h1" style="color: hotpink"><large><?php echo $thread_details['title']?></large></div>
+    </div>
+
     <div class="row no-gutters featured-thread-wrapper">
         <?php
 

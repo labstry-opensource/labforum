@@ -64,6 +64,17 @@ pre {
               'rights' => 0,
               'continuous_checkin' => $sign->checkContinousSign(@$_SESSION['id'])
           );
+          // For inks in the greetings card.
+          $display_links = array(
+              array(
+                  'href'=> 'forumlist.php',
+                  'description' => 'Forum Lists'
+              ),
+              array(
+                  'href'=> 'post.php',
+                  'description' => 'Post New Thread'
+              ),
+          );
       }
       $thread_details = array(
           'thread-url' => 'api/get-home-threads.php',
