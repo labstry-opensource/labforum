@@ -155,6 +155,18 @@ class Users{
 	public function registerUser($user){
 
 	}
+	public function setPassword($userid, $password, $repassword = null){
+		if($password === $repassword || $repassword === null){
+			$password = password_hash($password, PASSWORD_DEFAULT);
+		}else{
+			return false;
+		}
+		$stmt = $this->pdoconnect->prepare('UPDATE `userspace`.users SET password = ? WHERE id = ?');
+		$stmt->bindValue(1, $password, PDO::PARAM_STR);
+		$stmt->bindValue(2, $userid, PDO::PARAM_INT);
+		$stmt->execute();
+		$this->password = $password;
+	}
 }
 
 ?>

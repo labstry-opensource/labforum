@@ -11,8 +11,9 @@ $roles->getUserRole(@$_SESSION['id']);
 
 
 if(!@$_SESSION["id"] || $roles->rights < 90 || !@$_GET["id"]){
-    header("HTTP/2.0 403 Forbidden");
+    http_response_code(403);
     die('403 Forbidden');
+    exit;
 }
 
 $users->getUserPropById(@$_GET["id"]);
@@ -218,6 +219,16 @@ $users->getUserPropById(@$_GET["id"]);
                            self.disposeDialog();
                            self.toggleDialog();
                        }
+                   }
+                });
+            },
+            setUsernamePassword: function(userid, password){
+                $.ajax({
+                   url: '/forum/api/admin/change-password.php',
+                   method: 'POST',
+                   data:{
+                       id: userid,
+                       password: password,
                    }
                 });
             },
