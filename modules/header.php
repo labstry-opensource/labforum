@@ -178,11 +178,7 @@ if (! isset($opt_in_script)) {
 </div>
 <div class="header-placeholder"></div>
 <script id="sRBar" type="text/x-jsrender">
-    <a class="row" href="/forum/thread.php?id={{:topic_id}}">
-        <div class="col-12 col-md-7 search-links py-3" ><span class="thread-name">{{:topic_name}}</span></div>
-        div.col-12.col-
-    </a>
-
+    <?php include dirname(__FILE__) . '/../widgets/thread-display/simple-thread-widget.php'; ?>
 </script>
 
 
