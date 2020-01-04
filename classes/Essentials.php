@@ -27,6 +27,6 @@ class Essentials
         $meta = $this->meta;
         $home_url = $this->home_url;
         $opt_in_script = $this->opt_in_script;
-        return include dirname(__FILE__)."/../views/header.php";
+        return include dirname(__FILE__) . "/../modules/header.php";
     }
 }

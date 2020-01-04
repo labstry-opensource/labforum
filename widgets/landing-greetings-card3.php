@@ -42,21 +42,6 @@ if(!isset($user_details) || !@$_SESSION['username']) {
 }
 
 ?>
-<style>
-    .forum-shortcut{
-        margin-top: -50px;
-    }
-    @media screen and (min-width: 576px) {
-        .forum-shortcut{
-            margin-top: -100px
-        }
-    }
-    @media screen and (min-width: 768px){
-        .forum-shortcut{
-            margin-top: -125px
-        }
-    }
-</style>
 
 <section class="landing-greetings-card text-white">
     <div class="greeting-content d-flex align-items-center" style="background-color: #0099ff; min-height: 400px; ">

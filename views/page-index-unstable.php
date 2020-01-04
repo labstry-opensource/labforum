@@ -28,20 +28,6 @@ if (@$_SESSION['id'])
     ?>
 
 <style>
-.name{
-  color:white;
-  padding: 20px;
-  font-size: 16px;
-}
-.oneliner{
-    vertical-align: top;
-    display: inline-block;
-}
-.horizontal-btn{
-    padding-left: 50px;
-    padding-right: 50px;
-    display: inline-block;
-}
 .divider{
 	width: 100%;
 	height: 2px;
@@ -68,28 +54,32 @@ pre {
   </div>
   <div class="standard-wrapper home-content-wrapper">
       <?php
-    if (@$_SESSION['username']) {
-        $users->getUserPropById(@$_SESSION['id']);
-        $user_details = array(
-            'profile' => $users->profilepic,
-            'username' => @$_SESSION['username'],
-            'rank_name' => $role->role_name,
-            'signed_in_today' => $sign->checkIfSigned(@$_SESSION['id']),
-            'rights' => 0,
-            'continuous_checkin' => $sign->checkContinousSign(@$_SESSION['id'])
-        );
-    }
-    include "widgets/landing-greetings-card3.php";
-    include "widgets/thread-loader.php";
-    ?>
-      <?php
-    // One time query
-    $users->getNewestUser();
-    $newuser = $users->username;
-    $newuserid = $users->userid;
-    $numusers = $users->getUserCount();
-    $numthreads = $pdotoolkit->rowCounterWithLimit($pdoconnect, "threads");
-    ?>
+      if (@$_SESSION['username']) {
+          $users->getUserPropById(@$_SESSION['id']);
+          $user_details = array(
+              'profile' => $users->profilepic,
+              'username' => @$_SESSION['username'],
+              'rank_name' => $role->role_name,
+              'signed_in_today' => $sign->checkIfSigned(@$_SESSION['id']),
+              'rights' => 0,
+              'continuous_checkin' => $sign->checkContinousSign(@$_SESSION['id'])
+          );
+      }
+      $thread_details = array(
+          'thread-url' => 'api/get-home-threads.php',
+          'title' => 'Featured',
+      );
+
+      include "widgets/landing-greetings-card3.php";
+      include "widgets/thread-loader.php";
+
+      // One time query
+      $users->getNewestUser();
+      $newuser = $users->username;
+      $newuserid = $users->userid;
+      $numusers = $users->getUserCount();
+      $numthreads = $pdotoolkit->rowCounterWithLimit($pdoconnect, "threads");
+      ?>
       <div class="divider"></div>
 
       <div class="card">
@@ -97,24 +87,24 @@ pre {
           <div class="contentpreview" style="width: 100%; padding: 20px;">
               <div>The site has <?php
 
-            echo $numusers;
-            ?> users.</div>
+                  echo $numusers;
+                  ?> users.</div>
               <div>Newcomer: <a href="account/profile.php?id=<?php
 
-            echo $newuserid;
-            ?>"><?php
+                  echo $newuserid;
+                  ?>"><?php
 
-            echo $newuser;
-            ?></a></div>
+                      echo $newuser;
+                      ?></a></div>
               <div>A total of <?php
 
-            echo $numthreads;
-            ?> threads.</div>
+                  echo $numthreads;
+                  ?> threads.</div>
           </div>
       </div>
   </div>
 
-  </body>
+</body>
 </html>
 <?php
 if (@$_GET['action'] == 'checkin') {
