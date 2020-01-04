@@ -72,6 +72,7 @@ pre {
 
       include "widgets/landing-greetings-card3.php";
       include "modules/thread-display.php";
+      include "modules/footer.php";
 
       // One time query
       $users->getNewestUser();
