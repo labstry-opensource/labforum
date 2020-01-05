@@ -1,8 +1,10 @@
 <?php
+//Modules
+
 if (! isset($meta)) {
     $meta = array(
         'keywords' => 'Labstry, 論壇, AI, Android ROM, 生活方式, 分享, 討論, 電腦, 程式開發',
-        'description' => 'Labstry is a forum for all range of topics ranging from programming to lifestyle.',
+        'description' => 'Labstry is a general topics forum. Discussions ranging from programming to lifestyle.',
         'viewport' => 'width=device-width, initial-scale=1.0'
     );
 }
@@ -12,7 +14,65 @@ if (! isset($opt_in_script)) {
     );
 }
 
-header("Content-Type:text/html;charset=utf-8");
+if (@$_SESSION['username']) {
+    $users->getUserPropById(@$_SESSION['id']);
+    $user_details = array(
+        'profile' => $users->profilepic,
+        'username' => @$_SESSION['username'],
+        'rank_name' => $role->role_name,
+        'signed_in_today' => $sign->checkIfSigned(@$_SESSION['id']),
+        'rights' => 0,
+        'continuous_checkin' => $sign->checkContinousSign(@$_SESSION['id'])
+    );
+    // For links in the greetings card.
+    $display_links = array(
+        array(
+            'href'=> 'forumlist.php',
+            'description' => 'Forum Lists'
+        ),
+        array(
+            'href'=> 'post.php',
+            'description' => 'Post New Thread'
+        ),
+        array(
+            'href' => 'active.php',
+            'decription' => 'Sign',
+        )
+    );
+}
+$thread_details = array(
+    'thread-url' => 'api/get-home-threads.php',
+    'title' => 'Featured',
+);
+if(!isset($footer_details)){
+    $latest_user = new Users($pdoconnect, '');
+    $users = new Users($pdoconnect, '');
+    $latest_user->getNewestUser();
+    $footer_details = array(
+        'statistic' => array(
+            'num_users' => $users->getUserCount(),
+            'new_comer' =>  $latest_user->username,
+            'new_comer_id' => $latest_user->userid,
+        ),
+        'links'=> array(
+            //One array stands for a column
+            0 => array(
+                array(
+                    'href' => '/login3.php',
+                    'name' => 'Login',
+                )
+            ),
+            1 => array(
+                array(
+                    'href' => '/register.php',
+                    'name' => 'Register',
+                )
+            )
+        )
+    );
+}
+
+
 
 
 $essentials = new Essentials($meta, null, $opt_in_script);
@@ -21,101 +81,24 @@ $role = new UserRoles($pdoconnect);
 $users = new Users($pdoconnect, "");
 $sign = new Sign($pdoconnect);
 
-if (@$_SESSION['id'])
+if (@$_SESSION['id']){
     $role->getUserRole(@$_SESSION['id']);
-    
-    $essentials->getHeader();
-    ?>
-
-<style>
-.divider{
-	width: 100%;
-	height: 2px;
-	background-color: #ACACAC;
 }
-pre {
-    white-space: pre-wrap;
-}
- @media screen and (max-width: 480px){
-    .roledisplay{
-      text-align: left;
-    }
-    .detailsdiv, .avatarpic{
-      vertical-align: middle;
-      display: inline-block;
-    }
-  }
-  </style>
 
-  <div class="container">
-      <?php
 
-    ?>
-  </div>
+$essentials->getHeader();
+?>
+
+
   <div class="standard-wrapper home-content-wrapper">
       <?php
-      if (@$_SESSION['username']) {
-          $users->getUserPropById(@$_SESSION['id']);
-          $user_details = array(
-              'profile' => $users->profilepic,
-              'username' => @$_SESSION['username'],
-              'rank_name' => $role->role_name,
-              'signed_in_today' => $sign->checkIfSigned(@$_SESSION['id']),
-              'rights' => 0,
-              'continuous_checkin' => $sign->checkContinousSign(@$_SESSION['id'])
-          );
-          // For inks in the greetings card.
-          $display_links = array(
-              array(
-                  'href'=> 'forumlist.php',
-                  'description' => 'Forum Lists'
-              ),
-              array(
-                  'href'=> 'post.php',
-                  'description' => 'Post New Thread'
-              ),
-          );
-      }
-      $thread_details = array(
-          'thread-url' => 'api/get-home-threads.php',
-          'title' => 'Featured',
-      );
-
       include "widgets/landing-greetings-card3.php";
       include "modules/thread-display.php";
-      include "modules/footer.php";
-
-      // One time query
-      $users->getNewestUser();
-      $newuser = $users->username;
-      $newuserid = $users->userid;
-      $numusers = $users->getUserCount();
-      $numthreads = $pdotoolkit->rowCounterWithLimit($pdoconnect, "threads");
       ?>
-      <div class="divider"></div>
-
-      <div class="card">
-          <div class="intro" style="display:block;background-color:#add8e6; padding: 20px; height: 50px">Statistic</div>
-          <div class="contentpreview" style="width: 100%; padding: 20px;">
-              <div>The site has <?php
-
-                  echo $numusers;
-                  ?> users.</div>
-              <div>Newcomer: <a href="account/profile.php?id=<?php
-
-                  echo $newuserid;
-                  ?>"><?php
-
-                      echo $newuser;
-                      ?></a></div>
-              <div>A total of <?php
-
-                  echo $numthreads;
-                  ?> threads.</div>
-          </div>
-      </div>
   </div>
-
+<?php
+$essentials->getFooter();
+?>
 </body>
 </html>
 <?php
