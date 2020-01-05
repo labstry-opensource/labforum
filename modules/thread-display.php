@@ -58,7 +58,7 @@ $thread_url  = $thread_details['thread-url'];
     <div class="row no-gutters featured-thread-wrapper">
         <?php
 
-        include "loading-circle.php" ?>
+        include dirname(__FILE__)."/../widgets/loading-circle.php" ?>
     </div>
 
 </div>

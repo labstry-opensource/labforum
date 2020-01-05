@@ -3,10 +3,28 @@
      $home_url = '/forum/';
  }
 
- if(!isset($statistic)){
-     $statistic = array(
-         'num_users' => 0,
-         'new_comer' => 'No users yet. Become the first user! ',
+ if(!isset($footer_details)){
+     $footer_details = array(
+         'statistic' => array(
+             'num_users' => 0,
+             'new_comer' => 'No users yet. Become the first user! ',
+             'new_comer_id' => null,
+         ),
+         'links'=> array(
+             //One array stands for a column
+             0 => array(
+                 array(
+                     'href' => '/login3.php',
+                     'name' => 'Login',
+                 )
+             ),
+             1 => array(
+                 array(
+                     'href' => '/register.php',
+                     'name' => 'Register',
+                 )
+             )
+         )
      );
  }
  ?>
@@ -23,13 +41,14 @@
                     <div class="row">
                         <h5 class="col">
                             <span class="h1">
-                                <large><?php echo $statistic['num_users']?></large>
+                                <large><?php echo $footer_details['statistic']['num_users']?></large>
                             </span> users.
                         </h5>
                         <h5 class="col">
                             <span class="h1">
                                 <div><large>Labforumer: </large></div>
-                            </span> <?php echo $statistic['new_comer']?>
+                            </span>
+                            <a class="text-decoration-none" href="account/profile.php?id=<?php echo $footer_details['statistic']['new_comer_id']?>"><?php echo $footer_details['statistic']['new_comer']?></a>
                         </h5>
                     </div>
                     <div class="row py-5">
