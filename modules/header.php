@@ -44,12 +44,14 @@ if (! isset($links)) {
         ));
     }
 }
-if (! isset($opt_in_script)) {
-    $opt_in_script = null;
+if( ! isset($optional_paras)){
+    $optional_paras = array(
+        'opt_in_script' => null,
+        'title' => 'Homepage - Labstry Forum'
+    );
 }
 
 ?>
-
 <!doctype html>
 <html lang="en">
 <head>
@@ -67,7 +69,7 @@ if (! isset($opt_in_script)) {
 
         echo (isset($meta['description'])) ? $meta['description'] : ''?>">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Labstry Forum </title>
+    <title><?php echo $optional_paras['title']?></title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jsrender/1.0.5/jsrender.min.js"></script>
@@ -77,13 +79,15 @@ if (! isset($opt_in_script)) {
 
     echo filemtime(dirname(__FILE__) . '/../js/toggle.js')?>"></script>
     <?php
+    if($optional_paras['opt_in_script']){
+        foreach ($optional_paras['opt_in_script'] as $script) {
+            ?><script src="<?php
 
-    foreach ($opt_in_script as $script) {
-        ?><script src="<?php
-
-        echo $script;
-        ?>"></script><?php
+            echo $script;
+            ?>"></script><?php
+        }
     }
+
     ?>
 
     <!-- css -->

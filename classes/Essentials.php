@@ -6,6 +6,7 @@ class Essentials
     public $meta = array();
     public $module_list = array();
     public $home_url = '/forum/';
+    public $page_title = 'Homepage - Labstry Forum';
     public $opt_in_script;
     public $footer_details;
 
@@ -21,14 +22,21 @@ class Essentials
         $this->meta = $text;
     }
 
+    public function setTitle($title){
+        $this->page_title = $title;
+    }
+
     protected function getMeta(){
         return $this->meta;
     }
 
     public function getHeader(){
+        $optional_paras = array(
+            'opt_in_script' => $this->opt_in_script,
+            'title' => $this->page_title,
+        );
         $meta = $this->meta;
         $home_url = $this->home_url;
-        $opt_in_script = $this->opt_in_script;
         return include dirname(__FILE__) . '/../modules/header.php';
     }
     public function getFooter(){

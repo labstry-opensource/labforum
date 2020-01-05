@@ -41,7 +41,7 @@ if (@$_SESSION['username']) {
     );
 }
 $thread_details = array(
-    'thread-url' => 'api/get-home-threads.php',
+    'thread-url' => 'api/threads-engine.php?page=home',
     'title' => 'Featured',
 );
 if(!isset($footer_details)){
