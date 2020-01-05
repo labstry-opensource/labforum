@@ -1,14 +1,10 @@
 <?php
 if(! isset($thread_details)){
     $thread_details = array(
-            'thread-url' =>  'api/get-home-threads.php',
+            'thread-url' =>  'api/threads-engine.php?page=thread&id=1',
             'title' => 'Featured',
     );
 }
-/*
-if (! isset($thread_url)) {
-    $thread_url ='api/get-home-threads.php';
-}*/
 
 $thread_url  = $thread_details['thread-url'];
 ?>
