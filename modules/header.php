@@ -51,8 +51,10 @@ if( ! isset($optional_paras)){
     );
 }
 
-?>
-<!doctype html>
+if(!defined('GLOB_API_DIR')) define('GLOB_API_DIR', $home_url . 'api');
+if(!defined('GLOB_HOME_URL')) define('GLOB_HOME_URL', $home_url);
+
+?><!doctype html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">

@@ -1,4 +1,3 @@
-
 <?php
 
 class Forum{
@@ -42,6 +41,8 @@ class Forum{
 
 	public function getSubforumIds($gid){
 		//Return an array with all the subforum ids
+		//Deprecated: It's usage is not guaranteed
+
 		$stmt = $this->pdoconnect->prepare("SELECT fid FROM subforum WHERE gid = ? ORDER BY fid ASC");
 		$stmt->bindValue(1, $gid, PDO::PARAM_INT);
 		$stmt->execute();
@@ -55,6 +56,13 @@ class Forum{
 		}
 
 		return $fids;
+	}
+	public function getSubforums($gid){
+		$stmt = $this->pdoconnect->prepare('SELECT * FROM subforum WHERE gid = ? ORDER BY fid ASC');
+		$stmt->bindValue(1, $gid, PDO::PARAM_INT);
+		$stmt->execute();
+
+		return $stmt->fetchAll(PDO::FETCH_ASSOC);
 	}
 	protected function getSubforumViewRights($fid){
 		$stmt = $this->pdoconnect->prepare("SELECT rights FROM subforum WHERE fid = ?");
@@ -111,5 +119,3 @@ class Forum{
 	}
 
 }
-
-?>

@@ -10,6 +10,7 @@ include_once  dirname(__FILE__) . "/classes/Essentials.php";
 $roles = new UserRoles($pdoconnect);
 $roles->getUserRole(@$_SESSION['id']);
 
+
 if($roles->rights < 89){
     include dirname(__FILE__) . '/views/page-forumlist-unstable.php';
 
@@ -17,6 +18,3 @@ if($roles->rights < 89){
 
     include dirname(__FILE__) . '/views/page-forumlist-unstable.php';
 }
-
-
-?>
