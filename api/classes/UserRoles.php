@@ -131,10 +131,25 @@ class UserRoles{
 
     public function getUserRole($userid){
         $data = array();
-        $data = $this->getSpecialTeamRoleById($userid);
-        if($data["role_name"] == NULL){
-            $data = $this->getNormalRoleNameById($userid);
+        if($userid === 0){
+            $data["type"] = "Guest";
+            $data["role_id"] = "0";
+            $data['role_name'] = 'Guest';
+            $data["tagcolor"] = null;
+            $data["r_edit"] = 0;
+            $data["r_del"] = 0;
+            $data["r_promo"] = 0;
+            $data["r_hide"] = 0;
+            $data["r_manage"] = 0;
+            $data["profile_visible"] = 0;
+            $data["rights"] = 0;
+        }else{
+            $data = $this->getSpecialTeamRoleById($userid);
+            if($data["role_name"] == NULL){
+                $data = $this->getNormalRoleNameById($userid);
+            }
         }
+
         return $data;
     }
 }

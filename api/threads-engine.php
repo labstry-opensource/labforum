@@ -7,7 +7,7 @@ include "classes/ThreadProp.php";
 
 $id = @$_GET['id'];
 
-header('Content-Type: application/json; charset=utf-8');
+
 
 $thread = new Thread($pdoconnect);
 
@@ -22,7 +22,7 @@ if(@$_GET['page'] === 'home'){
         $thread_item['number_of_replies'] = $thread->getNumberOfReplies($thread_item['topic_id']);
         array_push($thread_arr, $thread_item);
     }
-
+    header('Content-Type: application/json; charset=utf-8');
     print_r(json_encode($thread_arr));
     exit;
 }else{
@@ -47,7 +47,7 @@ if(@$_GET['page'] === 'home'){
         $replyprop = new ReplyProp($pdoconnect, '', $id, $i);
         array_push($resultarr['replies'], $replyprop->getThreadProp());
     }
-
+    header('Content-Type: application/json; charset=utf-8');
     echo json_encode($resultarr);
     exit;
 

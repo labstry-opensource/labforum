@@ -28,7 +28,7 @@ class Maintainance{
 	}
 }
 $maintainance = new Maintainance($pdoconnect);
-if(($maintainance->checkIfMaintaining() == false) || $userrole->rights >= $maintainance->getMinUserRights()){
+if(($maintainance->checkIfMaintaining() === false) || $userrole->rights >= $maintainance->getMinUserRights()){
 	return;
 }
 
