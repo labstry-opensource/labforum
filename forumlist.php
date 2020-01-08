@@ -4,7 +4,7 @@ include_once  dirname(__FILE__)."/classes/connect.php";
 include_once  dirname(__FILE__)."/classes/Users.php";
 require_once  dirname(__FILE__)."/classes/Forum.php";
 include_once  dirname(__FILE__).'/classes/UserRoles.php';
-include_once  dirname(__FILE__).'/maintainance.php';
+include_once dirname(__FILE__) . '/maintenance.php';
 include_once  dirname(__FILE__) . "/classes/Essentials.php";
 
 $roles = new UserRoles($pdoconnect);

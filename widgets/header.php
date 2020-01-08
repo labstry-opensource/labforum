@@ -1,5 +1,6 @@
-
 <?php
+
+
 
 if(!isset($is_search_enabled)) $is_search_enabled = true;
 
@@ -185,6 +186,5 @@ if(!isset($search_target)){
         if($(document).width() < mobileWidth){
         }
     }
-
 
 </script>

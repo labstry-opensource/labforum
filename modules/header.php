@@ -1,11 +1,10 @@
 <?php
+
+if(!defined('BASE_URL')) define('BASE_URL', isset($home_url)? $home_url : '/forum');
 if (session_id() === '' || ! isset($_SESSION)) {
     // Session might not be started. Check before starting it.
     session_start();
 }
-if (! isset($home_url))
-    $home_url = '/labstry_forum/';
-
 if (! isset($links)) {
     $links = array(
         'title' => array(
@@ -40,7 +39,8 @@ if (! isset($links)) {
         ));
         array_push($links['page_links'], array(
             "title" => "Logout",
-            "link" => "/forum/index.php?action=logout"
+            "link" => "#",
+            'id' => 'logout'
         ));
     }
 }
@@ -154,9 +154,9 @@ if(!defined('GLOB_HOME_URL')) define('GLOB_HOME_URL', $home_url);
                 foreach ($links['page_links'] as $page_link) {
                     ?>
                     <li class="d-block d-md-inline-block color-white p-3 px-lg-5">
-                        <a href="<?php
-
-                    echo $page_link['link']?>" style="color:#fff" class="text-decoration-none"><?php
+                        <a href="<?php echo $page_link['link']?>"
+                           <?php echo isset($page_link['id']) ? 'id="'.$page_link['id'].'"': ''?>
+                           style="color:#fff" class="text-decoration-none"><?php
 
                     echo $page_link['title']?></a>
                     </li>
@@ -188,17 +188,33 @@ if(!defined('GLOB_HOME_URL')) define('GLOB_HOME_URL', $home_url);
 <script id="sRBar" type="text/x-jsrender">
     <?php include dirname(__FILE__) . '/../widgets/thread-display/simple-thread-widget.php'; ?>
 </script>
-
-
 <script>
     //On scroll must be inline
     var n = $('nav');
     var currentId = '';
     var previousPosition = '';
+
+    function refreshPage(){
+        $.get(window.location.href, function(data, status){
+            $("body").html(data);
+        });
+    }
     
     $(window).on('scroll', function(){
         handleScrollDown($(window));
+    });
 
+    $('#logout').on('click', function(e){
+        e.preventDefault();
+        $.ajax({
+            url: <?php echo json_encode(BASE_URL.'/api/logout.php') ?>,
+            method: 'GET',
+            success: function(data){
+                //Clear away the click binded on document first.
+                $(document).off('click');
+                refreshPage();
+            }
+        })
     });
 
     $(window).on('scroll.scrollspy', function(){
@@ -257,5 +273,4 @@ if(!defined('GLOB_HOME_URL')) define('GLOB_HOME_URL', $home_url);
             el.height($(window).innerHeight() - 50);
         }
     }
-   
 </script>
