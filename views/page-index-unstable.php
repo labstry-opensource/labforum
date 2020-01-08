@@ -1,4 +1,8 @@
 <?php
+
+$users = new Users($pdoconnect, "");
+$role = new UserRoles($pdoconnect);
+$sign = new Sign($pdoconnect);
 //Modules
 
 if (! isset($meta)) {
@@ -76,10 +80,6 @@ if(!isset($footer_details)){
 
 
 $essentials = new Essentials($meta, null, $opt_in_script);
-
-$role = new UserRoles($pdoconnect);
-$users = new Users($pdoconnect, "");
-$sign = new Sign($pdoconnect);
 
 if (@$_SESSION['id']){
     $role->getUserRole(@$_SESSION['id']);
