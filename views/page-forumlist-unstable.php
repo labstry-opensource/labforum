@@ -27,5 +27,6 @@ $essentials->getHeader();
         </section>
         <?php include dirname(__FILE__). "/../modules/forum-display.php" ?>
     </div>
+
 <?php
 $essentials->getFooter();
