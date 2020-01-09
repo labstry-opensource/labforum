@@ -25,8 +25,9 @@ foreach($board_ids as $board_id){
         if($forum->hasRightsToViewForum($forum_list_arr['fid'], $user_role['rights'])){
             $board_arr['forum'] = $forum_list_arr;
         }
+        array_push($forum_arr, $board_arr);
     }
-    array_push($forum_arr, $board_arr);
+
 }
 header('Content-Type: application/json; charset=utf-8');
 print_r(json_encode($forum_arr));
