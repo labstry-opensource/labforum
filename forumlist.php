@@ -12,7 +12,7 @@ $roles->getUserRole(@$_SESSION['id']);
 
 
 if($roles->rights < 89){
-    include dirname(__FILE__) . '/views/page-forumlist-unstable.php';
+    include dirname(__FILE__) . '/views/page-forumlist-stable.php';
 
 }else{
 
