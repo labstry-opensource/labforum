@@ -4,7 +4,7 @@ include dirname(__FILE__) . '/classes/connect.php';
 include dirname(__FILE__) . '/classes/Forum.php';
 include dirname(__FILE__) . '/classes/UserRoles.php';
 
-$userid = isset($_GET['id']) ? $_GET['id'] : 0;
+$userid = isset($_SESSION['id']) ? $_SESSION['id'] : 0;
 
 $forum = new Forum($pdoconnect);
 $roles = new UserRoles($pdoconnect);
