@@ -22,11 +22,13 @@ foreach($board_ids as $board_id){
     $board_arr['board_name'] = $forum->getForumName($board_id);
     $sub_forum_list = $forum->getSubforums($board_id);
     foreach($sub_forum_list as $forum_list_arr){
+        $forum_list_arr['num_of_threads'] = $forum->countThreads($forum_list_arr['fid']);
         if($forum->hasRightsToViewForum($forum_list_arr['fid'], $user_role['rights'])){
-            $board_arr['forum'] = $forum_list_arr;
+            $board_arr['forum'][] = $forum_list_arr;
         }
-        array_push($forum_arr, $board_arr);
+
     }
+    array_push($forum_arr, $board_arr);
 
 }
 header('Content-Type: application/json; charset=utf-8');

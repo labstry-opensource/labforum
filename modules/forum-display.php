@@ -4,6 +4,27 @@ if(!isset($forum_listing_url)){
 }
 ?>
 
+<style>
+    .forum-block{
+        background-color: palegoldenrod;
+        color: #000;
+        position: relative;
+    }
+    .forum-block:after{
+        content: '';
+        background-color: #000;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 1px;
+
+    }
+    .forum-show-wrapper{
+        border-radius: 25px;
+    }
+</style>
+
 <div class="forum-display-wrapper container"></div>
 
 <script type="text/js-template" id="thread-instance">
