@@ -136,7 +136,7 @@ include_once("menu/header.php");
               getHomeThread: function(){
                   var self = this;
                   $.ajax({
-                      url: 'api/get-home-threads.php',
+                      url: 'api/threads-engine.php?page=home',
                       method: 'GET',
                       success: function(data){
                           self.home_threads = data;
