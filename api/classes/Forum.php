@@ -118,10 +118,9 @@ class Forum{
 		
 	}
 	public function countThreads($fid){
-	    $stmt = $this->pdoconnect->prepare('SELECT COUNT(*) \'count\' FROM thread WHERE fid = :fid');
+	    $stmt = $this->pdoconnect->prepare('SELECT COUNT(*) \'count\' FROM threads WHERE fid = :fid');
 	    $stmt->bindValue(':fid', $fid, PDO::PARAM_INT);
 	    $stmt->execute();
-
 	    return $stmt->fetch(PDO::FETCH_ASSOC)['count'];
     }
 
