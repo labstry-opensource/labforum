@@ -1,4 +1,6 @@
 <?php
+
+
 include dirname(__FILE__) . '/classes/SQLComparer.php';
 
 $db_username = @$_GET['username'];
