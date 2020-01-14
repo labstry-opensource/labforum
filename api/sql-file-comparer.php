@@ -16,8 +16,11 @@ if(!$db_username || !$db_password){
 $adminconnect = new PDO('mysql:host='. $hostname .';', $db_username, $db_password);
 
 
-$old_sql = file_get_contents(dirname(__FILE__) . '/db_update/forum_db_old.sql');
-$new_sql = file_get_contents(dirname(__FILE__) . '/db_update/forum_db_new.sql');
+$old_sql = file_get_contents(dirname(__FILE__) . '/updates/forum_db_old.sql');
+$new_sql = file_get_contents(dirname(__FILE__) . '/updates/forum_db_new.sql');
 
 $comparer = new SQLComparer($adminconnect, $old_sql, $new_sql);
+
+$sql_diff = $comparer->getStructureChange();
+
 
