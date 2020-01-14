@@ -23,7 +23,6 @@ class SQLComparer{
         $this->pdoconnect = $pdoconnect;
         $this->old_sql = $old_sql;
         $this->new_sql = $new_sql;
-        $this->getFullScript();
     }
     public function __destruct()
     {
@@ -52,7 +51,36 @@ class SQLComparer{
             }
         }
 
-        echo $this->diff_sql;
+        return $this->diff_sql;
+    }
+
+    public function getStructureChange(){
+        $this->executeOldSql($this->old_sql);
+        $this->executeNewSql($this->new_sql);
+        $this->getOldTables();
+        $this->getNewTables();
+        $tables_to_create = $this->getTablesToCreate();
+        if(isset($tables_to_create)){
+            foreach($tables_to_create as $table){
+                $this->showCreateTable($table);
+            }
+        }
+        $this->showFieldDiffs($this->old_tables_arr);
+        return $this->diff_sql;
+    }
+
+    public function getDroppedTable(){
+        $this->executeOldSql($this->old_sql);
+        $this->executeNewSql($this->new_sql);
+        $this->getOldTables();
+        $this->getNewTables();
+        $tables_to_drop = $this->getTablesToDrop();
+        if(isset($tables_to_drop)){
+            foreach ($tables_to_drop as $table) {
+                $this->showDropTable($table);
+            }
+        }
+        return $this->diff_sql;
     }
 
     public function executeOldSql($sql){
@@ -118,7 +146,7 @@ class SQLComparer{
 
     public function showCreateTable($table){
         $this->pdoconnect->query('USE '. $this->new_test_db_name);
-        $stmt = $this->pdoconnect->prepare('SHOW CREATE TABLE '. $table);
+        $stmt = $this->pdoconnect->prepare("SHOW CREATE TABLE `$table`");
         $stmt->execute();
 
         $resultset = $stmt->fetchAll(PDO::FETCH_NUM)[0];
