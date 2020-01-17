@@ -80,7 +80,7 @@ include_once("menu/header.php");
               'continuous_checkin' => $sign->checkContinousSign(@$_SESSION['id']),
           );
       }
-      include dirname(__FILE__)."/../widgets/landing-greetings-card.php";
+      include dirname(__FILE__) . "/../widgets/legacy/landing-greetings-card.php";
       ?>
 
       <div style="font-size: 24px; width:98%; margin: 0 auto; padding-top: 15px; padding-bottom: 15px;">
