@@ -25,7 +25,7 @@ if(!isset($forum_listing_url)){
     }
 </style>
 
-<div class="forum-display-wrapper container"></div>
+<div data-title="Forum Listing" id="forum-listing" class="pushed-el-cards forum-display-wrapper container"></div>
 
 <script type="text/js-template" id="thread-instance">
     <?php include dirname(__FILE__) . '/../widgets/forum-display/forumlist-display-widget.php'; ?>

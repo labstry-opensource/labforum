@@ -5,7 +5,7 @@ class Essentials
 {
     public $meta = array();
     public $module_list = array();
-    public $home_url = '/forum/';
+    public $home_url = BASE_URL;
     public $page_title = 'Homepage - Labstry Forum';
     public $opt_in_script;
     public $footer_details;
@@ -37,11 +37,11 @@ class Essentials
         );
         $meta = $this->meta;
         $home_url = $this->home_url;
-        return include dirname(__FILE__) . '/../modules/header.php';
+        return include LAF_PATH . '/modules/header.php';
     }
     public function getFooter(){
         $footer_details = $this->footer_details;
         $home_url = $this->home_url;
-        return include dirname(__FILE__) . '/../modules/footer.php';
+        return include LAF_PATH . '/modules/footer.php';
     }
 }

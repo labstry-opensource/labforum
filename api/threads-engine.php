@@ -25,7 +25,9 @@ if(@$_GET['page'] === 'home'){
     header('Content-Type: application/json; charset=utf-8');
     print_r(json_encode($thread_arr));
     exit;
-}else{
+}else if(isset($_GET['fid'])){
+
+} else{
     $id = @$_GET['id'];
     $resultarr = $thread->getThreadProp($id);
     // Get reply count
