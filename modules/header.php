@@ -1,6 +1,5 @@
 <?php
 
-if(!defined('BASE_URL')) define('BASE_URL', isset($home_url)? $home_url : '/forum');
 if (session_id() === '' || ! isset($_SESSION)) {
     // Session might not be started. Check before starting it.
     session_start();
@@ -8,8 +7,8 @@ if (session_id() === '' || ! isset($_SESSION)) {
 if (! isset($links)) {
     $links = array(
         'title' => array(
-            'name' => 'Labstry Forum',
-            'link' => $home_url
+            'name' => 'Labstry Forum 3',
+            'link' => BASE_URL . '/index.php',
         ),
         'page_links' => array(
             array(
@@ -18,7 +17,7 @@ if (! isset($links)) {
             ),
             array(
                 "title" => "Labstry General",
-                "link" => "/forum/viewforum.php"
+                "link" => BASE_URL . "/viewforum.php"
             )
         )
     );
@@ -35,7 +34,7 @@ if (! isset($links)) {
         // The user is logged in, thus session is set
         array_push($links['page_links'], array(
             "title" => $_SESSION["username"],
-            "link" => "/forum/account/profile.php?id=" . $_SESSION["id"]
+            "link" => BASE_URL . "/account/profile.php?id=" . $_SESSION["id"]
         ));
         array_push($links['page_links'], array(
             "title" => "Logout",
@@ -51,8 +50,8 @@ if( ! isset($optional_paras)){
     );
 }
 
-if(!defined('GLOB_API_DIR')) define('GLOB_API_DIR', $home_url . 'api');
-if(!defined('GLOB_HOME_URL')) define('GLOB_HOME_URL', $home_url);
+if(!defined('GLOB_API_DIR')) define('GLOB_API_DIR', BASE_URL . '/api');
+if(!defined('GLOB_HOME_URL')) define('GLOB_HOME_URL', BASE_URL);
 
 ?><!doctype html>
 <html lang="en">
@@ -77,7 +76,7 @@ if(!defined('GLOB_HOME_URL')) define('GLOB_HOME_URL', $home_url);
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jsrender/1.0.5/jsrender.min.js"></script>
     <script src="<?php
 
-    echo $home_url?>js/toggle.js?<?php
+    echo $home_url?>/js/toggle.js?<?php
 
     echo filemtime(dirname(__FILE__) . '/../js/toggle.js')?>"></script>
     <?php
@@ -94,14 +93,10 @@ if(!defined('GLOB_HOME_URL')) define('GLOB_HOME_URL', $home_url);
 
     <!-- css -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.1/css/bootstrap.min.css"/>
-    <link rel="stylesheet" href="<?php
-
-    echo $home_url?>css/stylesheets/main.css?<?php
+    <link rel="stylesheet" href="<?php echo BASE_URL?>/css/stylesheets/main.css?<?php
 
     echo filemtime(dirname(__FILE__) . '/../css/stylesheets/main.css')?>"/>
-    <link rel="stylesheet" href="<?php
-
-    echo $home_url?>css/stylesheets/header.css?<?php
+    <link rel="stylesheet" href="<?php echo BASE_URL?>/css/stylesheets/header.css?<?php
 
     echo filemtime(dirname(__FILE__) . '/../css/stylesheets/header.css')?>"/>
 </head>
@@ -117,8 +112,8 @@ if(!defined('GLOB_HOME_URL')) define('GLOB_HOME_URL', $home_url);
                             <span class="icon-dash icon-dash-2"></span>
                         </div>
                     </a>
-                    <a href="/forum/index.php" class="title-name text-decoration-none">
-                        <h1 class="h6 mb-0 font-weight-normal">Labstry Forum</h1>
+                    <a href="<?php echo $links['title']['link']?>" class="title-name text-decoration-none">
+                        <h1 class="h6 mb-0 font-weight-normal"><?php echo $links['title']['name']?></h1>
                     </a>
                 </div>
                 <div class="header-right-btn-wrapper position-absolute" style="">

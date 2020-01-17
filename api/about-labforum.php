@@ -5,5 +5,15 @@ include dirname(__FILE__) . '/classes/LabforumUpdater.php';
 
 $updater = new LabforumUpdater($pdoconnect);
 
+if(@$_GET['check'] === 'update'){
+    header('Content-Type: application/json');
+    echo json_encode($updater->checkUpdate());
+    exit;
+}
+
 header('Content-Type: application/json');
-print_r(json_encode($updater->getCurrentVersion()));
+
+$data = array();
+$data['version'] = $updater->getCurrentVersion();
+
+print_r(json_encode($data['version']));

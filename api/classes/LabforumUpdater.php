@@ -23,8 +23,32 @@ class LabforumUpdater
     }
 
     public function getServerLatestVersion(){
-        return json_decode(file_get_contents($this->remote_api_path));
+        return json_decode(file_get_contents($this->remote_api_path), true);
+    }
 
+    public function checkUpdate(){
+        $current_version_data = $this->getCurrentVersion();
+        $remote_version_data = $this->getServerLatestVersion();
+
+        $remote_date_time = strtotime($remote_version_data['laf_version']);
+        $current_date_time = strtotime($current_version_data['laf_version']);
+
+        if($remote_date_time > $current_date_time){
+            $data['data'] = array(
+                'program_updatable' => true,
+                'version' => $remote_version_data['laf_version'],
+                'release_date' => $remote_version_data['laf_release_date'],
+                'db_version' => $remote_version_data['db_version'],
+            );
+        }else{
+            $data['data'] = array(
+                'program_updatable' => false,
+                'version' => $current_version_data['laf_version'],
+                'release_date' => $current_version_data['laf_release_date'],
+                'db_version' => $current_version_data['db_version'],
+            );
+        }
+        return $data;
     }
 
     public function migrateSchema(){

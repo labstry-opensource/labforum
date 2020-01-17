@@ -1,5 +1,5 @@
 <?php
-
+require_once dirname(__FILE__). '/laf-config.php';
 include_once(dirname(__FILE__)."/classes/connect.php");
 include_once(dirname(__FILE__)."/classes/Users.php");
 include_once(dirname(__FILE__)."/classes/AuthorProp.php");
