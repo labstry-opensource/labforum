@@ -29,14 +29,17 @@ class Forum{
 	}
 
 	public function getForumName($fid){
-		$stmt = $this->pdoconnect->prepare("SELECT gname FROM forumlist WHERE gid = ?");
-		$stmt->bindValue(1, $fid, PDO::PARAM_INT);
+        $stmt = $this->pdoconnect->prepare("SELECT gname FROM forumlist WHERE gid = ?");
+        $stmt->bindValue(1, $fid, PDO::PARAM_INT);
+        $stmt->execute();
 
-		$stmt->execute();
+        $resultset = $stmt->fetch(PDO::FETCH_ASSOC);
 
-		$resultset = $stmt->fetch(PDO::FETCH_ASSOC);
-
-		return $resultset['gname'];
+        if(!empty($resultset)){
+            return $resultset['gname'];
+        }else{
+            return false;
+        }
 	}
 
 	public function getSubforumIds($gid){
@@ -64,6 +67,14 @@ class Forum{
 
 		return $stmt->fetchAll(PDO::FETCH_ASSOC);
 	}
+
+	public function getSubformByFid($fid){
+        $stmt = $this->pdoconnect->prepare("SELECT * FROM subforum WHERE fid = ?");
+        $stmt->bindValue(1, $fid, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
 	protected function getSubforumViewRights($fid){
 		$stmt = $this->pdoconnect->prepare("SELECT rights FROM subforum WHERE fid = ?");
 		$stmt->bindValue(1, $fid, PDO::PARAM_INT);
@@ -80,6 +91,17 @@ class Forum{
 
 		return ($rights >= $minimumrights) ? true: false;
 	}
+
+	public function getModerators($fid){
+	    $stmt = $this->pdoconnect->prepare("SELECT 
+                    moderator_id, username, profile_pic 
+                    FROM laf_moderators m, `userspace`.`users` u WHERE
+                    fid = ? AND u.id = m.moderator_id");
+        $stmt->bindValue(1, $fid, PDO::PARAM_INT);
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 
 	public function getSubforumName($fid){
 		$stmt = $this->pdoconnect->prepare("SELECT fname FROM subforum WHERE fid = ?");

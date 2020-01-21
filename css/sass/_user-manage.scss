@@ -1,6 +1,19 @@
 .user-listing{
-  padding: 20px;
+  padding: 20px 0;
   display: flex;
   flex-direction: column;
   justify-content: center;
+}
+
+.manage-link{
+  position: relative;
+  &:before{
+    content : '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background-color: #005cff;
+  }
 }

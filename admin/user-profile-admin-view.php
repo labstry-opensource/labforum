@@ -1,6 +1,7 @@
 <?php
 
 session_start();
+include dirname(__FILE__) . '/../laf-config.php';
 include @$_SERVER["DOCUMENT_ROOT"]."/forum/classes/connect.php";
 include @$_SERVER["DOCUMENT_ROOT"]."/forum/classes/UserRoles.php";
 include @$_SERVER["DOCUMENT_ROOT"]."/forum/classes/Users.php";

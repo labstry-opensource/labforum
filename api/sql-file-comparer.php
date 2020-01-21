@@ -23,4 +23,6 @@ $comparer = new SQLComparer($adminconnect, $old_sql, $new_sql);
 
 $sql_diff = $comparer->getStructureChange();
 
+print_r($sql_diff); exit;
+
 
