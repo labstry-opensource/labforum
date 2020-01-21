@@ -66,9 +66,7 @@ $thread_url  = $thread_details['thread-url'];
 
 <script>
     $.ajax({
-        url: <?php
-
-        echo json_encode(htmlspecialchars($thread_url))?>,
+        url: <?php echo json_encode(htmlspecialchars($thread_url))?>,
         method: 'GET',
         success: function(d){
             var tmpl = $.templates('#thread_viewer');

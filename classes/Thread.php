@@ -4,9 +4,7 @@ class Thread
 {
 
     public $pdoconnect;
-
     public $forumid;
-
     public $forumname;
 
     public $threadid;

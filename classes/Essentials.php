@@ -44,4 +44,11 @@ class Essentials
         $home_url = $this->home_url;
         return include LAF_PATH . '/modules/footer.php';
     }
+
+    public function imposeRestrictAccess($roles_right, $right){
+        if($roles_right < $right){
+            http_response_code(403);
+            die('403 Forbidden');
+        }
+    }
 }

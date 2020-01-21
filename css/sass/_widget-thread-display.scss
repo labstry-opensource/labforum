@@ -1,0 +1,35 @@
+.thread-slide {
+  min-height: 100px;
+  width: 100%;
+  position:relative;
+}
+.thread-container:nth-child(2n+1){
+  background-color: #fff;
+  color: #0099ff;
+}
+.thread-container:nth-child(2n){
+  background-color: #ACACAC;
+  color: #fff;
+}
+.thread-container:nth-child(2n+1) .forum-name:before{
+  background-color: #0099ff;
+}
+.thread-container:nth-child(2n) .forum-name:before{
+  background-color: #fff;
+}
+.thread-container .svg-top{
+  transform: translateY(-100%);
+  z-index: 2;
+}
+.thread-container .svg-bottom{
+  z-index: 3;
+}
+.forum-name:before{
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 4px;
+
+}

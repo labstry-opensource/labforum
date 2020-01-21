@@ -7,21 +7,8 @@ class Users{
 	public  $username;
 	private $password;      //Password should be private
 	public  $email;
-	public  $regdate;
 	public  $replies;
-	public  $score;
-	public  $topics;
 	public  $profilepic;
-	public  $isemailvis;
-	public  $isspecialteam;
-	public  $address;
-	public  $idcard;
-	public  $zip;
-	public  $phone;
-	public  $password_hint;
-	public  $password_hint_answer;
-	public  $rname;
-	public  $usercounter;
 
 	public function __construct($pdoconnect, $pdotoolkit){
 		$this->pdoconnect = $pdoconnect;

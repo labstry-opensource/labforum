@@ -1,6 +1,7 @@
 <?php
 session_start();
 
+include_once dirname(__FILE__ ) . '/../laf-config.php';
 include_once "../classes/connect.php";
 include_once "../classes/Users.php";
 include_once "../classes/UserRoles.php";

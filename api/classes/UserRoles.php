@@ -152,6 +152,16 @@ class UserRoles{
 
         return $data;
     }
+
+    public function showManagingBoard($id){
+        $stmt = $this->pdoconnect->prepare("
+        SELECT l.fid, s.fname  FROM laf_moderators l , subforum s 
+        WHERE l.fid = s.fid AND id = :id");
+
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }
 
 

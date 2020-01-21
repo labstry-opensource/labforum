@@ -2,38 +2,7 @@
 
 class Thread
 {
-
     public $pdoconnect;
-
-    public $forumid;
-
-    public $forumname;
-
-    public $threadid;
-
-    public $threadname;
-
-    public $threadcontent;
-
-    public $author;
-
-    public $date;
-
-    public $views;
-
-    public $isDraft;
-
-    public $hiddeni;
-
-    public $stickyness;
-
-    public $stickyuntil;
-
-    public $hightlightcolor;
-
-    public $showInIndex;
-
-    public $descript;
 
     public function __construct($pdoconnect)
     {
@@ -97,36 +66,7 @@ class Thread
 			u.id = t.author");
         $stmt->bindValue(1, $threadid, PDO::PARAM_INT);
         $stmt->execute();
-        $threadarr = $stmt->fetch(PDO::FETCH_ASSOC);
-
-        /*
-         * $this->forumid = $threadarr['fid'];
-         * $this->forumname = $threadarr['fname'];
-         * $this->threadid = $threadarr['topic_id'];
-         * $this->threadname = $threadarr['topic_name'];
-         * $this->threadcontent = $threadarr['topic_content'];
-         * $this->author = $threadarr['topic_creator'];
-         * $this->date = $threadarr['date'];
-         * $this->highlightcolor = $threadarr['highlightcolor'];
-         * $this->views = $threadarr['views'];
-         *
-         * //Change to bool
-         * if($threadarr['draft']) $this->isDraft = true;
-         * else $this->isDraft = false;
-         *
-         * if($threadarr['hiddeni']) $this->hiddeni = true;
-         * else $this->hiddeni = false;
-         *
-         * if($threadarr['showInIndex']) $this->showInIndex = true;
-         * else $this->showInIndex = false;
-         *
-         * $this->stickyness = $threadarr['stickyness'];
-         * $this->stickyuntil = $threadarr['stickyuntil'];
-         * $this->hightlightcolor = $threadarr['highlightcolor'];
-         * $this->descript = $threadarr['seo'];
-         */
-
-        return $threadarr;
+        return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
     public function getDescription($tid)
@@ -155,6 +95,20 @@ class Thread
         $stmt->bindValue(1, '%' . $tname . '%', PDO::PARAM_STR);
         $stmt->execute();
         return json_encode($stmt->fetchAll(PDO::FETCH_ASSOC));
+    }
+
+    public function getThreadsByFid($fid, $from_limit = 0, $to_limit = 10){
+        $stmt = $this->pdoconnect->prepare('SELECT t.*, u.`username` AS username FROM 
+                    threads t, `userspace`.`users` u WHERE 
+                    fid = :fid AND 
+                    u.id = t.author 
+                    ORDER BY date DESC
+                    LIMIT :low_limit, :high_limit');
+        $stmt->bindParam(':fid', $fid, PDO::PARAM_INT);
+        $stmt->bindParam(':low_limit', $from_limit, PDO::PARAM_INT);
+        $stmt->bindParam(':high_limit', $to_limit, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 }
 

@@ -1,3 +1,15 @@
 .embed-responsive-16by6{
   padding-top: 37.5% ;
 }
+
+.btn-call-to-action{
+  background-color: coral;
+  color: white;
+  border-color: coral;
+
+  &:active{
+    background-color: orange;
+    color: #000;
+    border-color: orange;
+  }
+}

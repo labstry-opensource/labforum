@@ -1,15 +1,22 @@
 <?php
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
-include "classes/connect.php";
-include "classes/Thread.php";
-include "classes/ThreadProp.php";
+include dirname(__FILE__) . "/classes/connect.php";
+include dirname(__FILE__) . "/classes/Thread.php";
+include dirname(__FILE__) . "/classes/APITools.php";
+include dirname(__FILE__) . "/classes/ThreadProp.php";
+include dirname(__FILE__) . "/classes/Forum.php";
 
-$id = @$_GET['id'];
 
-
-
+$api_tools = new APITools();
 $thread = new Thread($pdoconnect);
+$forum = new Forum($pdoconnect);
+
+if(!isset($_GET['fid']) && !isset($_GET['page'])){
+    $data['error'] = 'Please specify a page or fid to get data';
+    $api_tools->outputContent($data);
+}
+
 
 if(@$_GET['page'] === 'home'){
     $thread_arr = array();
@@ -22,35 +29,29 @@ if(@$_GET['page'] === 'home'){
         $thread_item['number_of_replies'] = $thread->getNumberOfReplies($thread_item['topic_id']);
         array_push($thread_arr, $thread_item);
     }
-    header('Content-Type: application/json; charset=utf-8');
-    print_r(json_encode($thread_arr));
-    exit;
-}else if(isset($_GET['fid'])){
 
-} else{
-    $id = @$_GET['id'];
-    $resultarr = $thread->getThreadProp($id);
-    // Get reply count
-    $resultarr['reply_count'] = $thread->getNumberOfReplies($id);
-    $resultarr['replies'] = array();
+    $api_tools->outputContent($thread_arr);
 
-    if ((! @$_GET['reply_from']) || (! @$_GET['reply_to'])) {
-        $reply_from = 1;
-        $reply_to = $resultarr['reply_count'];
-    } else {
-        $reply_from = @$_GET['reply_from'];
-        $reply_to = @$_GET['reply_to'];
+}else{
+    $fid = $_GET['fid'];
+    $forum_thread_count = $forum->countThreads($fid);
+
+    $page = isset($_GET['page']) ? (int) $_GET['page'] : 1;
+    $count = isset($_GET['count']) ? (int) $_GET['count'] : 10;
+
+    $from_page = ($page - 1) * $count;
+    $to_page = $page * $count;
+
+    $data['pages'] = ceil($forum_thread_count / $count);
+    $data['current_page'] = $page;
+    $data['data'] = $thread->getThreadsByFid($fid, $from_page, $to_page);
+
+    foreach($data['data'] as $key => $thread_item){
+        $data['data'][$key]['number_of_replies'] = $thread->getNumberOfReplies($thread_item['topic_id']);
     }
 
-    for ($i = $reply_from; $i <= $reply_to; $i++ ) {
-        if ($i > $resultarr["reply_count"]){
-            break;
-        }
-        $replyprop = new ReplyProp($pdoconnect, '', $id, $i);
-        array_push($resultarr['replies'], $replyprop->getThreadProp());
-    }
-    header('Content-Type: application/json; charset=utf-8');
-    echo json_encode($resultarr);
-    exit;
+
+    $api_tools->outputContent($data);
+
 
 }

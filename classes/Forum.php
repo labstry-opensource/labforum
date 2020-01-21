@@ -80,7 +80,12 @@ class Forum{
 
 		$resultset = $stmt->fetch(PDO::FETCH_ASSOC);
 
-		return $resultset['fname'];
+		if(!empty($resultset)){
+			return $resultset['fname'];
+		}else{
+			return false;
+		}
+
 	}
 
 	public function getThreads($fid){
