@@ -59,14 +59,17 @@ if(!isset($link)){
     }
 </style>
 <body>
-<div class="admin-manage-titlecard d-flex position-fixed align-items-center">
-    <button type="button" class="btn menu-btn">
-        <i class="fas fa-bars text-white"></i>
-    </button>
-    <?php foreach($top_link as $link_item){?>
-        <a class="header-link" href="<?php echo $link_item['link']?>"><?php echo $link_item['title']?></a>
-    <?php } ?>
+<div style="background-color: #377796;">
+    <div class="admin-manage-titlecard d-flex position-fixed align-items-center" style="z-index:2">
+        <button type="button" class="btn menu-btn">
+            <i class="fas fa-bars text-white"></i>
+        </button>
+        <?php foreach($top_link as $link_item){?>
+            <a class="header-link" href="<?php echo $link_item['link']?>"><?php echo $link_item['title']?></a>
+        <?php } ?>
+    </div>
 </div>
+
 <div class="sidebar" style="  position: fixed; top: 50px; bottom: 0">
     <div class="list-group list-group-flush">
         <?php foreach ($link as $link_item) { ?>
