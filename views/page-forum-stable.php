@@ -1,5 +1,5 @@
 <?php
-session_start();
+if(!isset($_SESSION)) session_start();
 $fid = @$_GET['id'];
 $roles = new UserRoles($pdoconnect);
 $roles->getUserRole(@$_SESSION['id']);
