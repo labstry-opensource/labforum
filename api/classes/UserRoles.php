@@ -156,7 +156,7 @@ class UserRoles{
     public function showManagingBoard($id){
         $stmt = $this->pdoconnect->prepare("
         SELECT l.fid, s.fname  FROM laf_moderators l , subforum s 
-        WHERE l.fid = s.fid AND id = :id");
+        WHERE l.fid = s.fid AND l.moderator_id = :id");
 
         $stmt->bindParam(':id', $id, PDO::PARAM_INT);
         $stmt->execute();

@@ -1,5 +1,5 @@
 <?php
-require_once dirname(__FILE__)."/../../classes/LoginPolicy.php";
+//require_once dirname(__FILE__)."/../../classes/LoginPolicy.php";
 
 //$policy = new LoginPolicy($pdoconnect, "" , "");
 

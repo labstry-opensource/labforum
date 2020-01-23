@@ -14,8 +14,8 @@ if(!isset($_SESSION['id'])){
     $apitools->outputContent($data);
 }
 
-$user_role->getUserRole($_SESSION['id']);
-$rights = $user_role->rights;
+$data = $user_role->getUserRole($_SESSION['id']);
+$rights = $data['rights'];
 
 $apitools->imposeRightRestriction(90, $rights);
 

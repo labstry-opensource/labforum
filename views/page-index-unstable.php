@@ -48,38 +48,36 @@ $thread_details = array(
     'thread-url' => 'api/threads-engine.php?page=home',
     'title' => 'Featured',
 );
-if(!isset($footer_details)){
-    $latest_user = new Users($pdoconnect, '');
-    $users = new Users($pdoconnect, '');
-    $latest_user->getNewestUser();
-    $footer_details = array(
-        'statistic' => array(
-            'num_users' => $users->getUserCount(),
-            'new_comer' =>  $latest_user->username,
-            'new_comer_id' => $latest_user->userid,
+$latest_user = new Users($pdoconnect, '');
+$users = new Users($pdoconnect, '');
+$latest_user->getNewestUser();
+
+$footer_details = array(
+    'statistic' => array(
+        'num_users' => $users->getUserCount(),
+        'new_comer' =>  $latest_user->username,
+        'new_comer_id' => $latest_user->userid,
+    ),
+    'links'=> array(
+        //One array stands for a column
+        0 => array(
+            array(
+                'href' => '/login3.php',
+                'name' => 'Login',
+            )
         ),
-        'links'=> array(
-            //One array stands for a column
-            0 => array(
-                array(
-                    'href' => '/login3.php',
-                    'name' => 'Login',
-                )
-            ),
-            1 => array(
-                array(
-                    'href' => '/register.php',
-                    'name' => 'Register',
-                )
+        1 => array(
+            array(
+                'href' => '/register.php',
+                'name' => 'Register',
             )
         )
-    );
-}
+    )
+);
 
 
 
-
-$essentials = new Essentials($meta, null, $opt_in_script);
+$essentials = new Essentials($meta, null, $opt_in_script, $footer_details);
 
 if (@$_SESSION['id']){
     $role->getUserRole(@$_SESSION['id']);
@@ -101,36 +99,4 @@ $essentials->getFooter();
 ?>
 </body>
 </html>
-<?php
-if (@$_GET['action'] == 'checkin') {
-    // deprecated for finding id through database !!!!
 
-    // We should protect our code by checking whether user have signed
-    // We MUST USE PREPARED STATEMENT HERE TO PREVENT INJECTION
-    $id = @$_SESSION['id'];
-    $signstatsql = "SELECT COUNT(*) FROM checkin WHERE id = ? AND TO_DAYS(checkindate) = TO_DAYS(NOW())";
-    $times = $pdotoolkit->rowCounterWithPara($pdoconnect, $signstatsql, $id);
-    if (! $times) {
-        $signstmt = $pdoconnect->prepare("INSERT INTO checkin(id, checkindate) VALUES(?, NOW())");
-        $signstmt->bindParam(1, $id);
-        $signstmt->execute();
-        $checkincount = $pdotoolkit->rowCounterWithLimit($pdoconnect, "continuouscheckin", "id=" . $id);
-
-        // When we found a continuous record for checkin, then our action is to update it. Otherwise, we will insert a new record
-        if (! $checkincount)
-            $contstmt = "INSERT INTO continuouscheckin(id, times) VALUES(?, '1')";
-        else
-            $contstmt = "UPDATE continuouscheckin SET times = times + 1 WHERE id = ?";
-
-        $contchkin = $pdoconnect->prepare($contstmt);
-        $contchkin->bindParam(1, $id);
-        $contchkin->execute();
-    }
-    echo "<script>window.location='index.php';</script>";
-    header("Location: index.php");
-}
-if (@$_GET['action'] == "logout") {
-    session_destroy();
-    echo "<script>window.location='index.php';</script> ";
-}
-?>
