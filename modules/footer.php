@@ -1,15 +1,11 @@
  <?php
+
  if(!isset($home_url)){
      $home_url = '/forum/';
  }
 
  if(!isset($footer_details)){
      $footer_details = array(
-         'statistic' => array(
-             'num_users' => 0,
-             'new_comer' => 'No users yet. Become the first user! ',
-             'new_comer_id' => null,
-         ),
          'links'=> array(
              //One array stands for a column
              0 => array(
@@ -38,19 +34,21 @@
                    <h3 class="h1 text-center py-3">
                         <img src="<?php echo $home_url; ?>/images/system/logof.svg" style="max-width: 100px" alt="">
                     </h3>
-                    <div class="row">
-                        <h5 class="col">
-                            <span class="h1">
-                                <large><?php echo $footer_details['statistic']['num_users']?></large>
-                            </span> users.
-                        </h5>
-                        <h5 class="col">
-                            <span class="h1">
-                                <div><large>Labforumer: </large></div>
-                            </span>
-                            <a class="text-decoration-none" href="account/profile.php?id=<?php echo $footer_details['statistic']['new_comer_id']?>"><?php echo $footer_details['statistic']['new_comer']?></a>
-                        </h5>
-                    </div>
+                    <?php if(isset($footer_details['statistic'])){ ?>
+                        <div class="row">
+                            <h5 class="col">
+                                <span class="h1">
+                                    <large><?php echo $footer_details['statistic']['num_users']?></large>
+                                </span> users.
+                            </h5>
+                            <h5 class="col">
+                                <span class="h1">
+                                    <div><large>Labforumer: </large></div>
+                                </span>
+                                <a class="text-decoration-none" href="account/profile.php?id=<?php echo $footer_details['statistic']['new_comer_id']?>"><?php echo $footer_details['statistic']['new_comer']?></a>
+                            </h5>
+                        </div>
+                    <?php } ?>
                     <div class="row py-5">
                         <div class="col-6">
                             <a href="/login3.php">Login</a>

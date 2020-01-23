@@ -113,6 +113,23 @@ class Forum{
 		$resultset = $stmt->fetch(PDO::FETCH_ASSOC);
 		
 	}
+	public function getSubformByFid($fid){
+		$stmt = $this->pdoconnect->prepare("SELECT * FROM subforum WHERE fid = :fid");
+		$stmt->bindParam(':fid', $fid, PDO::PARAM_INT);
+		$stmt->execute();
+		return $stmt->fetch(PDO::FETCH_ASSOC);
+	}
+
+	public function getModerators($fid){
+		$stmt = $this->pdoconnect->prepare("SELECT 
+                    moderator_id, username, profile_pic 
+                    FROM laf_moderators m, `userspace`.`users` u WHERE
+                    fid = ? AND u.id = m.moderator_id");
+		$stmt->bindValue(1, $fid, PDO::PARAM_INT);
+		$stmt->execute();
+
+		return $stmt->fetchAll(PDO::FETCH_ASSOC);
+	}
 
 }
 

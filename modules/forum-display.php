@@ -6,8 +6,8 @@ if(!isset($forum_listing_url)){
 
 <style>
     .forum-block{
-        background-color: palegoldenrod;
-        color: #000;
+        background-color: #00bfff;
+        color: #fff;
         position: relative;
     }
     .forum-block:after{
@@ -25,7 +25,9 @@ if(!isset($forum_listing_url)){
     }
 </style>
 
-<div data-title="Forum Listing" id="forum-listing" class="pushed-el-cards forum-display-wrapper container"></div>
+<div data-title="Forum Listing" id="forum-listing" class="pushed-el-cards forum-display-wrapper container">
+    <?php include LAF_PATH . '/widgets/loading-circle.php'?>
+</div>
 
 <script type="text/js-template" id="thread-instance">
     <?php include dirname(__FILE__) . '/../widgets/forum-display/forumlist-display-widget.php'; ?>

@@ -17,6 +17,12 @@ if (! isset($opt_in_script)) {
         'https://cdnjs.cloudflare.com/ajax/libs/color-thief/2.3.0/color-thief.min.js',
     );
 }
+if(!isset($_SESSION['id'])){
+   $is_user_moderator = false;
+}else{
+    $moderator = new Moderator($pdoconnect);
+    $is_user_moderator = $moderator->isUserForumModerator($_SESSION['id'], $fid);
+}
 
 
 $essentials = new Essentials($meta, '', $opt_in_script);
@@ -36,30 +42,37 @@ $essentials->getHeader();
                         <h1 class="h3 text-white forum-name">Loading...</h1>
                         <div class="ml-auto">
                             <a href="post3.php" class="btn btn-call-to-action">Post New Thread</a>
-                            <a href="forum-manage.php" class="btn btn-primary">Manage</a>
+                            <?php if($is_user_moderator === true){?>
+                                <a href="forum-manage.php" class="btn btn-primary">Manage</a>
+                            <?php } ?>
                         </div>
                     </div>
-                </div>
-            </div>
-            <div class="d-block d-md-none py-3">
-                <h1 class="h3 forum-name">Loading...</h1>
-                <a href="post3.php" class="btn btn-call-to-action">Post New Thread</a>
-                <a href="forum-manage.php" class="btn btn-primary">Manage</a>
-            </div>
-            <div class="row align-items-center" style="min-height: 200px">
-                <div class="col-12 col-md-6 my-4 px-md-5">
-                    <b>Rules :</b>
-                    <div class="forum-rules"></div>
-                </div>
-                <div class="col-12 col-md-6 my-4">
-                    <b>Moderators:</b>
-                    <div class="moderator-wrapper"></div>
-                    <?php include LAF_PATH. '/modules/moderator-display.php'?>
                 </div>
             </div>
         </div>
     </div>
     <div class="container">
+        <div class="d-block d-md-none py-3">
+            <h1 class="h3 forum-name">Loading...</h1>
+            <a href="post3.php" class="btn btn-call-to-action">Post New Thread</a>
+            <?php if($is_user_moderator === true){?>
+                <a href="forum-manage.php" class="btn btn-primary">Manage</a>
+            <?php } ?>
+        </div>
+        <div class="row align-items-center" style="min-height: 200px">
+            <div class="col-12 col-md-6 my-4 px-md-5">
+                <b>Rules :</b>
+                <div class="forum-rules"></div>
+            </div>
+            <div class="col-12 col-md-6 my-4">
+                <b>Moderators:</b>
+                <div class="moderator-wrapper"></div>
+                <?php include LAF_PATH. '/modules/moderator-display.php'?>
+            </div>
+        </div>
+    </div>
+    </div>
+    <div class="">
         <?php include LAF_PATH. '/modules/dynamic-thread-display.php'?>
     </div>
 
