@@ -48,11 +48,11 @@ if(!isset($user_details) || !@$_SESSION['username']) {
 
 <style>
     .greeting-content{
-        border-radius: 45% 45% 90% 90% /15em;
+        border-radius: 90% 90% 90% 90% /15em;
     }
 </style>
 
-<section class="landing-greetings-card text-white" style="margin-top: -50px;">
+<section class="landing-greetings-card text-white" style="margin: 50px 0; ">
     <div class="greeting-content  embed-responsive embed-responsive-16by6" style="background-color: #0099ff; min-height: 400px;">
         <div class="embed-responsive-item"
              style="background-image : url('<?php echo BASE_URL . '/images/campaign-new-year-2020/22778.jpg'?>');
