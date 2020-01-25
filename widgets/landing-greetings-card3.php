@@ -47,16 +47,17 @@ if(!isset($user_details) || !@$_SESSION['username']) {
 ?>
 
 <style>
+    /*
     .greeting-content{
         border-radius: 90% 90% 90% 90% /15em;
-    }
+    } */
 </style>
 
-<section class="landing-greetings-card text-white" style="margin: 50px 0; ">
-    <div class="greeting-content  embed-responsive embed-responsive-16by6" style="background-color: #0099ff; min-height: 400px;">
+<section class="landing-greetings-card text-white" style="margin-top: -50px">
+    <div class="greeting-content  embed-responsive embed-responsive-16by6" style="min-height: 600px;">
         <div class="embed-responsive-item"
              style="background-image : url('<?php echo BASE_URL . '/images/campaign-new-year-2020/22778.jpg'?>');
-                     background-position: center center; background-size: cover; background-repeat: no-repeat">
+                     background-position: center center; background-size: cover; background-repeat: no-repeat; padding-bottom: 300px">
             <div class="container h-100 d-flex align-items-center">
                 <div class="row">
                     <div class="col-12">
@@ -75,6 +76,9 @@ if(!isset($user_details) || !@$_SESSION['username']) {
                     </div>
                 </div>
             </div>
+            <img src="<?php echo BASE_URL . '/images/system/wave.svg'?>" alt="" style="position:absolute; bottom: 0;
+             left: 0; width: 100%;  ">
         </div>
+
     </div>
 </section>
