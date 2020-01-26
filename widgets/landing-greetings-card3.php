@@ -58,7 +58,7 @@ if(!isset($user_details) || !@$_SESSION['username']) {
         <div class="embed-responsive-item"
              style="background-image : url('<?php echo BASE_URL . '/images/campaign-new-year-2020/22778.jpg'?>');
                      background-position: center center; background-size: cover; background-repeat: no-repeat; padding-bottom: 300px">
-            <div class="container h-100 d-flex align-items-center">
+            <div class="container h-100 d-flex align-items-center" style="padding-top: 50px">
                 <div class="row">
                     <div class="col-12">
                         <h2 class="h3">Welcome, <span><?php echo $user_details['username']?></span>.</h2>
