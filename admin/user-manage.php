@@ -13,7 +13,7 @@ $essential = new Essentials($pdoconnect);
 $userroles->getUserRole(@$_SESSION['id']);
 $right = $userroles->rights;
 
-$essential->imposeRestrictAccess(0, 0);
+$essential->imposeRestrictAccess($right, 90);
 
 include_once dirname(__FILE__) . '/view/page-user-manage.php';
 ?>
