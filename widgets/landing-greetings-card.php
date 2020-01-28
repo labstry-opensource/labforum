@@ -5,7 +5,7 @@ if(!isset($user_details) || !@$_SESSION['username']) {
     $user_details = array(
         'profile' => '',
         'username' => 'Guest',
-        'rank_name' => '<a href="/login.php">Login</a>',
+        'rank_name' => '<a class="text-white" href="/login.php">Login</a>',
         'signed_in_today' => true,
         'rights' => 0,
         'continuous_checkin' => 0,
@@ -58,7 +58,7 @@ if(!isset($user_details) || !@$_SESSION['username']) {
         <div class="embed-responsive-item"
              style="background-image : url('<?php echo BASE_URL . '/images/campaign-new-year-2020/22778.jpg'?>');
                      background-position: center center; background-size: cover; background-repeat: no-repeat; padding-bottom: 300px">
-            <div class="container h-100 d-flex align-items-center" style="padding-top: 50px">
+            <div class="container h-100 d-flex align-items-center" style="padding-top: 150px">
                 <div class="row">
                     <div class="col-12">
                         <h2 class="h3">Welcome, <span><?php echo $user_details['username']?></span>.</h2>
