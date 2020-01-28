@@ -6,14 +6,14 @@ error_reporting(E_ALL);
 session_start();
 $data = array();
 header("Content-Type: application/json");
-
-include @$_SERVER["DOCUMENT_ROOT"]."/api/forum/classes/connect.php";
-include @$_SERVER["DOCUMENT_ROOT"]."/api/forum/classes/Users.php";
+include_once  dirname(__FILE__ ) . '/../../laf-config.php';
+include_once LAF_PATH . "/../classes/connect.php";
+include_once LAF_PATH . "/../classes/Users.php";
 
 if(!@$_SESSION['id']){
-	$data["error"] = "Please login before proceeding.";
-	echo json_encode($data);
-	exit;
+	//$data["error"] = "Please login before proceeding.";
+	//echo json_encode($data);
+	//exit;
 }
 
 $users = new Users($pdoconnect, "");

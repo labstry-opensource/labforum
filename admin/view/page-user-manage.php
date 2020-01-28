@@ -1,9 +1,21 @@
 <?php
 include_once dirname(__FILE__) . '/../../laf-config.php';
+include_once dirname(__FILE__ ) . '/../../classes/Essentials.php';
+
+if(!isset($right)){
+    $essential = new Essentials('');
+    $essential->imposeRestrictAccess(0, 90);
+    die;
+}
+
+$page_title = array(
+    'title' => 'Friend finder',
+);
+
 include dirname(__FILE__) . '/../modules/header3.php';
 ?>
 <div class="container">
-    <h1 class="h3 py-5 font-weight-normal">Friend finder</h1>
+    <?php include dirname(__FILE__ ) . "/../modules/title-show.php"?>
     <form class='friend-finder' action='<?php echo BASE_URL.'/..'?>/api/admin/user-search.php' method="POST" autocomplete="off" style=''>
         <div class="row px-2">
             <input type="text" name="username" class="form-control col-12 col-md-10" >

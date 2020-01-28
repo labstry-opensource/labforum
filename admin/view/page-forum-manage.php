@@ -1,7 +1,21 @@
 <?php
+include_once dirname(__FILE__) . '/../../laf-config.php';
+include_once dirname(__FILE__ ) . '/../../classes/Essentials.php';
 
-include dirname(__FILE__) . '/../../laf-config.php';
+if(!isset($right)){
+    $essential = new Essentials('');
+    $essential->imposeRestrictAccess(0, 90);
+    die;
+}
+
+$page_title = array(
+    'title' => '版塊管理',
+    'description' => '查看和管理你管理的版塊',
+);
+
 include dirname(__FILE__) . '/../modules/header3.php';
+
+
 
 ?>
 
@@ -13,10 +27,7 @@ include dirname(__FILE__) . '/../modules/header3.php';
 </style>
 
 <div class="container">
-    <div class="title-wrapper py-5">
-        <h1 class="h3 font-weight-normal" style="color: #6c6c6c">版塊管理</h1>
-        <div>查看和管理你管理的版塊</div>
-    </div>
+    <?php include dirname(__FILE__ ) . "/../modules/title-show.php"?>
     <div class="board-display-wrapper">
     </div>
 

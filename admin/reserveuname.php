@@ -121,7 +121,7 @@ if(!@$_SESSION["id"] && $rights < 90) {
                         self.getReservedUsernameList();
                         self.$emit('load_complete');
                     }
-                })
+                })``
             }
         },
         template: $('.reserve-username-module').html(),
