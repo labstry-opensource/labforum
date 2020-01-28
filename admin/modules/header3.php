@@ -16,7 +16,7 @@ if(!isset($link)){
     $link = array(
         array(
             'title' => '預留用戶名',
-            'link' => BASE_URL . '/reserveuname.php',
+            'link' => BASE_URL . '/reserve-username.php',
         ),
         array(
             'title' => '用戶管理',
@@ -25,6 +25,10 @@ if(!isset($link)){
         array(
             'title' => '版塊管理',
             'link' => BASE_URL . '/forum-manage.php',
+        ),
+        array(
+            'title' => 'Roles Management',
+            'link' => BASE_URL . '/user-roles-manage.php',
         ),
 
     );

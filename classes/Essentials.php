@@ -45,8 +45,8 @@ class Essentials
         return include LAF_PATH . '/modules/footer.php';
     }
 
-    public function imposeRestrictAccess($roles_right, $right){
-        if($roles_right < $right){
+    public function imposeRestrictAccess($roles_right, $min_right){
+        if($roles_right < $min_right){
             http_response_code(403);
             die('403 Forbidden');
         }

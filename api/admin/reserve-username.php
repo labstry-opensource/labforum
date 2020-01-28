@@ -1,26 +1,30 @@
 <?php
 
-
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 session_start();
 
 $data = array();
 header('Content-Type: application/json');
+include  dirname(__FILE__ ) . '/../../laf-config.php';
+include  LAF_PATH . "/../classes/connect.php";
+include  LAF_PATH . "/../classes/UserRoles.php";
+include  LAF_PATH . "/../classes/Users.php";
 
-include @$_SERVER["DOCUMENT_ROOT"]."/api/forum/classes/connect.php";
-include @$_SERVER["DOCUMENT_ROOT"]."/api/forum/classes/UserRoles.php";
-include @$_SERVER["DOCUMENT_ROOT"]."/api/forum/classes/Users.php";
+
+//1. Check if user logged in
+if(!@$_SESSION['id']){
+    $data["error"] = "Please login before proceeding.";
+    echo json_encode($data);
+    exit;
+}
 
 $users = new Users($pdoconnect, "");
 $userprop = new UserRoles($pdoconnect);
 $right_info = $userprop->getUserRole(@$_SESSION['id']);
 
 
-//1. Check if user logged in
-if(!@$_SESSION['id']){
-	$data["error"] = "Please login before proceeding.";
-	echo json_encode($data);
-	exit;
-}
 
 
 if($right_info["rights"] < 90){

@@ -3,22 +3,26 @@
 session_start();
 header('Content-Type: application/json');
 
-include @$_SERVER["DOCUMENT_ROOT"]."/api/forum/classes/Users.php";
-include @$_SERVER["DOCUMENT_ROOT"]."/api/forum/classes/connect.php";
-include @$_SERVER["DOCUMENT_ROOT"]."/api/forum/classes/UserRoles.php";
+include dirname(__FILE__ ) . '/../../laf-config.php';
+include LAF_PATH ."/../classes/Users.php";
+include LAF_PATH ."/../classes/connect.php";
+include LAF_PATH ."/../classes/UserRoles.php";
 
+//1. Check if user logged in
+if(!@$_SESSION['id']){
+    $data["error"] = "Please login before proceeding.";
+    echo json_encode($data);
+    exit;
+}
 
 $users = new Users($pdoconnect, "");
 $roles = new UserRoles($pdoconnect);
 
 $data = array();
 
+
 $right_data = $roles->getUserRole(@$_SESSION["id"]);
 
-if(!@$_SESSION['id'] || $right_data["rights"] < 90){
-	$data["error"] = "Please make sure you know what you are doing.";
-	die(json_encode($data));
-}
 
 $data = $roles->getAllRoles();
 

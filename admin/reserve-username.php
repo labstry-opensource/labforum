@@ -1,4 +1,5 @@
 <?php
+
 if(!isset($_SESSION)) session_start();
 
 include_once dirname(__FILE__ ) . '/../laf-config.php';
@@ -14,4 +15,4 @@ $right = $userroles->rights;
 
 $essential->imposeRestrictAccess($right, 90);
 
-include dirname(__FILE__ ) . '/view/page-index.php';
+include_once dirname(__FILE__) . '/view/page-reserve-username.php';
