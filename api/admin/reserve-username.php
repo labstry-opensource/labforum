@@ -8,9 +8,9 @@ session_start();
 $data = array();
 header('Content-Type: application/json');
 include  dirname(__FILE__ ) . '/../../laf-config.php';
-include  LAF_PATH . "/../classes/connect.php";
-include  LAF_PATH . "/../classes/UserRoles.php";
-include  LAF_PATH . "/../classes/Users.php";
+include  dirname(__FILE__)  . "/../classes/connect.php";
+include  dirname(__FILE__)  . "/../classes/UserRoles.php";
+include  dirname(__FILE__)  . "/../classes/Users.php";
 
 
 //1. Check if user logged in

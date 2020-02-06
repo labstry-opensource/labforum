@@ -72,7 +72,7 @@ if(!defined('GLOB_HOME_URL')) define('GLOB_HOME_URL', BASE_URL);
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title><?php echo $optional_paras['title']?></title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.1/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jsrender/1.0.5/jsrender.min.js"></script>
     <script src="<?php
 
@@ -99,9 +99,15 @@ if(!defined('GLOB_HOME_URL')) define('GLOB_HOME_URL', BASE_URL);
     <link rel="stylesheet" href="<?php echo BASE_URL?>/css/stylesheets/header.css?<?php
 
     echo filemtime(dirname(__FILE__) . '/../css/stylesheets/header.css')?>"/>
+    <?php
+    if($optional_paras['opt_in_css']){
+    foreach ($optional_paras['opt_in_css'] as $css) {
+    ?><link rel="stylesheet" href="<?php echo $css; ?>"/><?php
+        }
+    }?>
 </head>
 <body>
-<div class="nav-search-wrapper w-100" style="position:fixed; top: 0; overflow-x: hidden; z-index: 1400">
+<div class="nav-search-wrapper w-100" style="position:fixed; top: 0; overflow-x: hidden; z-index: 1039">
     <nav class="header-wrapper position-relative overflow-hidden">
         <header class="" style="">
             <div class="container header-el-wrapper">

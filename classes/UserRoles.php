@@ -32,12 +32,13 @@ class UserRoles{
         $stmt->bindValue(1, $this->userid, PDO::PARAM_INT);
         $stmt->execute();
         
-        if($resultset = $stmt->fetch(PDO::FETCH_ASSOC))
+        if($resultset = $stmt->fetch(PDO::FETCH_ASSOC)){
             $isSpecialTeam = true;
-        
-        $this->role_name = $resultset['role_name'];
-        $this->tagcolor = $resultset['tagcolor'];
-        $this->rights = $resultset['rights'];
+            $this->role_name = $resultset['role_name'];
+            $this->tagcolor = $resultset['tagcolor'];
+            $this->rights = $resultset['rights'];
+        }
+
         
         return $isSpecialTeam;
     }

@@ -79,6 +79,9 @@ class UserRoles{
         
         if($resultset = $stmt->fetch(PDO::FETCH_ASSOC))
             $isSpecialTeam = true;
+        else{
+            return;
+        }
 
         $data["type"] = "SpecialTeam";
         $data["role_id"] = $resultset["role_id"];
@@ -145,7 +148,7 @@ class UserRoles{
             $data["rights"] = 0;
         }else{
             $data = $this->getSpecialTeamRoleById($userid);
-            if($data["role_name"] == NULL){
+            if(empty($data["role_name"])){
                 $data = $this->getNormalRoleNameById($userid);
             }
         }
