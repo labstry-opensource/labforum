@@ -56,7 +56,7 @@ if(!isset($user_details) || !@$_SESSION['username']) {
 <section class="landing-greetings-card text-white" style="margin-top: -50px">
     <div class="greeting-content  embed-responsive embed-responsive-16by6" style="min-height: 600px;">
         <div class="embed-responsive-item"
-             style="background-image : url('<?php echo BASE_URL . '/images/campaign-new-year-2020/22778.jpg'?>');
+             style="background-image : url('<?php echo BASE_URL . '/images/system/photo_of_the_month.jpg'?>');
                      background-position: center center; background-size: cover; background-repeat: no-repeat; padding-bottom: 300px">
             <div class="container h-100 d-flex align-items-center" style="padding-top: 150px">
                 <div class="row">

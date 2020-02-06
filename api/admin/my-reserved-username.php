@@ -6,9 +6,9 @@ error_reporting(E_ALL);
 session_start();
 $data = array();
 header("Content-Type: application/json");
-include_once  dirname(__FILE__ ) . '/../../laf-config.php';
-include_once LAF_PATH . "/../classes/connect.php";
-include_once LAF_PATH . "/../classes/Users.php";
+include_once  dirname(__FILE__) . '/../../laf-config.php';
+include_once  dirname(__FILE__) . "/../classes/connect.php";
+include_once  dirname(__FILE__) . "/../classes/Users.php";
 
 if(!@$_SESSION['id']){
 	//$data["error"] = "Please login before proceeding.";

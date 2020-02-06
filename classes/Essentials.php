@@ -8,13 +8,15 @@ class Essentials
     public $home_url = BASE_URL;
     public $page_title = 'Homepage - Labstry Forum';
     public $opt_in_script;
+    public $opt_in_css;
     public $footer_details;
 
-    public function __construct($meta, $module_list = null, $opt_in_script = null, $footer_details = null)
+    public function __construct($meta, $module_list = null, $opt_in_script = null, $footer_details = null, $opt_in_css = null)
     {
         $this->meta = $meta;
         $this->module_list = $module_list;
         $this->opt_in_script = $opt_in_script;
+        $this->opt_in_css = $opt_in_css;
         $this->footer_details = $footer_details;
     }
 
@@ -33,6 +35,7 @@ class Essentials
     public function getHeader(){
         $optional_paras = array(
             'opt_in_script' => $this->opt_in_script,
+            'opt_in_css' => $this->opt_in_css,
             'title' => $this->page_title,
         );
         $meta = $this->meta;

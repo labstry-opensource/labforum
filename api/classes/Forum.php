@@ -14,7 +14,7 @@ class Forum{
 	}
 
 	public function getForumListId(){
-		$stmt = $this->pdoconnect->prepare("SELECT gid FROM forumlist");
+		$stmt = $this->pdoconnect->prepare("SELECT gid FROM laf_forum_listing");
 		$stmt->execute();
 
 		$gids = array();
@@ -29,7 +29,7 @@ class Forum{
 	}
 
 	public function getForumName($fid){
-        $stmt = $this->pdoconnect->prepare("SELECT gname FROM forumlist WHERE gid = ?");
+        $stmt = $this->pdoconnect->prepare("SELECT gname FROM laf_forum_listing WHERE gid = ?");
         $stmt->bindValue(1, $fid, PDO::PARAM_INT);
         $stmt->execute();
 
@@ -146,4 +146,19 @@ class Forum{
 	    return $stmt->fetch(PDO::FETCH_ASSOC)['count'];
     }
 
+    public function checkHasForum($fid){
+        $stmt = $this->pdoconnect->prepare('SELECT COUNT(*) \'count\' FROM subforum WHERE fid = :fid');
+        $stmt->bindParam(':fid', $fid, PDO::PARAM_INT);
+        $stmt->execute();
+        return ($stmt->fetch(PDO::FETCH_ASSOC)['count']) ? true : false;
+    }
+
+    public function hasRightsToAuthorInForum($fid, $rights){
+        $stmt = $this->pdoconnect->prepare("SELECT min_author_rights FROM subforum WHERE fid = :fid");
+        $stmt->bindParam(':fid', $fid, PDO::PARAM_INT);
+        $stmt->execute();
+        $min_author_right = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        return ($rights >= $min_author_right['min_author_rights']) ? true: false;
+    }
 }

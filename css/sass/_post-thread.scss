@@ -1,0 +1,62 @@
+.btn-action{
+  max-height: 42px;
+  border-radius: 25px;
+}
+.title-holder{
+  background-color: #0088ff;
+  margin-top: -50px;
+  padding-top: 100px;
+
+  .thread-topic{
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid #fff;
+    border-radius: 0;
+  }
+}
+.ql-container.ql-snow{
+  border: none !important;
+}
+.ql-font{
+  width: 200px !important;
+}
+.ql-editor{
+  min-height: 100vh;
+}
+.bem{
+  margin: .4rem !important;
+}
+#toolbar-container .ql-font{
+  span[data-label="Sans Serif"]::before{
+    font-family: "Sans Serif";
+  }
+  span[data-label="Arial"]::before{
+    font-family: Arial;
+  }
+  span[data-label="Monospace"]::before{
+    font-family: monospace;
+  }
+  span[data-label="Noto Sans TC"]::before{
+    font-family: 'Noto Sans TC';
+  }
+}
+.ql-font-arial{
+  font-family: Arial;
+}
+.ql-font-tahoma{
+  font-family: Tahoma;
+}
+.ql-font-monospace{
+  font-family: monospace;
+}
+.ql-font-notosans{
+  font-family: 'Noto Sans TC';
+}
+
+.settings-list{
+  position: relative;
+  label{
+    margin-bottom: 0;
+    min-height: 38px;
+  }
+}

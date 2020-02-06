@@ -1,112 +1,39 @@
 <?php
-if(!isset($_SESSION)) session_start();
 
-$id = isset($_SESSION['id']) ? @$_SESSION['id'] : 0;
+if (! isset($meta)) {
+    $meta = array(
+        'keywords' => 'Labstry, 論壇, AI, Android ROM, 生活方式, 分享, 討論, 電腦, 程式開發',
+        'description' => 'Find topics that you are interested on.',
+        'viewport' => 'width=device-width, initial-scale=1.0'
+    );
+}
 
-$forum = new Forum($pdoconnect);
-$roles = new UserRoles($pdoconnect);
-$roles->getUserRole($id);
-$rights = $roles->rights;
-
-$gids = $forum->getForumListId();
+$essentials = new Essentials($meta);
+$essentials->setTitle('Forum Listing - Labstry Forum');
+$essentials->getHeader();
 
 ?>
-<html>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<head>
-	<title>所有版塊 - Labstry 論壇</title>
-    <link rel="stylesheet" href="menu/dynamicmenu.css"/>
+    <style>
 
-</head>
-<style>
-.showtag{
-	width: 98%;
-	margin: 10px auto;
-	box-shadow: 2px 2px 4px 4px #ACACAC;
-	border-radius: 25px;
-	height: 100px;
-	overflow: hidden;
-}
-.cardtitle{
-	padding-left: 15px;
-	line-height: 100px;
-	font-size: 28px;
-	background-color: #BFFF00;
-	color: black;
-}
-.threadwrapper{
-	width: 98%;
-	margin: 10px auto;
-	border-radius: 25px;
-	overflow: hidden;
-}
-.title{
-	width: 100%;
-	background-color: orange;
-	color:white;
-	text-align: center;
-}
-.table{
-	display: table;
-	background-color: #0092ff;
-	width: 100%;
-	padding: 20px 10px 20px 10px;
-	color:white;
+    </style>
 
-}
-.row{
-	display: table-row;
-}
-.cell{
-	display: table-cell;
-}
-.empty{
-	text-decoration: none;
-	color:white;
-}
-</style>
-<body>
-<?php
-include("menu/header.php");
+    <div class="standard-wrapper">
+        <section style="margin-top: -50px; margin-bottom: 50px">
+            <div class="forum-listing-title d-flex  align-items-center" style="background-color: #add8e6; min-height: 300px; ">
+                <div class="container">
+                    <div><h1>Forum Listing</h1></div>
+                    "Find topics that you are interested on"
+                </div>
+            </div>
+            <div class="" style="left: 0; width: 100%; height: 100px">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
+                    <path fill="#add8e6" fill-opacity="1" d="M0,64L34.3,96C68.6,128,137,192,206,186.7C274.3,181,343,107,411,90.7C480,75,549,117,617,133.3C685.7,149,754,139,823,138.7C891.4,139,960,149,1029,138.7C1097.1,128,1166,96,1234,74.7C1302.9,53,1371,43,1406,37.3L1440,32L1440,0L1405.7,0C1371.4,0,1303,0,1234,0C1165.7,0,1097,0,1029,0C960,0,891,0,823,0C754.3,0,686,0,617,0C548.6,0,480,0,411,0C342.9,0,274,0,206,0C137.1,0,69,0,34,0L0,0Z"></path>
+                </svg>
+            </div>
 
-
-?>
-<div class='showtag'>
-	<div class="cardtitle">版塊列表</div>
-
-</div>
+        </section>
+        <?php include dirname(__FILE__). "/../modules/forum-display.php" ?>
+    </div>
 
 <?php
-
-foreach($gids as $gid){
-	$gname = $forum->getForumName($gid);
-	$subforumids = $forum->getSubforumIds($gid);
-?>
-<div class="threadwrapper">
-	<div class="title"><?php echo $gname; ?></div>
-
-	<?php
-	foreach($subforumids as $fid){
-		if($forum->hasRightsToViewForum($fid, $rights)){
-			$fname = $forum->getSubforumName($fid);
-	?>
-
-	<a class="empty" href="viewforum.php?id=<?php echo $fid;?>">
-		<div class="table">
-			<div class="row">
-				<div class="cell"><?php echo $fname; ?>&emsp;forum: <?php echo $fid;?></div>
-			</div>
-		</div>
-	</a>
-	<?php
-		}
-	}
-	?>
-</div>
-
-<?php
-}
-
-?>
-</body>
-</html>
+$essentials->getFooter();

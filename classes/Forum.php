@@ -120,6 +120,7 @@ class Forum{
 		return $stmt->fetch(PDO::FETCH_ASSOC);
 	}
 
+
 	public function getModerators($fid){
 		$stmt = $this->pdoconnect->prepare("SELECT 
                     moderator_id, username, profile_pic 
@@ -129,6 +130,13 @@ class Forum{
 		$stmt->execute();
 
 		return $stmt->fetchAll(PDO::FETCH_ASSOC);
+	}
+
+	public function checkHasForum($fid){
+		$stmt = $this->pdoconnect->prepare("SELECT COUNT(*) 'count' FROM subforum WHERE fid = :fid");
+		$stmt->bindParam(':fid', $fid, PDO::PARAM_INT);
+		$stmt->execute();
+		return ($stmt->fetch(PDO::FETCH_ASSOC)['count']) ? true : false;
 	}
 
 }

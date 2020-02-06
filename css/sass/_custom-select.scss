@@ -1,0 +1,66 @@
+.select-list{
+  display: none;
+  cursor: pointer;
+  left: 1rem;
+  right: 1rem;
+  border-radius: 24px;
+  border: 1px solid #0088ff;
+  padding: 0;
+  user-select: none;
+  li{
+    padding: 0.5rem 1rem;
+    color: #0088ff;
+    &:hover{
+      background-color: #0088ff;
+      color: #fff;
+    }
+  }
+  &.active{
+    display: block;
+  }
+}
+.select-styled{
+  cursor: pointer;
+  padding: .5rem 2rem .5rem 2rem;
+  border-radius: 25px;
+  color: #0088ff;
+  background-color: #fff;
+  background-image: url("data:image/svg+xml;utf8, <svg width='16' height='16' viewBox='0 0 1792 1792' xmlns='http://www.w3.org/2000/svg'> <path d='M1408 704q0 26-19 45l-448 448q-19 19-45 19t-45-19l-448-448q-19-19-19-45t19-45 45-19h896q26 0 45 19t19 45z' fill='%230088ff'/></svg>");
+  background-position: right 0.5rem center;
+  background-repeat: no-repeat;
+  height: auto;
+}
+.select{
+  z-index: 3;
+  position: relative;
+}
+.custom-checkbox{
+  .right-toggle{
+    background-color: #6c6c6c;
+    border-radius: 25px;
+    width: 2.5em;
+    height: 1.5em;
+    position: relative;
+    transition: all 0.2s ease-in-out;
+    &:before{
+      content: '';
+      position: absolute;
+      left: .25em;
+      bottom: .25em;
+      width: 1em;
+      height: 1em;
+      border-radius: 50%;
+      background-color: #fff;
+      transition: all 0.2s ease-in-out;
+    }
+  }
+  & input:checked{
+    + .right-toggle{
+      background-color: #0088ff;
+      &:before{
+        transform: translateX(1em);
+      }
+    }
+  }
+}
+

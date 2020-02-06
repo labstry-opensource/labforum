@@ -70,6 +70,23 @@ class ThreadOperation{
 		}
 	}
 
+	public function postThread($thread){
+	    $stmt = $this->pdoconnect->prepare("INSERT 
+                INTO threads (fid, topic_name, topic_content, author, date, draft, rights)
+                VALUES(:fid, :thread_topic, :thread_content, :author, NOW(), :draft, :rights)");
+
+	    $stmt->bindParam(':fid', $thread['fid'], PDO::PARAM_INT);
+	    $stmt->bindParam(':thread_topic', $thread['thread_topic'], PDO::PARAM_STR);
+	    $stmt->bindParam(':thread_content', $thread['thread_content'], PDO::PARAM_STR);
+        $stmt->bindParam(':author', $thread['author'], PDO::PARAM_INT);
+        $stmt->bindParam(':draft', $thread['thread_content'], PDO::PARAM_INT);
+        $stmt->bindParam(':rights', $thread['rights'], PDO::PARAM_INT);
+
+        $stmt->execute();
+
+        return $this->pdoconnect->lastInsertId();
+    }
+
 }
 
 ?>
