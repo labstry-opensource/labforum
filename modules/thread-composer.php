@@ -141,7 +141,7 @@
                         if(data.success){
                             $('.modal-body').html('<div class="text-success">' + data.success.msg + '</div>');
                             const range = editor.getSelection();
-                            editor.insertEmbed(range.index, 'image', '//' + server_name + BASE_URL + '/images/post/' + data.success.uploaded_file);
+                            editor.insertEmbed(range.index, 'image', '//' + window.location.host + BASE_URL + '/images/post/' + data.success.uploaded_file);
                         }else if(data.error){
                             $('.modal-body').html('<div class="text-danger">' + data.error.msg + '</div>');
                         }

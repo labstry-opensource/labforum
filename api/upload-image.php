@@ -9,7 +9,7 @@ $allowed_format = array();
 
 
 session_start();
-if(!isset($_SESSION)){
+if(!isset($_SESSION['id'])){
     http_response_code(403);
     print_r('403 Forbidden');
     exit;
