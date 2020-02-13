@@ -41,7 +41,9 @@ $essentials->getHeader();
                     <div class="position-absolute d-none d-md-flex align-items-center p-2 px-md-5" style="bottom: 0; height: 100px;left:0; right:0">
                         <h1 class="h3 text-white forum-name">Loading...</h1>
                         <div class="ml-auto">
-                            <a href="post3.php" class="btn btn-call-to-action">Post New Thread</a>
+                            <?php if($forum->hasRightsToAuthorInForum($_GET['id'], $roles_arr['rights'])){?>
+                                <a href="post3.php" class="btn btn-call-to-action">Post New Thread</a>
+                            <?php } ?>
                             <?php if($is_user_moderator === true){?>
                                 <a href="forum-manage.php" class="btn btn-primary">Manage</a>
                             <?php } ?>

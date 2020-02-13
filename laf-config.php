@@ -10,3 +10,13 @@ defined('DIR') || define('DIR', defined('ABSPATH') ? 'template' : basename(dirna
 defined('DB_SERVER') || define('DB_SERVER',  'localhost');
 defined('DB_USERNAME') || define('DB_USERNAME',  'playground');
 defined('DB_PASSWORD') || define('DB_PASSWORD',  'plyg2043');
+
+
+if (isset($_SERVER['HTTPS']) &&
+    ($_SERVER['HTTPS'] == 'on' || $_SERVER['HTTPS'] == 1) ||
+    isset($_SERVER['HTTP_X_FORWARDED_PROTO']) &&
+    $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https') {
+    define('PROTOCOL', 'https://');
+}else {
+    define('PROTOCOL', 'http://');
+}

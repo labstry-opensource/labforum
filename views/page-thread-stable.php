@@ -1,7 +1,5 @@
 <?php
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
-if(@$_GET['id']) session_start();
+if(@$_GET['id'] && !isset($_SESSION)) session_start();
 
 
 $threadid = @$_GET['id'];
@@ -195,7 +193,11 @@ for($i= 0 ; $i< $threadprop->numberOfReplies(); $i++){
 					</div>	
 				</div>
 			</div>
-			<div class='threadcontent'><?php echo $replyprop->threadcontent; ?></div>
+            <div class='threadcontent'>
+                <iframe src="" frameborder="0">
+                    <?php echo $replyprop->threadcontent; ?>
+                </iframe>
+            </div>
 			<div class='action'>
 				<div class="bottom">
 					<?php echo $threadprop->getAvailableOperations(); ?>

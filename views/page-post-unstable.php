@@ -8,27 +8,33 @@ if (! isset($meta)) {
     );
 }
 $opt_in_script = array(
-    'https://cdnjs.cloudflare.com/ajax/libs/quill/1.3.7/quill.min.js',
+    'https://unpkg.com/quill@1.3.7/dist/quill.min.js',
     'https://unpkg.com/quill-image-resize-module@3.0.0/image-resize.min.js',
     'https://unpkg.com/quill-emoji@0.1.7/dist/quill-emoji.js',
 );
 $opt_in_css = array(
-    'https://cdnjs.cloudflare.com/ajax/libs/quill/1.3.7/quill.snow.min.css',
+    'https://unpkg.com/quill@1.3.7/dist/quill.snow.css',
     'https://fonts.googleapis.com/css?family=Noto+Sans+TC&display=swap',
     'https://unpkg.com/quill-emoji@0.1.7/dist/quill-emoji.css',
 );
+
 
 $essentials = new Essentials($meta, '', $opt_in_script, '', $opt_in_css);
 if(isset($_GET['id'])){
     $mode = 'edit';
     $essentials->setTitle('Edit Thread - Labstry Forum');
+    $thread = new Thread($pdoconnect);
+
 }else{
-    $mode = 'add';
+    $mode = 'compose';
     $essentials->setTitle('Post New Thread - Labstry Forum');
 }
 $essentials->getHeader();
+
+
 ?>
-<form action="<?php echo BASE_URL . '/api/post-thread.php'?>" method="POST" class="thread-post-edit">
+<form action="<?php echo BASE_URL . "/api/post-thread.php?action=$mode" .
+    (($mode === 'edit')? '&id=' . $_GET['id'] : '') ?>" method="POST" class="thread-post-edit">
     <div class="title-holder" style="min-height: 300px;">
         <div class="container  position-relative">
             <div>
@@ -42,61 +48,11 @@ $essentials->getHeader();
                 </button>
             </div>
         </div>
-        <div class="container py-5">
-            <div class="row align-items-center">
-                <select name="forum" class="custom-select fid-select d-none col-12 col-md-4" id="">
-
-                </select>
-                <div class="col-12 col-md-8 mb-3">
-                    <input type="text" name="thread_topic" placeholder="輸入主題" class="form-control thread-topic thread_topic text-white">
-                    <div class="thread_topic-invalid-feedback invalid-feedback bg-light"></div>
-                </div>
-            </div>
-
-        </div>
+        <?php include LAF_PATH . '/modules/thread-title-edit.php'?>
     </div>
-    <div class="container">
-        <?php include LAF_PATH . '/modules/thread-composer.php'?>
-        <noscript>
-            <textarea name="thread_content" class="form-control thread-content" placeholder="Happy foruming..."></textarea>
-        </noscript>
-    </div>
-    <textarea name="thread_content" class="form-control thread-content d-none" placeholder="Happy foruming..."></textarea>
-    <div class="modal fade" id="threadSettingsModal" tabindex="-1" role="dialog" aria-labelledby="Thread Settings..." aria-hidden="true">
-        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-            <div class="modal-content" style="border-radius: 25px; overflow: hidden">
-                <div class="modal-header text-light align-items-center" style="background-color: #4BD2B0;">
-                    <h5 class="modal-title" id="thread-settings">Thread Settings</h5>
-                    <button type="button" class="btn btn-light btn-action ml-auto" style="padding: 0;
-                    border-radius: 50%; font-size: 1.5rem;width: 42px; height: 42px" data-dismiss="modal">&times;</button>
-                </div>
-                <div class="modal-body">
-                    <div class="settings-list py-2">
-                        <label for="draft" class="d-flex align-items-center">
-                            <span class="">草稿模式:</span>
-                            <div class="ml-auto custom-checkbox">
-                                <input type="checkbox" id="draft" name="draft" class="d-none">
-                                <div class="right-toggle"></div>
-                            </div>
-                        </label>
-                    </div>
-                    <div class="settings-list py-2">
-                        <label for="readPermission" class="d-flex align-items-center">
-                            <span>閱讀權限:</span>
-                            <input type="text" class="form-control ml-auto" style="max-width: 4em" id="readPermission" name="read_permission" value="0" />
-                        </label>
-                        <div class="text-danger read-permission-invalid-feedback"></div>
-                    </div>
-                    <div class="settings-list py-3">
-                        <label for="introduction">Introduction</label>
-                        <textarea class="form-control" id="introduction" name="introduction" style="min-height: 200px"></textarea>
-                        <div class="text-danger read-permission-invalid-feedback"></div>
-                    </div>
-                </div>
 
-            </div>
-        </div>
-    </div>
+    <?php include LAF_PATH . '/modules/thread-composer.php'?>
+    <?php include LAF_PATH . '/modules/thread-settings-dialog.php'?>
 </form>
 <div class="modal fade" id="fileUploadModal" tabindex="-1" role="dialog" aria-labelledby="Upload Files" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
@@ -104,7 +60,7 @@ $essentials->getHeader();
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">Uploading files</h5>
             </div>
-            <div class="modal-body"></div>
+            <div class="modal-body upload-file-modal-body"></div>
         </div>
     </div>
 </div>
@@ -124,6 +80,8 @@ $essentials->getHeader();
 </script>
 
 <script>
+    var editMode = <?php echo json_encode($mode === 'edit');?>;
+    var editingID = <?php echo json_encode(isset($_GET['id']) ? $_GET['id'] : '') ?>;
     var modeTitle = <?php echo json_encode(($mode === 'edit') ? 'Edit Thread' : 'Post New Thread') ?>;
     var forum_engine = <?php echo json_encode(BASE_URL . '/api/forum-engine.php'); ?>;
     var BASE_URL = <?php echo json_encode(BASE_URL ); ?>;
@@ -132,56 +90,37 @@ $essentials->getHeader();
     setTitle(modeTitle);
 
     //Get forums
-    $.ajax({
-        url: <?php echo json_encode(BASE_URL . '/api/forum-engine.php')?>,
-        method: 'GET',
-        success: function(data) {
-            var forum_arr = [];
-            for (var key in data) {
-                for (var forum_key in data[key]['forum']) {
-                    var forum_val = {
-                        forum_id: data[key]['forum'][forum_key]['fid'],
-                        forum_name: data[key]['forum'][forum_key]['fname'],
+    if(!editMode){
+        //Compose Mode
+        $.ajax({
+            url: forum_engine,
+            method: 'GET',
+            success: function(data) {
+                var forum_arr = [];
+                for (var key in data) {
+                    for (var forum_key in data[key]['forum']) {
+                        var forum_val = {
+                            forum_id: data[key]['forum'][forum_key]['fid'],
+                            forum_name: data[key]['forum'][forum_key]['fname'],
+                        }
+                        forum_arr.push(forum_val);
                     }
-                    forum_arr.push(forum_val);
                 }
+                var tmpl = $.templates('#forum-options');
+                $('.fid-select').html(tmpl.render(forum_arr));
+                initCustomSelect();
             }
-            var tmpl = $.templates('#forum-options');
-            $('.fid-select').html(tmpl.render(forum_arr));
-            initCustomSelect();
-        }
-    });
-
-    function initCustomSelect(){
-
-        $('.custom-select').wrap('<div class="select col-12 col-md-4 mb-3"></div>').after('<div class="form-control forum select-styled">Select forum</div>' +
-            '<ul class="select-list position-absolute list-group list-group-flush overflow-hidden"></ul>' +
-            '<div class="forum-invalid-feedback invalid-feedback bg-light"></div>');
-
-        // Iterate over each select element
-        var optionValues = [];
-        $('.custom-select option').each(function (index) {
-            if(index === 0){
-                $('.select-styled').text($(this).html());
+        });
+    }
+    else{
+        //Edit Mode
+        $.ajax({
+            url: BASE_URL + '/api/get-thread.php?id=' + editingID ,
+            method: 'GET',
+            success: function(data){
+                setThreadData(data);
             }
-            option_item = {value: $(this).val(), text: $(this).html()}
-            optionValues.push(option_item);
-        });
-
-        for(var i = 0; i < optionValues.length; i++){
-            var list_li = '<li class="list-group-item" data-value="'+ optionValues[i]['value']+'">' + optionValues[i]['text'] + '</li>';
-            $('.select-list').append(list_li);
-        }
-
-        $('.select-styled').on('click', function(){
-           $(this).siblings('.select-list').toggleClass('active');
-        });
-
-        $('.select-list li').on('click', function(){
-            $('.custom-select').val($(this).data('value'));
-            $(this).parent().removeClass('active');
-            $(this).parent().siblings('.select-styled').text($(this).text());
-        });
+        })
     }
 
     $('.thread-post-edit').on('submit', function (e) {
@@ -207,12 +146,24 @@ $essentials->getHeader();
                 }
             }
         });
+
     });
 
     $('.thread-topic').on('keyup', function(){
         setTitle($('.thread-topic').val());
     });
 
+
+    function setThreadData(data){
+        $('.fixed-forum-label').removeClass('d-none').text(data.fname);
+        $('.thread-topic').val(data.topic_name);
+        editor.clipboard.dangerouslyPasteHTML(data.topic_content);
+        $('.read-permission').val(data.rights);
+        $('.introduction').text(data.seo);
+        if(data.draft === true){
+            $('.draft-checkbox').prop('checked', true);
+        }
+    }
 
 </script>
 

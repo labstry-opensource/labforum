@@ -1,7 +1,4 @@
 <?php
-require_once dirname(__FILE__). '/laf-config.php';
-require_once(dirname(__FILE__).'/classes/connect.php');
-require_once(dirname(__FILE__).'/classes/UserRoles.php');
 
 if(!isset($_SESSION)) session_start();
 $id = isset($_SESSION['id']) ? @$_SESSION['id'] : 0;

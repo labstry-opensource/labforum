@@ -4,14 +4,51 @@ include_once  dirname(__FILE__)."/classes/connect.php";
 include_once  dirname(__FILE__)."/classes/Users.php";
 require_once  dirname(__FILE__)."/classes/Forum.php";
 include_once  dirname(__FILE__).'/classes/UserRoles.php';
-include_once dirname(__FILE__) . '/maintenance.php';
+include_once  dirname(__FILE__) . '/maintenance.php';
 include_once  dirname(__FILE__) . "/classes/Essentials.php";
+include_once  dirname(__FILE__) . "/classes/Thread.php";
+
+
+$thread = new Thread($pdoconnect);
+
+if(!isset($_SESSION)) session_start();
+
+if(isset($_GET['id'])){
+    if(!$thread->checkHasSuchThread($_GET['id'])){
+        http_response_code(403);
+        $errormsg = "NO_SUCH_THREAD";
+        include LAF_PATH . '/error_page/not_allowed_to_edit.php';
+        die;
+    }
+
+}
+
 
 $roles = new UserRoles($pdoconnect);
 $roles->getUserRole(@$_SESSION['id']);
 
+if(!isset($_SESSION['id'])){
+    http_response_code(403);
+    $error_arr = array(
+        'error_info' => 'INSUFFICIENT_RIGHTS',
+        'error_msg' => '你不能編輯此帖子',
+        'link' => array(
+            array(
+                'title' => '返回首頁',
+                'href' => BASE_URL. '/index.php',
+            ),
+            array(
+                'title' => '嘗試登入，看能不能解決問題',
+                'href' => BASE_URL. '/../login.php',
+            )
+        )
+    );
+    include LAF_PATH . '/error_page/general-error.php';
+    die;
+}
+
 if($roles->rights >= 89){
     include dirname(__FILE__) . '/views/page-post-unstable.php';
 }else{
-    include dirname(__FILE__) . '/views/page-post-unstable.php';
+    include dirname(__FILE__) . '/views/page-post-stable.php';
 }
