@@ -154,11 +154,11 @@ class Forum{
     }
 
     public function hasRightsToAuthorInForum($fid, $rights){
+	    if($rights === 0) return false;
         $stmt = $this->pdoconnect->prepare("SELECT min_author_rights FROM subforum WHERE fid = :fid");
         $stmt->bindParam(':fid', $fid, PDO::PARAM_INT);
         $stmt->execute();
         $min_author_right = $stmt->fetch(PDO::FETCH_ASSOC);
-
         return ($rights >= $min_author_right['min_author_rights']) ? true: false;
     }
 }

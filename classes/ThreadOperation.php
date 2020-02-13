@@ -1,6 +1,6 @@
 <?php
 
-include_once("AuthorProp.php");
+include_once dirname(__FILE__) ."/AuthorProp.php";
 
 class ThreadOperation{
 	public $pdoconnect;

@@ -1,10 +1,10 @@
 ﻿<?php
 if(!isset($_SESSION)) session_start();
-require_once(dirname(__FILE__)."/classes/UserRoles.php");
+include_once dirname(__FILE__)."/api/classes/UserRoles.php";
 
 
 $userrole = new UserRoles($pdoconnect);
-$userrole->getUserRole(@$_SESSION["id"]);
+$roles_arr = $userrole->getUserRole(@$_SESSION["id"]);
 
 class Maintainance{
 	public $pdoconnect;
@@ -28,7 +28,7 @@ class Maintainance{
 	}
 }
 $maintainance = new Maintainance($pdoconnect);
-if(($maintainance->checkIfMaintaining() === false) || $userrole->rights >= $maintainance->getMinUserRights()){
+if(($maintainance->checkIfMaintaining() === false) || $roles_arr['rights'] >= $maintainance->getMinUserRights()){
 	return;
 }
 
@@ -89,7 +89,6 @@ a{
 	 * we will redirect users if $diff is GE zero
 	 */
 	//Test bed
-	echo $diff;
 	if($diff >=0) echo "<script>window.location = 'index.php'</script>";
 	die();
 ?>

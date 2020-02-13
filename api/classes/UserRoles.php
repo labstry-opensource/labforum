@@ -1,6 +1,5 @@
 <?php
 
-include_once "connect.php";
 
 class UserRoles{
     public $pdoconnect;
@@ -119,15 +118,15 @@ class UserRoles{
         
         $data["type"] = "Normal";
         $data["role_id"] = "13";
-        $data['role_name'] = $resultset["rname"];
-        $data["tagcolor"] = $resultset["tagcolor"];
+        $data['role_name'] = isset($resultset["rname"]) ? $resultset['rname'] : 'Guest';
+        $data["tagcolor"] = isset($resultset["tagcolor"]) ? $resultset["tagcolor"] : '';
         $data["r_edit"] = 0;
         $data["r_del"] = 0;
         $data["r_promo"] = 0;
         $data["r_hide"] = 0;
         $data["r_manage"] = 0;
         $data["profile_visible"] = 0;   
-        $data["rights"] = $resultset["read"];
+        $data["rights"] = isset($resultset["read"] ) ? $resultset['read'] : 0;
 
         return $data;
     }

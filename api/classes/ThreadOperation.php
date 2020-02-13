@@ -14,11 +14,43 @@ class ThreadOperation{
 	public $r_del;
 	public $r_promo;
 
-	public function __construct($pdoconnect, $pdotoolkit, $threadid){
+	public function __construct($pdoconnect, $pdotoolkit = null, $threadid = null){
 		$this->pdoconnect = $pdoconnect;
 		$this->pdotoolkit = $pdotoolkit;
 		$this->threadid = $threadid;
 	}
+
+	public function addThreadLog($thread_id, $user_id, $action, $remarks, $visible = "1"){
+	    $stmt = $this->pdoconnect->prepare('
+	        INSERT INTO laf_threads_operation_log VALUES
+	        (:thread_id, :datetime, :userid, :thread_action, :remarks, :visible)
+	    ');
+	    $stmt->bindParam(':thread_id', $thread_id, PDO::PARAM_STR);
+	    $stmt->bindValue(':datetime', date('Y-m-d H:i:s'), PDO::PARAM_STR);
+	    $stmt->bindParam(':userid', $user_id , PDO::PARAM_STR);
+	    $stmt->bindParam(':thread_action', $action , PDO::PARAM_STR);
+	    $stmt->bindParam(':remarks', $remarks, PDO::PARAM_STR);
+        $stmt->bindParam(':visible', $visible, PDO::PARAM_STR);
+	    $stmt->execute();
+
+    }
+
+    public function getThreadLog($thread_id){
+        $stmt = $this->pdoconnect->prepare('
+            SELECT l.*, d.*, u.username 
+            FROM laf_threads_operation_log l, 
+            laf_threads_operation_def d,
+            `userspace`.`users` u WHERE 
+            l.type = d.type AND 
+            l.operator_id = u.id AND
+            l.visible = 1 AND
+            thread_id = :thread_id 
+	    ');
+        $stmt->bindParam(':thread_id', $thread_id, PDO::PARAM_STR);
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 
 	public function checkRights(){
 		$id = @$_SESSION['id'];
@@ -72,8 +104,8 @@ class ThreadOperation{
 
 	public function postThread($thread){
 	    $stmt = $this->pdoconnect->prepare("INSERT 
-                INTO threads (fid, topic_name, topic_content, author, date, draft, rights)
-                VALUES(:fid, :thread_topic, :thread_content, :author, NOW(), :draft, :rights)");
+                INTO threads (fid, topic_name, topic_content, author, date, draft, rights, seo)
+                VALUES(:fid, :thread_topic, :thread_content, :author, NOW(), :draft, :rights, :keyword)");
 
 	    $stmt->bindParam(':fid', $thread['fid'], PDO::PARAM_INT);
 	    $stmt->bindParam(':thread_topic', $thread['thread_topic'], PDO::PARAM_STR);
@@ -81,10 +113,33 @@ class ThreadOperation{
         $stmt->bindParam(':author', $thread['author'], PDO::PARAM_INT);
         $stmt->bindParam(':draft', $thread['thread_content'], PDO::PARAM_INT);
         $stmt->bindParam(':rights', $thread['rights'], PDO::PARAM_INT);
+        $stmt->bindParam(':keyword', $thread['keyword'], PDO::PARAM_STR);
 
         $stmt->execute();
 
         return $this->pdoconnect->lastInsertId();
+    }
+
+    public function editThread($thread){
+	    $stmt = $this->pdoconnect->prepare('UPDATE threads SET 
+               topic_name = :thread_topic,
+               topic_content = :thread_content, 
+               draft = :draft, 
+               seo = :keyword,
+               rights = :read_permission WHERE topic_id = :id');
+
+	    $stmt->bindParam(':id', $thread['id'], PDO::PARAM_INT);
+	    $stmt->bindParam(':thread_topic', $thread['thread_topic'], PDO::PARAM_STR);
+	    $stmt->bindParam(':thread_content', $thread['thread_content'], PDO::PARAM_STR);
+	    $stmt->bindParam(':draft', $thread['draft'], PDO::PARAM_STR);
+	    $stmt->bindParam(':keyword', $thread['keyword'], PDO::PARAM_STR);
+	    $stmt->bindParam(':read_permission', $thread['read_permission'], PDO::PARAM_STR);
+
+        $stmt->execute();
+
+        $this->addThreadLog($thread['id'], $_SESSION['id'], '1', '');
+
+        return true;
     }
 
 }

@@ -186,6 +186,22 @@ if(!defined('GLOB_HOME_URL')) define('GLOB_HOME_URL', BASE_URL);
     </div>
 </div>
 <div class="header-placeholder"></div>
+
+<div class="modal fade" id="logoutModal" tabindex="-1"
+     data-backdrop="static"
+     role="dialog" aria-labelledby="Logout" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document" >
+        <div class="modal-content" style="border-radius: 25px; overflow: hidden">
+            <div class="modal-body" style="background-color: #4BD2B0;">
+                <div class="d-flex align-items-center">
+                    <div class="spinner-border text-light" role="status" aria-hidden="true"></div>
+                    <strong class="h3 ml-auto text-light">Bye.</strong>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script id="sRBar" type="text/x-jsrender">
     <?php include dirname(__FILE__) . '/../widgets/thread-display/simple-thread-widget.php'; ?>
 </script>
@@ -207,11 +223,13 @@ if(!defined('GLOB_HOME_URL')) define('GLOB_HOME_URL', BASE_URL);
 
     $('#logout').on('click', function(e){
         e.preventDefault();
+        $('#logoutModal').modal('toggle');
         $.ajax({
             url: <?php echo json_encode(BASE_URL.'/api/logout.php') ?>,
             method: 'GET',
             success: function(data){
                 //Clear away the click binded on document first.
+                $('#logoutModal').modal('toggle');
                 $(document).off('click');
                 refreshPage();
             }

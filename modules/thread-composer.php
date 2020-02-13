@@ -1,59 +1,63 @@
-<div id="toolbar">
-    <select class="ql-font">
-        <option selected>Sans Serif</option>
-        <option value="Calibri">Calibri</option>
-        <option value="Times New Roman">Times New Roman</option>
-        <option value="Noto Sans">Noto Sans TC</option>
-        <option value="Tahoma">Tahoma</option>
-        <option value="Roboto">Roboto</option>
-        <option value="Arial">Arial</option>
-        <option value="Monospace">Monospace</option>
+<div class="container">
+    <div id="toolbar" class="position-sticky" style="top: 50px; z-index: 99; background-color: #fff;">
+        <select class="ql-font">
+            <option selected>Sans Serif</option>
+            <option value="Calibri">Calibri</option>
+            <option value="Times New Roman">Times New Roman</option>
+            <option value="Noto Sans">Noto Sans TC</option>
+            <option value="Tahoma">Tahoma</option>
+            <option value="Roboto">Roboto</option>
+            <option value="Arial">Arial</option>
+            <option value="Monospace">Monospace</option>
 
-    </select>
-    <!-- Add font size dropdown -->
-    <div class="ql-formats">
-        <select class="ql-size">
-            <option selected value="12px">Small</option>
-            <!-- Note a missing, thus falsy value, is used to reset to default -->
-            <option value="15px">Normal</option>
-            <option value="18px">Large</option>
-            <option value="24px">Huge</option>
-            <option value="32px">Gigantic</option>
         </select>
-        <select class="ql-color"></select>
+        <!-- Add font size dropdown -->
+        <div class="ql-formats">
+            <select class="ql-size">
+                <option selected value="12px">Small</option>
+                <!-- Note a missing, thus falsy value, is used to reset to default -->
+                <option value="15px">Normal</option>
+                <option value="18px">Large</option>
+                <option value="24px">Huge</option>
+                <option value="32px">Gigantic</option>
+            </select>
+            <select class="ql-color"></select>
+        </div>
+
+        <div class="ql-formats">
+            <button class="ql-bold"></button>
+            <button class="ql-underline"></button>
+            <button class="ql-italic"></button>
+        </div>
+        <div class="ql-formats">
+            <button class="ql-script" value="sub"></button>
+            <button class="ql-script" value="super"></button>
+        </div>
+        <div class="ql-formats">
+            <button class="ql-align"></button>
+            <button class="ql-align" value="center"></button>
+            <button class="ql-align" value="right"></button>
+        </div>
+        <div class="ql-formats">
+            <button class="ql-indent" value="-1" />
+            <button class="ql-indent" value="+1" />
+        </div>
+        <div class="ql-formats">
+            <button class="ql-image"></button>
+            <button class="ql-emoji"></button>
+            <button class="ql-code-block"></button>
+            <button class="ql-link"></button>
+        </div>
+
+
     </div>
 
-    <div class="ql-formats">
-        <button class="ql-bold"></button>
-        <button class="ql-underline"></button>
-        <button class="ql-italic"></button>
-    </div>
-    <div class="ql-formats">
-        <button class="ql-script" value="sub"></button>
-        <button class="ql-script" value="super"></button>
-    </div>
-    <div class="ql-formats">
-        <button class="ql-align"></button>
-        <button class="ql-align" value="center"></button>
-        <button class="ql-align" value="right"></button>
-    </div>
-    <div class="ql-formats">
-        <button class="ql-indent" value="-1" />
-        <button class="ql-indent" value="+1" />
-    </div>
-    <div class="ql-formats">
-        <button class="ql-image"></button>
-        <button class="ql-emoji"></button>
-        <button class="ql-code-block"></button>
-    </div>
+    <div class="thread-editor form-control thread_content p-0">
 
-
+    </div>
+    <div class="thread_content-invalid-feedback invalid-feedback"></div>
 </div>
-
-<div class="thread-editor form-control thread_content p-0">
-
-</div>
-<div class="thread_content-invalid-feedback invalid-feedback"></div>
+<textarea name="thread_content" class="form-control thread-content d-none" placeholder="Happy foruming..."></textarea>
 
 <script>
     //Let third party app stays alone
@@ -97,9 +101,8 @@
     Quill.prototype.getHtml = function() {
         const tempCont = document.createElement('div');
         const tempEditor= new Quill(tempCont);
-        tempEditor.setContents(editor.getContents());
         var el = document.createElement('div');
-        el.innerHTML = tempEditor.root.innerHTML;
+        el.innerHTML = editor.root.innerHTML;
 
          $(el).find('.ql-emojiblot span span').contents().unwrap().unwrap().unwrap();
         console.log(el);
@@ -153,7 +156,7 @@
                     },
                 });
             }else{
-                $('.modal-body').html('<span class="text-warning">The file you selected isn\'t an image</span>');
+                $('.load-file-modal-body').html('<span class="text-warning">The file you selected isn\'t an image</span>');
             }
         });
     }

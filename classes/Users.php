@@ -31,21 +31,23 @@ class Users{
         $stmt->bindValue(1, $userid, PDO::PARAM_INT);
         $stmt->execute();
         
-        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        if($result = $stmt->fetch(PDO::FETCH_ASSOC)){
+            $this->username = $result['username'];
+            $this->password = $result['password'];
+            $this->email = $result['email'];
+            $this->regdate = $result['date'];
+            $this->replies = $result['replies'];
+            $this->score = $result['score'];
+            $this->topics = $result['topics'];
+            $this->profilepic = $result['profile_pic'];
+            $this->isemailvis = $result['email_visible'];
+            $this->isspecialteam = $result['s_team'];
+            $this->password_hint = $result['password_hint'];
+            $this->password_hint_answer = $result['password_hint_answer'];
+            $this->rname = $result['rname'];
+        }
         
-        $this->username = $result['username'];
-        $this->password = $result['password'];
-        $this->email = $result['email'];
-        $this->regdate = $result['date'];
-        $this->replies = $result['replies'];
-        $this->score = $result['score'];
-        $this->topics = $result['topics'];
-        $this->profilepic = $result['profile_pic'];
-        $this->isemailvis = $result['email_visible'];
-        $this->isspecialteam = $result['s_team'];
-        $this->password_hint = $result['password_hint'];
-        $this->password_hint_answer = $result['password_hint_answer'];
-        $this->rname = $result['rname'];
+
     }
     public function getUserPropByUname($username){
         //Check database
