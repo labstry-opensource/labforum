@@ -3,7 +3,7 @@ require_once dirname(__FILE__). '/laf-config.php';
 include_once  dirname(__FILE__)."/classes/connect.php";
 include_once  dirname(__FILE__)."/classes/Users.php";
 require_once  dirname(__FILE__)."/classes/Forum.php";
-include_once  dirname(__FILE__).'/classes/UserRoles.php';
+include_once  dirname(__FILE__).'/api/classes/UserRoles.php';
 include_once  dirname(__FILE__) . '/maintenance.php';
 include_once  dirname(__FILE__) . "/classes/Essentials.php";
 include_once  dirname(__FILE__) . "/classes/Thread.php";
@@ -25,7 +25,7 @@ if(isset($_GET['id'])){
 
 
 $roles = new UserRoles($pdoconnect);
-$roles->getUserRole(@$_SESSION['id']);
+$roles_arr = $roles->getUserRole(@$_SESSION['id']);
 
 if(!isset($_SESSION['id'])){
     http_response_code(403);
@@ -47,7 +47,7 @@ if(!isset($_SESSION['id'])){
     die;
 }
 
-if($roles->rights >= 89){
+if($roles_arr['rights'] >= 89){
     include dirname(__FILE__) . '/views/page-post-unstable.php';
 }else{
     include dirname(__FILE__) . '/views/page-post-stable.php';

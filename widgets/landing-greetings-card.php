@@ -33,7 +33,7 @@ if(!isset($user_details) || !@$_SESSION['username']) {
             'description' => 'Post new thread',
         )
     );
-    if($user_details && $role->rights >=90){
+    if($user_details && $roles_arr['rights'] >=90){
         array_push($display_links,
             array(
                 'href'=> 'admin/index.php',
