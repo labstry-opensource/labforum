@@ -69,7 +69,7 @@ class Thread
         $stmt->execute();
 
         $thread_arr = $stmt->fetch(PDO::FETCH_ASSOC);
-        $thread_arr['draft'] = ($thread_arr['draft'] === 0) ? false: true;
+        $thread_arr['draft'] = ($thread_arr['draft'] === '0') ? false: true;
         return $thread_arr;
     }
     public function getAuthor($threadid){
