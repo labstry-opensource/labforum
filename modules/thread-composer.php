@@ -1,5 +1,5 @@
 <div class="container">
-    <div id="toolbar" class="position-sticky" style="top: 50px; z-index: 99; background-color: #fff;">
+    <div id="toolbar" class="position-sticky" style="top: 50px; z-index: 2;background-color: #fff;">
         <select class="ql-font">
             <option selected>Sans Serif</option>
             <option value="Calibri">Calibri</option>
@@ -127,7 +127,7 @@
             $('#fileUploadModal').modal('show');
             var file = $(this).prop('files')[0];
             if(/^image\//.test(file.type)){
-                $('.modal-body').html('<div class="d-flex align-items-center" style="color: #0088ff">\n' +
+                $('.upload-file-modal-body').html('<div class="d-flex align-items-center" style="color: #0088ff">\n' +
                     '  <strong>Uploading ' + file.name + '...</strong>\n' +
                     '  <div class="spinner-border ml-auto" role="status" aria-hidden="true"></div>\n' +
                     '</div>');
@@ -142,11 +142,11 @@
                     data: formData,
                     success: function(data){
                         if(data.success){
-                            $('.modal-body').html('<div class="text-success">' + data.success.msg + '</div>');
+                            $('.upload-file-modal-body').html('<div class="text-success">' + data.success.msg + '</div>');
                             const range = editor.getSelection();
                             editor.insertEmbed(range.index, 'image', '//' + window.location.host + BASE_URL + '/images/post/' + data.success.uploaded_file);
                         }else if(data.error){
-                            $('.modal-body').html('<div class="text-danger">' + data.error.msg + '</div>');
+                            $('.upload-file-modal-body').html('<div class="text-danger">' + data.error.msg + '</div>');
                         }
 
                         setTimeout(function(){
@@ -156,7 +156,7 @@
                     },
                 });
             }else{
-                $('.load-file-modal-body').html('<span class="text-warning">The file you selected isn\'t an image</span>');
+                $('.upload-file-modal-body').html('<span class="text-warning">The file you selected isn\'t an image</span>');
             }
         });
     }

@@ -58,7 +58,7 @@ if(!isset($user_details) || !@$_SESSION['username']) {
         <div class="embed-responsive-item"
              style="background-image : url('<?php echo BASE_URL . '/images/system/photo_of_the_month.jpg'?>');
                      background-position: center center; background-size: cover; background-repeat: no-repeat; padding-bottom: 300px">
-            <div class="container h-100 d-flex align-items-center" style="padding-top: 150px">
+            <div class="container h-100 d-flex align-items-center position-relative" style="padding-top: 150px; z-index: 9">
                 <div class="row">
                     <div class="col-12">
                         <h2 class="h3">Welcome, <span><?php echo $user_details['username']?></span>.</h2>
