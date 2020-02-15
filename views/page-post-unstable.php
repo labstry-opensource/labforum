@@ -86,8 +86,14 @@ $essentials->getHeader();
     var forum_engine = <?php echo json_encode(BASE_URL . '/api/forum-engine.php'); ?>;
     var BASE_URL = <?php echo json_encode(BASE_URL ); ?>;
     var thread_page = BASE_URL + '/thread.php';
+    var posting_forum = <?php echo json_encode(isset($_GET['posting_forum']) ? $_GET['posting_forum']: null); ?>;
 
     setTitle(modeTitle);
+    if(posting_forum !== null){
+        setTimeout(function () {
+            setPostForum(posting_forum);
+        }, 1000);
+    }
 
     //Get forums
     if(!editMode){

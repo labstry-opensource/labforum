@@ -61,6 +61,7 @@ if(@$_GET['page'] === 'home'){
         $data['error'] = 'No such thread';
         $api_tools->outputContent($data);
     }
+    $thread->addViews($thread_id);
     $thread_arr = $thread->getThreadProp($thread_id);
 
     //Get user roles and tag color

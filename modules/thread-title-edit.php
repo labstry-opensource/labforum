@@ -43,4 +43,12 @@
             $(this).parent().siblings('.select-styled').text($(this).text());
         });
     }
+    function setPostForum(forum_id){
+        if($('.fid-select option[value=\''+ forum_id+ '\']').length){
+            $('.fid-select').val(forum_id);
+            var currentText = $('.fid-select option:selected').text();
+            $('.fid-select').siblings('.select-styled').text(currentText);
+        }
+
+    }
 </script>
