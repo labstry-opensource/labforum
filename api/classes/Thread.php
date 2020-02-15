@@ -69,7 +69,7 @@ class Thread
         $stmt->execute();
 
         $thread_arr = $stmt->fetch(PDO::FETCH_ASSOC);
-        $thread_arr['draft'] = ($thread_arr['draft'] === 0) ? false: true;
+        $thread_arr['draft'] = ($thread_arr['draft'] === '0') ? false: true;
         return $thread_arr;
     }
     public function getAuthor($threadid){
@@ -133,12 +133,18 @@ class Thread
 
     public function getReplies($thread_id){
         $stmt = $this->pdoconnect->prepare('SELECT 
-            reply_id, reply_topic, reply_content, u.username, author, r.date FROM replies r, `userspace`.`users` u 
+            reply_id, reply_topic, reply_content, u.username, u.profile_pic, author, r.date FROM replies r, `userspace`.`users` u 
             WHERE u.id = r.author AND hiddeni <> 1 AND topic_id = :thread_id');
         $stmt->bindParam(':thread_id', $thread_id, PDO::PARAM_INT);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+    public function addViews($thread_id){
+        $stmt = $this->pdoconnect->prepare('
+            UPDATE threads SET views = views + 1 WHERE topic_id = :thread_id');
 
+        $stmt->bindParam(':thread_id', $thread_id, PDO::PARAM_INT);
+        $stmt->execute();
     }
 }
 
