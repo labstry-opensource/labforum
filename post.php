@@ -67,8 +67,4 @@ if(isset($_GET['id'])){
 }
 
 
-if($roles_arr['rights'] >= 89){
-    include dirname(__FILE__) . '/views/page-post-unstable.php';
-}else{
-    include dirname(__FILE__) . '/views/page-post-stable.php';
-}
+include dirname(__FILE__) . '/views/page-post-unstable.php';

@@ -1,262 +1,119 @@
 <?php
-if(@$_GET['id'] && !isset($_SESSION)) session_start();
+//Use php to get thread head to prevent crawling issues in some search engines
+$thread_head = json_decode(file_get_contents( 'http://localhost' . BASE_URL . '/api/thread-head.php?id=' . $_GET['id']), true);
 
-
-$threadid = @$_GET['id'];
-
-//Process post when user posted a reply
-if(@$_GET['action'] == 'addreply'){
-    $replypost = new AddReply($pdoconnect, $pdotoolkit, $threadid);
-    $replypost->submitReply(@$_POST['replytitle'], @$_POST['replycontent']);
+if (! isset($meta)) {
+    $meta = array(
+        'description' => $thread_head['seo'],
+        'viewport' => 'width=device-width, initial-scale=1.0'
+    );
 }
+$opt_in_script = array(
+    'https://unpkg.com/moment@2.24.0/min/moment.min.js',
+);
 
-//Check details of author
-$authorprop = new AuthorProp($pdoconnect, $pdotoolkit, $threadid);
-$authorid = $authorprop->userid;
-
-$thread = new Thread($pdoconnect);
-$thread->getThreadProp($threadid);
-$authorid = $thread->author;
-
-//Check details of thread
-$threadprop = new ThreadProp($pdoconnect, $pdotoolkit, $threadid);
-//$threadprop->triggerViewsCount();
-$threadprop->getThreadProp();
-
-$users = new Users($pdoconnect, $pdotoolkit);
-$users->getUserPropById($authorid);
-
-
+$essentials = new Essentials($meta, null, $opt_in_script, null);
+$essentials->setTitle($thread_head['topic_name'] . '- Labstry Forum ');
+$essentials->getHeader();
 
 ?>
-
-<html>
-
-<head>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<?php
-
-if($threadprop->descript != ""){
-?>
-<meta name="description" content="<?php echo $threadprop->descript; ?>"/>
-<?php
-}
-?>
-
-<title>Labstry 論壇- <?php echo $threadprop->threadname; ?></title>
-<link rel="stylesheet" href="menu/dynamicmenu.css"/>
-<link rel="stylesheet" href="thread.css"/>
-</head>
-<style>
-.title{
-	display:block;
-	padding:40px; 
-	width:100%; 
-	height:10px; 
-	background-color: green; 
-	font-size: 40px;
-}
-.wrapper{
-	width: 100%;
-	margin: 0 auto;
-	padding-bottom: 10px;
-}
-.card{
-	box-shadow: 2px 2px 4px 4px #ACACAC;
-	padding-bottom: 10px;
-	border-radius: 18px;
-	overflow: hidden;
-
-}
-.innerwrapper{
-	width:94%; 
-	/*margin:0 auto; */
-	background: linear-gradient(to right, orange 50%, white 50%);
-	background-size: 200% 100%;
-	background-position: right bottom;
-	transition: all .5s ease-out;
-}
-.innerwrapper:hover{
-	background-position: left bottom;
-}
-
-.detailswrapper{
-	background-color: #00c5ff;
-	color:white;
-}
-.orderwrapper{
-	width:95%;
-	height: 180px;
-	margin:0 auto;
-}
-.payment{
-	display: inline-block; 
-	float:right;
-}
-.nohoveroverride{
-	width:95%;
-	margin:0 auto;
-}
-.item22{
-	width:100%;
-}
-.threadcontent{
-	font-size:16px;
-	font-weight:200;
-	width: 95%;
-	margin: 0 auto;
-	padding-top: 40px;
-	min-height: 100px;
-}
-
-.threadcontent img{
-    max-width: 100%;
-}
-.operationprovider{
-	width:100%;
-	height:100%;
-	background-color:grey;
-	opacity: 0.8;
-	position:fixed;
-}
-</style>
-
-<body onload="Design();">
-<?php include_once(dirname(__FILE__)."/../menu/header.php");?>
-<!--- div class="operationprovider">
-
-
-</div> --->
-<?php
-//Use parameter to get the appropiate header
-$viewpage = "thread";
-?>
-<div class="wrapper">
-	<div class="card">
-		<!--- Describe the card that shows the thread --->
-		<div class="detailswrapper">
-			<div class="orderwrapper">
-				<div class="details" style="display:inline-block;vertical-align:middle">
-					<img class="avatarshow" style="vertical-align:middle;padding:10px;padding-left:0px" src="<?php echo $users->profilepic; ?>"/></div>
-					<div style="display:inline-block;">
-						<div id="tname" style="font-size:26px;display:inline-block;vertical-align:middle"><?php echo $threadprop->threadname; ?></div>
-						<div id="tdate" style="font-size:15px"><?php echo $threadprop->date; ?></div>
-					</div>
-					<div class="details">
-						<div class="author" style="font-size:15px;"><?php echo $threadprop->author; ?></div>
-					</div>
-					<div class="role" style="color:<?php echo $authorprop->color; ?>;font-size:15px"><?php echo $authorprop->rolename; ?></div>
-				</div>
-			</div>
-			<!--- |-----------------------------------------------|  --->
-			<div class="threadcontent"><?php echo $threadprop->getThreadContent(); ?></div>
-			<div class="action">
-				<div class="bottom">
-					<?php echo $threadprop->getAvailableOperations(); ?>
-			</div>
-		</div>
-	</div>
-</div>
-
-<div class="dynamicplaceholder">
-<?php
-for($i= 0 ; $i< $threadprop->numberOfReplies(); $i++){
-	$currentcnt = $i +1; 
-	$replyauthorprop = new ReplyAuthorProp($pdoconnect, $pdotoolkit, $threadid, $currentcnt);
-
-	$replyprop = new ReplyProp($pdoconnect, $pdotoolkit, $threadid, $currentcnt);
-	$replyprop->getThreadProp();
-
-	?>
-	<div class="wrapper">
-		<div class="card">
-		<!--- Describe the card that shows the reply --->
-			<div class="detailswrapper">
-				<div class="orderwrapper">
-				<!-- Showing the reply order --->
-					<div style='margin-right:10px;float:right'><?php 
-						if($i == 0) echo "頭香";
-						else echo "#".$currentcnt; ?>
-					</div>
-					<div class='details' style='display:inline-block;vertical-align:middle' >
-						<img class='avatarshow' style='vertical-align:middle;padding:10px;padding-left:0px' src="<?php echo $replyauthorprop->profilepic; ?>"/>
-					</div>
-					<div style='display:inline-block;'>
-						<div id='tname' style='font-size:26px;display:inline-block;vertical-align:middle'><?php echo $replyprop->threadname; ?></div>
-						<div id='tdate' style='font-size:15px;'><?php echo $replyprop->date; ?></div>
-					</div>
-					<div class='details'><div class='author' style='font-size:15px;'><?php echo $replyauthorprop->username; ?></div></div>
-					<div class='details'>
-						<div class='author' style="color:<?php echo $replyauthorprop->color; ?>;font-size:15px">
-							<?php echo $replyauthorprop->rolename; ?>		
-						</div>
-					</div>	
-				</div>
-			</div>
-            <div class='threadcontent'>
-                <iframe src="" frameborder="0">
-                    <?php echo $replyprop->threadcontent; ?>
-                </iframe>
+    <div class="op-thread-container"  style="padding-top: 50px; margin-top: -50px;">
+        <div class="op-thread-contents-wrapper">
+            <div class="d-flex justify-content-center align-items-center" style="min-height: 400px">
+                <?php
+                $loading_msg = "Loading thread, please wait...";
+                include LAF_PATH . '/widgets/loading-circle.php'?>
             </div>
-			<div class='action'>
-				<div class="bottom">
-					<?php echo $threadprop->getAvailableOperations(); ?>
-				</div>
-			</div>	
-		</div>
-	</div>
+        </div>
+    </div>
+    <div class="reply-thread-container" style="padding: 100px 0"></div>
 <?php
+if(isset($_SESSION['id'])) {
+
+    ?>
+    <div class="quick-reply" style="border-radius: 24px">
+        <form class="quick-reply-form" method="post"
+              action="<?php echo BASE_ROOT_API_URL . '/post-reply.php?id=' . $_GET['id'] ?>">
+            <div class="d-flex align-items-center"
+                 style="background-color:#3458eb; min-height: 200px; border-radius: 24px">
+                <div class="container">
+                    <div class="form-group text-light">
+                        <input type="hidden" name="thread_id" value="<?php echo $_GET['id'] ?>">
+                        <label for="replyTitle" class="h2 py-5">Quick Reply</label>
+                        <input type="text" class="form-control my-5 quick-reply-title reply_topic" id="replyTitle"
+                               placeholder="Title" name="reply_topic">
+                        <div class="invalid-feedback reply_topic-invalid-feedback"></div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="container form-group">
+                <textarea name="reply_content" class="form-control my-2 quick-reply-content reply_content" style="min-height: 200px"
+                          placeholder="Reply content here..."></textarea>
+                <div class="invalid-feedback reply_content-invalid-feedback"></div>
+            </div>
+            <div class="container">
+                <button class="btn btn-success" style="border-radius: 24px">
+                    Submit
+                </button>
+            </div>
+
+        </form>
+    </div>
+    <?php
 }
 ?>
-</div> <!--- Dynamic place holder --->
 
-<div class="wrapper" id="">
-	<div class="card">
-		<!--- Describe the card that shows the reply card--->
-		<?php if(@$_SESSION['id']) { ?>
-		<form method="POST" class="replyform" action="<?php echo basename($_SERVER['PHP_SELF'])."?id=".$threadid;?>&action=addreply">
-			<div class="detailswrapper">
-				<div class="orderwrapper">
-					<div style="font-size:26px;padding-top: 20px;">回覆帖子內容</div>
-					<input type="text" name="replytitle" class="replyclear" style="background:transparent; border:none;font-size: 18px;" placeholder="Input title here..." ></div>
-				</div>
-				<div class="replycontent" style="width: 99%;margin: 0 auto;">
-					<div contenteditable="true" class="colorededit replyclear" style="min-height: 100px;"></div>
-					<textarea class="replyedit" name="replycontent" style="display: none;"></textarea>
-				</div>
-				<input class="replysubmit" type="submit" value="Submit"/>
-			</div>
-		</form>
-	<?php } else{ ?>
-		<div class="detailswrapper">
-				<div class="orderwrapper">
-					<div style="font-size:26px;padding-top: 20px;">請<a href="/login.php?from=/forum/<?php echo basename($_SERVER['PHP_SELF'])."?id=".$threadid;?>">登入</a>以回覆</div>
-				</div>
-		</div>
-	<?php } ?>
-	</div>
-</body>
-<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-<script>
-$('.colorededit').on('DOMSubtreeModified', function() {
-    $('.replyedit').html($('.colorededit').html()+ "<br>This reply is sumbitted by Project PostCard</br>");
-});
-$('.replyform').on("submit", function(e){
-	e.preventDefault();
-	$.ajax({
-		url: $('.replyform').attr('action'),
-		type: 'POST',
-		data: $('.replyform').serialize(),
-		success: function(data){
-			$('.dynamicplaceholder').html($(data).filter('.dynamicplaceholder'));
-			clearReplyBox();
-		}
+    <script id="user-role-template" type="text/html">
+        <?php
+        $thread_type = 'op';
+        include LAF_PATH . '/modules/thread-author-display.php';?>
+    </script>
+    <script id="thread-reply-template" type="text/html">
+        <?php
+        $thread_type = 'reply';
+        include LAF_PATH . '/modules/thread-author-display.php';?>
+    </script>
+    <script>
+        var BASE_URL = <?php echo json_encode(BASE_URL); ?>;
+        var thread_id = <?php echo json_encode($_GET['id']);?>;
+        getThreadProp();
 
-	});
-});
 
-function clearReplyBox(){
-	$('.replyclear').html("");
-}
-</script>
-</html>
+        function getThreadProp(){
+            $.ajax({
+                url: BASE_URL + '/api/threads-engine.php?id=' + thread_id,
+                method: 'GET',
+                success: function(data){
+                    var tmpl = $.templates('#user-role-template');
+                    var reply_tmpl = $.templates('#thread-reply-template');
+                    $('.op-thread-contents-wrapper').html(tmpl.render(data));
+                    $('.reply-thread-container').html(reply_tmpl.render(data.replies));
+                }
+            });
+        }
+
+        $('.quick-reply-form').on('submit', function(e){
+            e.preventDefault();
+            $.ajax({
+                url: $(this).attr('action'),
+                method:  $(this).attr('method'),
+                data: $(this).serialize(),
+                success: function(data){
+                    if(data.error){
+                        for(key in data.error){
+                            $('.' + key).addClass('is-invalid');
+                            $('.' + key + '-invalid-feedback').html(data.error[key]);
+                        }
+                    }else{
+                        //window.location = window.location.href;
+                    }
+
+                }
+            });
+
+        });
+    </script>
+
+<?php
+$essentials->getFooter();
