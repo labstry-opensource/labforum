@@ -167,6 +167,15 @@ class Thread
         $stmt->execute();
         return ($stmt->fetch(PDO::FETCH_ASSOC)['count']) ? false: true;
     }
+
+    public function checkHasRightToViewThisThread($thread_id, $read_permission){
+        $stmt = $this->pdoconnect->prepare('
+            SELECT COUNT(*) \'count\' FROM `threads` WHERE `topic_id` = :id AND `rights` <= :read_permission');
+        $stmt->bindParam(":id", $thread_id, PDO::PARAM_INT);
+        $stmt->bindParam(":read_permission", $read_permission, PDO::PARAM_INT);
+        $stmt->execute();
+        return ($stmt->fetch(PDO::FETCH_ASSOC)['count'] === '0' ) ? false: true;
+    }
 }
 
 ?>

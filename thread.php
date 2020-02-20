@@ -6,7 +6,7 @@ include_once dirname(__FILE__)."/classes/Essentials.php";
 include_once dirname(__FILE__)."/api/classes/UserRoles.php";
 include_once dirname(__FILE__)."/classes/AuthorProp.php";
 include_once dirname(__FILE__)."/classes/ThreadProp.php";
-include_once dirname(__FILE__)."/classes/Thread.php";
+include_once dirname(__FILE__)."/api/classes/Thread.php";
 
 if(!isset($_SESSION)) session_start();
 
@@ -50,11 +50,7 @@ if(isset($error_arr)){
 }
 
 
-if($roles_arr['rights'] >= 90){
-    include_once 'views/page-thread-unstable.php';
-}else{
-    include_once 'views/page-thread-stable.php';
-}
+include_once 'views/page-thread-stable.php';
 
 
 ?>
