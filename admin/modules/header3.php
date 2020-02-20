@@ -46,6 +46,7 @@ if(!isset($link)){
     <!-- css -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
     <link rel="stylesheet" href="<?php echo BASE_URL . '/../css/stylesheets/admin.css'?>">
+    <link rel="stylesheet" href="https://unpkg.com/@simonwep/pickr@1.5.1/dist/themes/nano.min.css">
 
     <!-- js -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
@@ -53,7 +54,7 @@ if(!isset($link)){
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jsrender/1.0.5/jsrender.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/js/fontawesome.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/js/solid.min.js"></script>
-
+    <script src="https://unpkg.com/@simonwep/pickr@1.5.1/dist/pickr.min.js"></script>
     <title>Administration Panel - Labstry Forum </title>
 </head>
 <style>
@@ -64,7 +65,7 @@ if(!isset($link)){
 </style>
 <body>
 <div style="background-color: #377796;">
-    <div class="admin-manage-titlecard d-flex position-fixed align-items-center" style="z-index:2">
+    <div class="admin-manage-titlecard d-flex align-items-center" style="z-index:2">
         <button type="button" class="btn menu-btn">
             <i class="fas fa-bars text-white"></i>
         </button>

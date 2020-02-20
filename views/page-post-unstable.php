@@ -10,6 +10,7 @@ if (! isset($meta)) {
 $opt_in_script = array(
     'https://unpkg.com/quill@1.3.7/dist/quill.min.js',
     'https://unpkg.com/quill-image-resize-module@3.0.0/image-resize.min.js',
+    'https://unpkg.com/quill-video-resize-module@1.0.2/video-resize.min.js',
     'https://unpkg.com/quill-emoji@0.1.7/dist/quill-emoji.js',
 );
 $opt_in_css = array(
@@ -31,10 +32,18 @@ if(isset($_GET['id'])){
 }
 $essentials->getHeader();
 
-
+if(isset($_GET['reply'])){
+    $reply_id = $_GET['reply'];
+}
 ?>
+<style>
+    .thread-editor .ql-video{
+        pointer-events: none;
+    }
+</style>
 <form action="<?php echo BASE_URL . "/api/post-thread.php?action=$mode" .
-    (($mode === 'edit')? '&id=' . $_GET['id'] : '') ?>" method="POST" class="thread-post-edit">
+    (($mode === 'edit')? '&id=' . $_GET['id'] : '') .
+    (isset($reply_id) ? ('&reply=' . $reply_id) : '')?>" method="POST" class="thread-post-edit">
     <div class="title-holder" style="min-height: 300px;">
         <div class="container  position-relative">
             <div>
@@ -42,7 +51,7 @@ $essentials->getHeader();
                     <svg class="d-inline" width="16" height="16" viewBox="0 0 1792 1792" xmlns="http://www.w3.org/2000/svg"><path d="M512 1536h768v-384h-768v384zm896 0h128v-896q0-14-10-38.5t-20-34.5l-281-281q-10-10-34-20t-39-10v416q0 40-28 68t-68 28h-576q-40 0-68-28t-28-68v-416h-128v1280h128v-416q0-40 28-68t68-28h832q40 0 68 28t28 68v416zm-384-928v-320q0-13-9.5-22.5t-22.5-9.5h-192q-13 0-22.5 9.5t-9.5 22.5v320q0 13 9.5 22.5t22.5 9.5h192q13 0 22.5-9.5t9.5-22.5zm640 32v928q0 40-28 68t-68 28h-1344q-40 0-68-28t-28-68v-1344q0-40 28-68t68-28h928q40 0 88 20t76 48l280 280q28 28 48 76t20 88z" fill="#0088ff"/></svg>
                     <span class="d-inline px-3">Save</span>
                 </button>
-                <button class="btn btn-light btn-action mx-2" type="button" data-toggle="modal" data-target="#threadSettingsModal">
+                <button class="btn btn-light btn-action btn-settings mx-2" type="button" data-toggle="modal" data-target="#threadSettingsModal">
                     <svg width="16" height="16" viewBox="0 0 1792 1792" xmlns="http://www.w3.org/2000/svg"><path d="M1152 896q0-106-75-181t-181-75-181 75-75 181 75 181 181 75 181-75 75-181zm512-109v222q0 12-8 23t-20 13l-185 28q-19 54-39 91 35 50 107 138 10 12 10 25t-9 23q-27 37-99 108t-94 71q-12 0-26-9l-138-108q-44 23-91 38-16 136-29 186-7 28-36 28h-222q-14 0-24.5-8.5t-11.5-21.5l-28-184q-49-16-90-37l-141 107q-10 9-25 9-14 0-25-11-126-114-165-168-7-10-7-23 0-12 8-23 15-21 51-66.5t54-70.5q-27-50-41-99l-183-27q-13-2-21-12.5t-8-23.5v-222q0-12 8-23t19-13l186-28q14-46 39-92-40-57-107-138-10-12-10-24 0-10 9-23 26-36 98.5-107.5t94.5-71.5q13 0 26 10l138 107q44-23 91-38 16-136 29-186 7-28 36-28h222q14 0 24.5 8.5t11.5 21.5l28 184q49 16 90 37l142-107q9-9 24-9 13 0 25 10 129 119 165 170 7 8 7 22 0 12-8 23-15 21-51 66.5t-54 70.5q26 50 41 98l183 28q13 2 21 12.5t8 23.5z" fill="#0088ff"/></svg>
                     <span class="d-inline px-3">Settings</span>
                 </button>
@@ -82,6 +91,7 @@ $essentials->getHeader();
 <script>
     var editMode = <?php echo json_encode($mode === 'edit');?>;
     var editingID = <?php echo json_encode(isset($_GET['id']) ? $_GET['id'] : '') ?>;
+    var reply_id = <?php echo json_encode(isset($_GET['reply'])? $_GET['reply'] : '') ?>;
     var modeTitle = <?php echo json_encode(($mode === 'edit') ? 'Edit Thread' : 'Post New Thread') ?>;
     var forum_engine = <?php echo json_encode(BASE_URL . '/api/forum-engine.php'); ?>;
     var BASE_URL = <?php echo json_encode(BASE_URL ); ?>;
@@ -121,12 +131,12 @@ $essentials->getHeader();
     else{
         //Edit Mode
         $.ajax({
-            url: BASE_URL + '/api/get-thread.php?id=' + editingID ,
+            url: BASE_URL + '/api/get-thread.php?id=' + editingID + ((reply_id !== '')? '&reply=' + reply_id: ''),
             method: 'GET',
             success: function(data){
                 setThreadData(data);
             }
-        })
+        });
     }
 
     $('.thread-post-edit').on('submit', function (e) {
@@ -145,9 +155,11 @@ $essentials->getHeader();
                         $('.' + key).addClass('is-invalid');
                     }
                 }else if(data.success){
-                    $('#successModal').modal({backdrop: 'static', keyboard: false});
+                   $('#successModal').modal({backdrop: 'static', keyboard: false});
                     setTimeout(function(){
-                        window.location = thread_page + '?id=' + data.success.thread_id;
+                        $('#successModal').modal('toggle');
+                        var thread_url = thread_page + '?id=' + data.success.thread_id;
+                        window.location = thread_url;
                     }, 2000);
                 }
             }
@@ -161,11 +173,20 @@ $essentials->getHeader();
 
 
     function setThreadData(data){
-        $('.fixed-forum-label').removeClass('d-none').text(data.fname);
-        $('.thread-topic').val(data.topic_name);
-        editor.clipboard.dangerouslyPasteHTML(data.topic_content);
-        $('.read-permission').val(data.rights);
-        $('.introduction').text(data.seo);
+        if(reply_id === ''){
+            $('.fixed-forum-label').removeClass('d-none').text(data.fname);
+            $('.thread-topic').val(data.topic_name);
+            editor.clipboard.dangerouslyPasteHTML(data.topic_content);
+            $('.read-permission').val(data.rights);
+            $('.introduction').text(data.seo);
+        }else{
+            $('.thread-topic').val(data.reply_topic);
+            editor.clipboard.dangerouslyPasteHTML(data.reply_content);
+            $('.read-permission').prop('disabled', true);
+            $('.draft-checkbox').prop('disabled', true);
+            $('.introduction').prop('disabled', true);
+            $('.btn-settings').prop('disabled', true);
+        }
         if(data.draft === true){
             $('.draft-checkbox').prop('checked', true);
         }

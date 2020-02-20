@@ -57,23 +57,13 @@ if(!isset($roles_arr)){
                 History
             </button>
             <?php if($roles_arr['r_edit'] === '1' || $_SESSION['id'] === $thread->getAuthor($_GET['id'])){ ?>
-                <a href="post.php?id=<?php echo $_GET['id']?>" class="btn btn-primary" style="border-radius: 25px">
+                <a href="post.php?id=<?php echo $_GET['id']?>{{if reply_id}}&reply={{:reply_id}}{{/if}}" class="btn btn-primary" style="border-radius: 25px">
                     Edit
                 </a>
             <?php } ?>
-            <?php if($roles_arr['r_del'] === '1' || $_SESSION['id'] === $thread->getAuthor($_GET['id'])){ ?>
-                <a href="post.php?id=<?php echo $_GET['id']?>" class="btn btn-primary" style="border-radius: 25px">
-                    Mark as delete
-                </a>
-            <?php } ?>
             <?php if($roles_arr['r_manage'] === '1'){ ?>
-                <a href="<?php echo BASE_URL . '/admin/thread-manage.php?id=' . $_GET['id']?>" class="btn btn-danger" style="border-radius: 25px">
+                <a href="<?php echo BASE_URL . '/admin/thread-manage.php?id=' . $_GET['id']?>{{if reply_id}}&reply={{:reply_id}}{{/if}}" class="btn btn-danger" style="border-radius: 25px">
                     Manage Thread
-                </a>
-            <?php } ?>
-            <?php if($roles_arr['r_hide'] === '1'){ ?>
-                <a href="<?php echo BASE_URL . '/admin/thread-manage.php?id=' . $_GET['id']?>" class="btn btn-warning" style="border-radius: 25px">
-                    Hide
                 </a>
             <?php } ?>
         </div>

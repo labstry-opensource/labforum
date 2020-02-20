@@ -1,6 +1,7 @@
 <?php
-include_once dirname(__FILE__) . '/../../laf-config.php';
-include_once dirname(__FILE__ ) . '/../../classes/Essentials.php';
+if(!defined('LAF_PATH')) {
+    die('Direct access not permitted');
+}
 
 if(!isset($right)){
     $essential = new Essentials('');

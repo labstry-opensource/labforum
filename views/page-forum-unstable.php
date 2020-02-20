@@ -42,7 +42,7 @@ $essentials->getHeader();
                     <div class="position-absolute d-none d-md-flex align-items-center p-2 px-md-5" style="bottom: 0; height: 100px;left:0; right:0">
                         <h1 class="h3 text-white forum-name">Loading...</h1>
                         <div class="ml-auto">
-                            <?php if($has_right_to_author){?>
+                            <?php if(@$has_right_to_author){?>
                                 <a href="post.php?posting_forum=<?php echo $_GET['id']?>" class="btn btn-call-to-action" style="border-radius: 24px">Post New Thread</a>
                             <?php } ?>
                             <?php if($is_user_moderator === true){?>
@@ -57,7 +57,7 @@ $essentials->getHeader();
     <div class="container">
         <div class="d-block d-md-none py-3">
             <h1 class="h3 forum-name">Loading...</h1>
-            <?php if($has_right_to_author){ ?>
+            <?php if(@$has_right_to_author){ ?>
                 <a href="post3.php" class="btn btn-call-to-action" style="border-radius: 24px">Post New Thread</a>
             <?php } ?>
             <?php if($is_user_moderator === true){?>

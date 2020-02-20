@@ -1,6 +1,6 @@
 <?php
 if(!isset($forum_listing_url)){
-    $forum_listing_url = GLOB_API_DIR . '/forum-engine.php';
+    $forum_listing_url = BASE_ROOT_API_URL . '/forum-engine.php';
 }
 ?>
 

@@ -15,6 +15,7 @@ if(!isset($_GET['id'])){
 }
 
 $thread = new Thread($pdoconnect);
+
 if(!$thread->checkHasSuchThread($_GET['id'])){
     $data['error'] = 'No such thread !';
     $apitools->outputContent($data);
@@ -24,14 +25,19 @@ $roles = new UserRoles($pdoconnect);
 $roles_arr = $roles->getUserRole(@$_SESSION['id']);
 
 $data = $thread->getThreadProp($_GET['id']);
-
 if($data['rights'] > $roles_arr['rights']){
     $data['error'] = 'You have no rights to view this thread.';
     $apitools->outputContent($data);
 }
 
+if(isset($_GET['reply'])){
+    $output = $thread->getReplyPropById($_GET['id'], $_GET['reply']);
+}else{
+    $output = $data;
+}
 
 
-$apitools->outputContent($data);
+
+$apitools->outputContent($output);
 
 

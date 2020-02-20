@@ -23,10 +23,10 @@ class ThreadOperation{
 	public function addThreadLog($thread_id, $user_id, $action, $remarks, $visible = "1"){
 	    $stmt = $this->pdoconnect->prepare('
 	        INSERT INTO laf_threads_operation_log VALUES
-	        (:thread_id, :datetime, :userid, :thread_action, :remarks, :visible)
+	        (:thread_id, :edit_time, :userid, :thread_action, :remarks, :visible)
 	    ');
 	    $stmt->bindParam(':thread_id', $thread_id, PDO::PARAM_STR);
-	    $stmt->bindValue(':datetime', date('Y-m-d H:i:s'), PDO::PARAM_STR);
+	    $stmt->bindValue(':edit_time', date('Y-m-d H:i:s'), PDO::PARAM_STR);
 	    $stmt->bindParam(':userid', $user_id , PDO::PARAM_STR);
 	    $stmt->bindParam(':thread_action', $action , PDO::PARAM_STR);
 	    $stmt->bindParam(':remarks', $remarks, PDO::PARAM_STR);
@@ -119,6 +119,18 @@ class ThreadOperation{
 
         return $this->pdoconnect->lastInsertId();
     }
+    public function postReply($reply){
+
+	    $stmt = $this->pdoconnect->prepare('INSERT INTO replies
+            (topic_id, reply_id, reply_topic, reply_content, author, hiddeni) VALUES
+            (:thread_id, (SELECT MAX(reply_id) + 1 FROM replies m WHERE topic_id = :thread_id), :reply_topic, :reply_content, :id, 0)');
+
+        $stmt->bindParam(':thread_id', $reply['thread_id'], PDO::PARAM_INT);
+        $stmt->bindParam(':reply_topic', $reply['reply_topic'], PDO::PARAM_STR);
+        $stmt->bindParam(':reply_content', $reply['reply_content'], PDO::PARAM_STR);
+        $stmt->bindParam(':id', $_SESSION['id'], PDO::PARAM_INT);
+        $stmt->execute();
+    }
 
     public function editThread($thread){
 	    $stmt = $this->pdoconnect->prepare('UPDATE threads SET 
@@ -141,6 +153,61 @@ class ThreadOperation{
 
         return true;
     }
+    public function promoteThread($thread_id){
+	    $stmt = $this->pdoconnect->prepare('UPDATE threads SET
+	            `stickyness` = \'1\' WHERE `topic_id` = :thread_id');
+	    $stmt->bindValue(':thread_id', $thread_id, PDO::PARAM_INT);
+	    $stmt->execute();
+        $this->addThreadLog($thread_id, $_SESSION['id'], '2', '');
+    }
+    public function moveThreadToForum($thread_id, $fid){
+        $stmt = $this->pdoconnect->prepare('UPDATE threads SET
+	            `fid` = :fid WHERE `topic_id` = :thread_id');
+        $stmt->bindValue(':thread_id', $thread_id, PDO::PARAM_INT);
+        $stmt->bindValue(':fid', $fid, PDO::PARAM_INT);
+        $stmt->execute();
+        print_r($stmt->errorInfo());
+        $this->addThreadLog($thread_id, $_SESSION['id'], '7', '');
+    }
+    public function demoteThread($thread_id){
+        $stmt = $this->pdoconnect->prepare('UPDATE `threads` SET
+	            `stickyness` = \'0\' WHERE `topic_id` = :thread_id');
+        $stmt->bindValue(':thread_id', $thread_id, PDO::PARAM_INT);
+        $stmt->execute();
+        $this->addThreadLog($thread_id, $_SESSION['id'], '3', '');
+    }
+
+    public function withdrawnFromIndex($thread_id){
+	    $stmt = $this->pdoconnect->prepare('UPDATE `threads` SET `showInIndex` = \'0\' WHERE `topic_id` = :thread_id');
+	    $stmt->bindValue(':thread_id', $thread_id, PDO::PARAM_INT);
+	    $stmt->execute();
+        $this->addThreadLog($thread_id, $_SESSION['id'], '5', '');
+    }
+
+    public function setShowInIndex($thread_id){
+        $stmt = $this->pdoconnect->prepare('UPDATE `threads` SET 
+            `showInIndex` = \'1\', 
+            `stickyness` = 2 WHERE `topic_id` = :thread_id');
+        $stmt->bindValue(':thread_id', $thread_id, PDO::PARAM_INT);
+        $stmt->execute();
+        $this->addThreadLog($thread_id, $_SESSION['id'], '4', '');
+    }
+
+    public function setHiddeni($thread_id){
+        $stmt = $this->pdoconnect->prepare('UPDATE `threads` SET 
+            `hiddeni` = \'1\' WHERE `topic_id` = :thread_id');
+        $stmt->bindValue(':thread_id', $thread_id, PDO::PARAM_INT);
+        $stmt->execute();
+        $this->addThreadLog($thread_id, $_SESSION['id'], '6', '');
+    }
+    public function setHighLightColor($thread_id, $color){
+        $stmt = $this->pdoconnect->prepare('UPDATE `threads` SET 
+            `highlightcolor` = :color WHERE `topic_id` = :thread_id');
+        $stmt->bindValue(':thread_id', $thread_id, PDO::PARAM_INT);
+        $stmt->bindValue(':color', $color, PDO::PARAM_STR);
+        $stmt->execute();
+    }
+
 
 }
 

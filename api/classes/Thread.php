@@ -59,7 +59,7 @@ class Thread
     public function getThreadProp($threadid)
     {
         $stmt = $this->pdoconnect->prepare("SELECT 
-			t.fid, fname, topic_id, topic_name, topic_content,
+			t.fid, fname, topic_id, topic_name, topic_content, highlightcolor,
 			 author, t.date, u.username, u.profile_pic, t.rights, t.draft, t.seo
 			FROM threads t, subforum s, `userspace`.`users` u 
 			WHERE s.fid = t.fid AND 
@@ -139,12 +139,33 @@ class Thread
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    public function getReplyPropById($thread_id, $reply_id){
+        $stmt = $this->pdoconnect->prepare('SELECT 
+            reply_id, reply_topic, reply_content FROM replies  
+            WHERE topic_id = :thread_id AND reply_id = :reply_id');
+        $stmt->bindParam(':thread_id', $thread_id, PDO::PARAM_INT);
+        $stmt->bindParam(':reply_id', $reply_id, PDO::PARAM_INT);
+        $stmt->execute();
+
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
     public function addViews($thread_id){
         $stmt = $this->pdoconnect->prepare('
             UPDATE threads SET views = views + 1 WHERE topic_id = :thread_id');
 
         $stmt->bindParam(':thread_id', $thread_id, PDO::PARAM_INT);
         $stmt->execute();
+    }
+
+    public function isThreadAuthor($thread_id, $id){
+        $stmt = $this->pdoconnect->prepare('
+            SELECT COUNT(*) \'count\' FROM `threads` WHERE topic_id = :thread_id AND author = :id');
+        $stmt->bindParam(":thread_id", $thread_id, PDO::PARAM_INT);
+        $stmt->bindParam(":id", $id , PDO::PARAM_INT);
+        $stmt->execute();
+        return ($stmt->fetch(PDO::FETCH_ASSOC)['count']) ? false: true;
     }
 }
 
