@@ -27,18 +27,15 @@ $essentials->getHeader();
         </div>
     </div>
     <div class="reply-thread-container" style="padding: 100px 0"></div>
-<?php
-if(isset($_SESSION['id'])) {
-
-    ?>
     <div class="quick-reply" style="border-radius: 24px">
+        <?php if(isset($_SESSION['id'])) {?>
         <form class="quick-reply-form" method="post"
-              action="<?php echo BASE_ROOT_API_URL . '/post-reply.php?id=' . $_GET['id'] ?>">
+              action="<?php echo BASE_ROOT_API_URL . '/post-reply.php?id=' . @$_GET['id'] ?>">
             <div class="d-flex align-items-center"
                  style="background-color:#3458eb; min-height: 200px; border-radius: 24px">
                 <div class="container">
                     <div class="form-group text-light">
-                        <input type="hidden" name="thread_id" value="<?php echo $_GET['id'] ?>">
+                        <input type="hidden" name="thread_id" value="<?php echo @$_GET['id'] ?>">
                         <label for="replyTitle" class="h2 py-5">Quick Reply</label>
                         <input type="text" class="form-control my-5 quick-reply-title reply_topic" id="replyTitle"
                                placeholder="Title" name="reply_topic">
@@ -57,12 +54,9 @@ if(isset($_SESSION['id'])) {
                     Submit
                 </button>
             </div>
-
         </form>
+        <?php } ?>
     </div>
-    <?php
-}
-?>
 
     <script id="user-role-template" type="text/html">
         <?php
@@ -76,7 +70,7 @@ if(isset($_SESSION['id'])) {
     </script>
     <script>
         var BASE_URL = <?php echo json_encode(BASE_URL); ?>;
-        var thread_id = <?php echo json_encode($_GET['id']);?>;
+        var thread_id = <?php echo json_encode(@$_GET['id']);?>;
         getThreadProp();
 
 
