@@ -1,6 +1,6 @@
 <?php
 //Use php to get thread head to prevent crawling issues in some search engines
-$thread_head = json_decode(file_get_contents( PROTOCOL. 'localhost' . BASE_URL . '/api/thread-head.php?id=' . $_GET['id']), true);
+$thread_head = json_decode(file_get_contents( 'http://localhost' . BASE_URL . '/api/thread-head.php?id=' . $_GET['id']), true);
 
 if (! isset($meta)) {
     $meta = array(
@@ -8,18 +8,61 @@ if (! isset($meta)) {
         'viewport' => 'width=device-width, initial-scale=1.0'
     );
 }
+$opt_in_script = array(
+    'https://unpkg.com/moment@2.24.0/min/moment.min.js',
+);
 
-
-$essentials = new Essentials($meta, null, null, null);
+$essentials = new Essentials($meta, null, $opt_in_script, null);
 $essentials->setTitle($thread_head['topic_name'] . '- Labstry Forum ');
 $essentials->getHeader();
 
 ?>
     <div class="op-thread-container"  style="padding-top: 50px; margin-top: -50px;">
-        <div class="op-thread-contents-wrapper"></div>
+        <div class="op-thread-contents-wrapper">
+            <div class="d-flex justify-content-center align-items-center" style="min-height: 400px">
+                <?php
+                $loading_msg = "Loading thread, please wait...";
+                include LAF_PATH . '/widgets/loading-circle.php'?>
+            </div>
+        </div>
     </div>
     <div class="reply-thread-container" style="padding: 100px 0"></div>
+<?php
+if(isset($_SESSION['id'])) {
 
+    ?>
+    <div class="quick-reply" style="border-radius: 24px">
+        <form class="quick-reply-form" method="post"
+              action="<?php echo BASE_ROOT_API_URL . '/post-reply.php?id=' . $_GET['id'] ?>">
+            <div class="d-flex align-items-center"
+                 style="background-color:#3458eb; min-height: 200px; border-radius: 24px">
+                <div class="container">
+                    <div class="form-group text-light">
+                        <input type="hidden" name="thread_id" value="<?php echo $_GET['id'] ?>">
+                        <label for="replyTitle" class="h2 py-5">Quick Reply</label>
+                        <input type="text" class="form-control my-5 quick-reply-title reply_topic" id="replyTitle"
+                               placeholder="Title" name="reply_topic">
+                        <div class="invalid-feedback reply_topic-invalid-feedback"></div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="container form-group">
+                <textarea name="reply_content" class="form-control my-2 quick-reply-content reply_content" style="min-height: 200px"
+                          placeholder="Reply content here..."></textarea>
+                <div class="invalid-feedback reply_content-invalid-feedback"></div>
+            </div>
+            <div class="container">
+                <button class="btn btn-success" style="border-radius: 24px">
+                    Submit
+                </button>
+            </div>
+
+        </form>
+    </div>
+    <?php
+}
+?>
 
     <script id="user-role-template" type="text/html">
         <?php
@@ -49,6 +92,27 @@ $essentials->getHeader();
                 }
             });
         }
+
+        $('.quick-reply-form').on('submit', function(e){
+            e.preventDefault();
+            $.ajax({
+               url: $(this).attr('action'),
+               method:  $(this).attr('method'),
+               data: $(this).serialize(),
+               success: function(data){
+                   if(data.error){
+                       for(key in data.error){
+                           $('.' + key).addClass('is-invalid');
+                           $('.' + key + '-invalid-feedback').html(data.error[key]);
+                       }
+                   }else{
+                       //window.location = window.location.href;
+                   }
+
+               }
+            });
+
+        });
     </script>
 
 <?php

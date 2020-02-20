@@ -10,7 +10,7 @@ class Users{
 	public  $replies;
 	public  $profilepic;
 
-	public function __construct($pdoconnect, $pdotoolkit){
+	public function __construct($pdoconnect, $pdotoolkit = null){
 		$this->pdoconnect = $pdoconnect;
 		$this->pdotoolkit = $pdotoolkit;
 	}
@@ -153,6 +153,10 @@ class Users{
 		$stmt->bindValue(2, $userid, PDO::PARAM_INT);
 		$stmt->execute();
 		$this->password = $password;
+	}
+	public function validatePassword($userid, $password){
+		$user_arr = $this->getUserPropById($userid);
+		return password_verify( $password, $user_arr['password']);
 	}
 }
 

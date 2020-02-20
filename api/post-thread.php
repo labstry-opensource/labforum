@@ -15,9 +15,10 @@ $apitools = new APITools();
 
 $forum = new Forum($pdoconnect);
 $config = HTMLPurifier_Config::createDefault();
-$def = $config->getHTMLDefinition(true);
-$def->addAttribute('a', 'rel', 'Enum#noopener,noreferrer');
+$config->set('HTML.SafeIframe', true);
+$config->set('URI.SafeIframeRegexp', '%^(https?:)?(\/\/www\.youtube(?:-nocookie)?\.com\/embed\/|\/\/player\.vimeo\.com\/)%');
 $purifier = new HTMLPurifier($config);
+
 
 if(!isset($_GET['action']) || $_GET['action'] === 'compose'){
     $roles = new UserRoles($pdoconnect);
@@ -32,14 +33,13 @@ if(!isset($_GET['action']) || $_GET['action'] === 'compose'){
         'thread_content' => $_POST['thread_content'],
     );
 
-
     $validator->validateIdentity($_SESSION['id']);
     $validator->validateForum($_POST['forum']);
     $validator->validateAuthorRights($_POST['forum'], $role_detail['rights']);
     $validator->validateThread($thread_arr);
     $validator->validateReadPermission($read_permission);
 
-    $draft_mode = isset($_POST['draft']) ? true: false;
+    $draft_mode = isset($_POST['draft']) ? '1' : '0';
 
     $operation = new ThreadOperation($pdoconnect, '', '');
 
@@ -72,6 +72,8 @@ if(!isset($_GET['action']) || $_GET['action'] === 'compose'){
 
     $roles = new UserRoles($pdoconnect);
 
+    $draft_mode = isset($_POST['draft']) ? '1' : '0';
+
     $validator = new ThreadValidator($apitools, $forum);
     $validator->validatePostedContent($_POST);
     $validator->validateIdentity(@$_SESSION['id']);
@@ -82,7 +84,6 @@ if(!isset($_GET['action']) || $_GET['action'] === 'compose'){
         'thread_topic' => $_POST['thread_topic'],
         'thread_content' => $_POST['thread_content'],
     );
-
 
     $validator->validateEditRights($thread_details, $role_detail);
     $validator->validateThread($thread_arr);

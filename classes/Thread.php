@@ -143,15 +143,6 @@ class Thread
         return ($stmt->fetch(PDO::FETCH_ASSOC)['count'] === '0' ) ? false: true;
     }
 
-    public function isThreadAuthor($thread_id, $id){
-        $stmt = $this->pdoconnect->prepare('
-            SELECT COUNT(*) \'count\' FROM `thread` WHERE topic_id = :thread_id AND author = :id');
-        $stmt->bindParam(":thread_id", $thread_id, PDO::PARAM_INT);
-        $stmt->bindParam(":id", $id , PDO::PARAM_INT);
-        $stmt->execute();
-        return ($stmt->fetch(PDO::FETCH_ASSOC)['count'] === '0' ) ? false: true;
-    }
-
 }
 
 ?>

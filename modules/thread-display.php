@@ -1,7 +1,7 @@
 <?php
 if(! isset($thread_details)){
     $thread_details = array(
-            'thread-url' =>  GLOB_API_DIR . '/threads-engine.php?page=thread&id=1',
+            'thread-url' =>  BASE_ROOT_API_URL . '/threads-engine.php?page=thread&id=1',
             'title' => 'Featured',
     );
 }

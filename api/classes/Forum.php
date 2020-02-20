@@ -103,6 +103,15 @@ class Forum{
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    public function isModerator($fid, $userid){
+        $stmt = $this->pdoconnect->prepare('SELECT COUNT(*) \'count\'
+                    FROM laf_moderators m, `userspace`.`users` u WHERE
+                    fid = :fid AND moderator_id = :userid');
+        $stmt->bindValue(':fid', $fid, PDO::PARAM_INT);
+        $stmt->bindValue(':userid', $userid, PDO::PARAM_INT);
+        $stmt->execute();
+    }
+
 	public function getSubforumName($fid){
 		$stmt = $this->pdoconnect->prepare("SELECT fname FROM subforum WHERE fid = ?");
 		$stmt->bindValue(1, $fid, PDO::PARAM_INT);

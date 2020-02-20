@@ -48,6 +48,18 @@ class ThreadValidator
         }
     }
 
+    public function validateReply($reply){
+        if(empty($reply['reply_content'])){
+            $data['error']['reply_content'] = $this->error_msg['content_empty'];
+            $this->apitools->outputContent($data);
+        }
+        $content_word_count = strlen(strip_tags($reply['reply_content']));
+        if($content_word_count < 6){
+            $data['error']['reply_content'] =  $this->error_msg['content_too_short'];
+            $this->apitools->outputContent($data);
+        }
+    }
+
     public function validateReadPermission($read_permission){
         if(!isset($read_permission) || !ctype_digit($read_permission) ||
             $read_permission < 0 || $read_permission > 255){

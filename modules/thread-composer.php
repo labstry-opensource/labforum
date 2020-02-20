@@ -47,6 +47,7 @@
             <button class="ql-emoji"></button>
             <button class="ql-code-block"></button>
             <button class="ql-link"></button>
+            <button class="ql-video"></button>
         </div>
 
 
@@ -105,6 +106,14 @@
         el.innerHTML = editor.root.innerHTML;
 
          $(el).find('.ql-emojiblot span span').contents().unwrap().unwrap().unwrap();
+         $(el).find('.ql-video').each(function(){
+             //Show video according to ratio
+             var width = $(this).attr('width');
+             $(this).addClass('embed-responsive-item').removeClass('ql-video')
+                 .removeAttr('width').removeAttr('height')
+                 .wrap('<div style="max-width: ' + width + 'px"></div>')
+                 .wrap('<div class="embed-responsive-16by9 embed-responsive"></div>');
+         })
         console.log(el);
         return '' + el.innerHTML;
     };
@@ -113,6 +122,7 @@
         modules: {
             toolbar: '#toolbar',
             imageResize: {},
+            videoResize: {},
             "emoji-toolbar": true,
             "emoji-textarea": true,
             "emoji-shortname": true,
@@ -148,7 +158,6 @@
                         }else if(data.error){
                             $('.upload-file-modal-body').html('<div class="text-danger">' + data.error.msg + '</div>');
                         }
-
                         setTimeout(function(){
                             $('#fileUploadModal').modal('toggle');
                         }, 2000);
@@ -163,4 +172,5 @@
     editor.getModule('toolbar').addHandler('image', function() {
         selectAndUploadImage();
     });
+
 </script>
