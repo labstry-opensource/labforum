@@ -1,8 +1,9 @@
 <?php
 
-include dirname(__FILE__)."/../classes/Users.php";
-include dirname(__FILE__)."/../classes/connect.php";
-include dirname(__FILE__)."/../classes/APITools.php";
+include dirname(__FILE__) . '/../../laf-config.php';
+include API_PATH . "/classes/Users.php";
+include API_PATH . "/classes/connect.php";
+include API_PATH . "/classes/APITools.php";
 
 $apitools = new APITools();
 

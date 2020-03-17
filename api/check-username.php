@@ -1,11 +1,7 @@
 <?php
-
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-
-include @$_SERVER["DOCUMENT_ROOT"]."/api/forum/classes/Users.php";
-include @$_SERVER["DOCUMENT_ROOT"]."/api/forum/classes/connect.php";
+include dirname(__FILE__) . '/../laf-config.php';
+include API_PATH . '/classes/Users.php';
+include API_PATH . "/classes/connect.php";
 
 $data = array();
 

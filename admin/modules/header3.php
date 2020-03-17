@@ -24,7 +24,7 @@ if(!isset($link)){
         ),
         array(
             'title' => '版塊管理',
-            'link' => BASE_URL . '/forum-manage.php',
+            'link' => BASE_URL . '/forum.php',
         ),
         array(
             'title' => 'Roles Management',
@@ -32,6 +32,13 @@ if(!isset($link)){
         ),
 
     );
+}
+if(!isset($opt_in_script)){
+    $opt_in_script = array();
+}
+
+if(!isset($opt_in_css)){
+    $opt_in_css = array();
 }
 
 ?>
@@ -47,6 +54,9 @@ if(!isset($link)){
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
     <link rel="stylesheet" href="<?php echo BASE_URL . '/../css/stylesheets/admin.css'?>">
     <link rel="stylesheet" href="https://unpkg.com/@simonwep/pickr@1.5.1/dist/themes/nano.min.css">
+    <?php foreach ($opt_in_css as $css){ ?>
+        <link rel="stylesheet" href="<?php echo $css?>">
+    <?php } ?>
 
     <!-- js -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
@@ -55,6 +65,13 @@ if(!isset($link)){
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/js/fontawesome.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/js/solid.min.js"></script>
     <script src="https://unpkg.com/@simonwep/pickr@1.5.1/dist/pickr.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/color-thief/2.3.0/color-thief.umd.js"></script>
+    <script src="https://unpkg.com/invert-color@2.0.0/lib/invert.min.js"></script>
+    <?php foreach ($opt_in_script as $script){ ?>
+        <script src="<?php echo $script;?>"></script>
+    <?php } ?>
+
+
     <title>Administration Panel - Labstry Forum </title>
 </head>
 <style>

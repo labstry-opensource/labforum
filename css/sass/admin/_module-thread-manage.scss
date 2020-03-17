@@ -2,3 +2,14 @@
   border-radius: 24px;
   margin: 0.5em;
 }
+
+.user-list-label:hover{
+  background-color: #acacac;
+  color: white;
+  border-radius: 24px;
+}
+input[type=checkbox]:checked +  .user-display-row .user-list-label{
+  background-color: #0088ff;
+  color: white;
+  border-radius: 24px;
+}

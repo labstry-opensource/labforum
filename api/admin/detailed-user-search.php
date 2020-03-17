@@ -3,9 +3,10 @@
 session_start();
 header('Content-Type: application/json');
 
-include @$_SERVER["DOCUMENT_ROOT"]."/api/forum/classes/Users.php";
-include @$_SERVER["DOCUMENT_ROOT"]."/api/forum/classes/connect.php";
-include @$_SERVER["DOCUMENT_ROOT"]."/api/forum/classes/UserRoles.php";
+include dirname(__FILE__) . '/../../laf-config.php';
+include API_PATH ."/classes/Users.php";
+include API_PATH ."/classes/connect.php";
+include API_PATH ."/classes/UserRoles.php";
 
 
 $users = new Users($pdoconnect, "");

@@ -1,14 +1,14 @@
 <?php
 session_start();
 include dirname(__FILE__) . "/../laf-config.php";
-include dirname(__FILE__) . "/classes/connect.php";
-include dirname(__FILE__) . "/classes/APITools.php";
-include dirname(__FILE__) . '/classes/Forum.php';
-include dirname(__FILE__) . '/classes/ThreadOperation.php';
-include dirname(__FILE__) . '/classes/Thread.php';
-include dirname(__FILE__) . '/classes/ThreadValidator.php';
-include dirname(__FILE__) . '/classes/UserRoles.php';
-include LAF_PATH . '/../vendor/HTMLPurifier.standalone.php';
+include API_PATH . "/classes/connect.php";
+include API_PATH . "/classes/APITools.php";
+include API_PATH . '/classes/Forum.php';
+include API_PATH . '/classes/ThreadOperation.php';
+include API_PATH . '/classes/Thread.php';
+include API_PATH . '/classes/ThreadValidator.php';
+include API_PATH . '/classes/UserRoles.php';
+include API_PATH . '/../vendor/HTMLPurifier.standalone.php';
 
 
 $apitools = new APITools();
