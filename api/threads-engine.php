@@ -1,13 +1,12 @@
 <?php
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
-include dirname(__FILE__) . "/classes/connect.php";
-include dirname(__FILE__) . "/classes/Thread.php";
-include dirname(__FILE__) . "/classes/ThreadOperation.php";
-include dirname(__FILE__) . "/classes/APITools.php";
-include dirname(__FILE__) . "/classes/ThreadProp.php";
-include dirname(__FILE__) . "/classes/Forum.php";
-include dirname(__FILE__) . "/classes/UserRoles.php";
+include dirname(__FILE__) . "/../laf-config.php";
+include API_PATH . "/classes/connect.php";
+include API_PATH . "/classes/Thread.php";
+include API_PATH . "/classes/ThreadOperation.php";
+include API_PATH . "/classes/APITools.php";
+include API_PATH . "/classes/ThreadProp.php";
+include API_PATH . "/classes/Forum.php";
+include API_PATH . "/classes/UserRoles.php";
 
 
 $api_tools = new APITools();

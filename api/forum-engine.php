@@ -24,6 +24,7 @@ if(isset($_GET['fid'])){
     $forum_data['fid'] = $forum_arr['fid'];
     $forum_data['fname'] = $forum_arr['fname'];
     $forum_data['rules'] = $forum_arr['rules'];
+    $forum_data['forum_banner'] = $forum_arr['forum_banner'];
 
     $api_tools->outputContent($forum_data);
 }else{

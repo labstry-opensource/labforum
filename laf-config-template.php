@@ -8,10 +8,12 @@ defined('BASE_URL') || define('BASE_URL', str_replace($_SERVER['DOCUMENT_ROOT'],
 defined('BASE_ROOT_URL') || define('BASE_ROOT_URL', str_replace(DIR, '', LAF_ROOT_PATH));
 defined('BASE_ROOT_API_URL') || define('BASE_ROOT_API_URL', BASE_ROOT_URL . '/api');
 
-defined('LANGUAGE') || define('LANGUAGE', 'en');
-defined('DB_SERVER') || define('DB_SERVER',  'localhost');
-defined('DB_USERNAME') || define('DB_USERNAME',  'playground');
-defined('DB_PASSWORD') || define('DB_PASSWORD',  'plyg2043');
+
+defined('LANGUAGE') || define('LANGUAGE', ':language');
+defined('DATABASE') || define('DATABASE', ':database');
+defined('DB_SERVER') || define('DB_SERVER',  ':serveraddr');
+defined('DB_USERNAME') || define('DB_USERNAME',  ':username');
+defined('DB_PASSWORD') || define('DB_PASSWORD',  ':password');
 
 if (isset($_SERVER['HTTPS']) &&
     ($_SERVER['HTTPS'] == 'on' || $_SERVER['HTTPS'] == 1) ||

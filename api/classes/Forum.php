@@ -103,6 +103,14 @@ class Forum{
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    public function addModerator($fid, $userid){
+        $stmt = $this->pdoconnect->prepare('INSERT INTO laf_moderators (fid, moderator_id)
+            VALUES(:fid, :userid)');
+        $stmt->bindValue(':fid', $fid, PDO::PARAM_INT);
+        $stmt->bindValue(':userid', $userid, PDO::PARAM_INT);
+        $stmt->execute();
+    }
+
     public function isModerator($fid, $userid){
         $stmt = $this->pdoconnect->prepare('SELECT COUNT(*) \'count\'
                     FROM laf_moderators m, `userspace`.`users` u WHERE
@@ -169,5 +177,15 @@ class Forum{
         $stmt->execute();
         $min_author_right = $stmt->fetch(PDO::FETCH_ASSOC);
         return ($rights >= $min_author_right['min_author_rights']) ? true: false;
+    }
+
+    public function editForum($forum){
+	    $stmt = $this->pdoconnect->prepare('UPDATE 
+            subforum SET rights = :rights, rules = :rules, forum_banner = :forum_banner WHERE fid= :fid');
+	    $stmt->bindParam(':rights', $forum['rights'], PDO::PARAM_INT);
+	    $stmt->bindParam(':rules', $forum['rules'], PDO::PARAM_INT);
+	    $stmt->bindParam(':forum_banner', $forum['forum_banner'], PDO::PARAM_INT);
+	    $stmt->bindParam(':fid', $forum['fid'], PDO::PARAM_INT);
+	    $stmt->execute();
     }
 }

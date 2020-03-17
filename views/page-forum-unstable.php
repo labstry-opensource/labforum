@@ -34,7 +34,7 @@ $essentials->getHeader();
     <div class="container">
         <div class="position-relative">
             <div class="embed-responsive embed-responsive-16by6">
-                <div class="embed-responsive-item" style="
+                <div class="embed-responsive-item forum-hero" style="
                         background-image: url(<?php echo BASE_URL?>/images/system/forum-placeholder-banner.png);
                         background-position: center center;
                         background-size: cover;
@@ -89,6 +89,7 @@ $essentials->getHeader();
         var thread_api = <?php echo json_encode(htmlspecialchars(BASE_URL . '/api/threads-engine.php?'));?>;
         var forum_api = <?php echo json_encode(htmlspecialchars(BASE_URL . '/api/forum-engine.php?'));?>;
         var count = 10;
+        var base_dir = <?php echo json_encode(BASE_ROOT_URL); ?>;
 
         <?php //Get forum details ?>
         $.ajax({
@@ -97,6 +98,7 @@ $essentials->getHeader();
             success: function(d){
                 $('.forum-name').text(d.fname);
                 $('#forum-threads-wrapper').data('title', d.fname);
+                $('.forum-hero').css('background-image', 'url(' + base_dir + '/images/system/' + d.forum_banner + ')');
                 if(!d.rules){
                     $('.forum-rules').html('The lazy moderator haven\'t setup any rules. Follow rules in generic forum rules');
                 }else{

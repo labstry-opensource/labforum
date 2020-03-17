@@ -8,7 +8,7 @@ include API_PATH . '/classes/Thread.php';
 include API_PATH . '/classes/ThreadValidator.php';
 include API_PATH . '/classes/ThreadOperation.php';
 include API_PATH . '/classes/UserRoles.php';
-include LAF_PATH . '/../vendor/HTMLPurifier.standalone.php';
+include API_PATH . '/../vendor/HTMLPurifier.standalone.php';
 
 $apitools = new APITools();
 $msg = include LAF_ROOT_PATH .'/locale/' . LANGUAGE . '/api-post-reply.php';
