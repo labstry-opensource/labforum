@@ -1,8 +1,8 @@
-<a class="thread-container col-12 d-block text-decoration-none"
+<a class="thread-container col-12 d-block text-decoration-none py-2"
    href="/forum/thread.php?id={{:topic_id}}">
     <div class="thread-slide container">
-        <div class="row py-2">
-            <div class="col-12 col-md-9 order-1 order-md-2">
+        <div class="row">
+            <div class="col-12 col-md-9">
                 <div class="thread-name">{{:topic_name}}</div>
                 <time class="timeago" datetime="{{:date}}">{{:date}}</time>
                 <div class="py-3 row">
@@ -11,8 +11,8 @@
 
                 </div>
             </div>
-            <div class="col-12 col-md-3 order-2 order-md-1 forum-name">
-                <div>{{:forum_name}}</div>
+            <div class="col-12 col-md-3 position-relative forum-name">
+                <div class="forum-name">{{:forum_name}}</div>
                 <div>{{:username}}</div>
             </div>
         </div>

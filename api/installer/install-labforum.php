@@ -100,8 +100,9 @@ try{
     $connect->exec('GRANT SELECT, CREATE, INSERT, UPDATE, DELETE, ALTER, DROP on 
         `'. $_POST['dbname'].'`.* TO \''. $_POST['username'].'\'@\'%\'');
 
+
 }catch(PDOException $e){
-    print_r($e->errorInfo);
+    print_r($e->getMessage());
     if($e->errorInfo[1] === 1007){
         $data['error']['dbname'] = 'The database is already exists. Cannot create a new database named ' . $_POST['dbname']. '.';
         $apitools->outputContent($data);

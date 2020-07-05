@@ -1,10 +1,5 @@
 <?php
-include dirname(__FILE__) . '/../laf-config.php';
-include dirname(__FILE__) . "/classes/connect.php";
-include dirname(__FILE__) . "/classes/Thread.php";
-include dirname(__FILE__) . "/classes/APITools.php";
-
-header('Content-Type: application/json; charset=utf-8');
+include dirname(__FILE__) . '/../autoload.php';
 
 $apitools = new APITools($pdoconnect);
 

@@ -1,13 +1,6 @@
 <?php
-session_start();
 
-include dirname(__FILE__) . '/../../laf-config.php';
-include_once API_PATH . '/classes/connect.php';
-include_once API_PATH . '/classes/Users.php';
-include_once API_PATH . "/classes/UserRoles.php";
-include_once API_PATH . "/classes/Validator.php";
-include_once API_PATH . "/classes/APITools.php";
-include_once API_PATH . "/classes/Forum.php";
+include_once dirname(__FILE__) . '/../../autoload.php';
 
 $apitools = new APITools();
 $validator = new Validator($apitools);

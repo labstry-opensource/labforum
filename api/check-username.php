@@ -1,7 +1,6 @@
+
 <?php
-include dirname(__FILE__) . '/../laf-config.php';
-include API_PATH . '/classes/Users.php';
-include API_PATH . "/classes/connect.php";
+include_once dirname(__FILE__) . '/../../autoload.php';
 
 $data = array();
 

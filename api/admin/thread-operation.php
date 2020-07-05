@@ -11,7 +11,7 @@ include API_PATH . '/classes/Thread.php';
 include API_PATH . '/classes/Forum.php';
 
 
-$msg = include LAF_ROOT_PATH .'/locale/' . LANGUAGE . '/admin/thread-operation-api.php';
+$msg = include LAF_ROOT_PATH .'/locale/' . LANGUAGE . '/admin/api-thread-operation.php';
 
 $apitools = new APITools();
 $user_role = new UserRoles($pdoconnect);

@@ -39,4 +39,9 @@ class Validator{
         }
     }
 
+    public function validateModeratorRights($rights){
+        if($rights > 89) return;
+        $data["error"] = $this->error_msg['not_moderators'];
+        $this->apitools->outputContent($data);
+    }
 }

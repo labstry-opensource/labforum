@@ -1,7 +1,7 @@
 <?php
 
-
-include dirname(__FILE__) . '/classes/SQLComparer.php';
+//We can't use autoload or even connect because it might not exists !!!
+include dirname(__FILE__) . '/../src/SQLComparer.php';
 
 $db_username = @$_GET['username'];
 $db_password = @$_GET['password'];

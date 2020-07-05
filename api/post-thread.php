@@ -1,19 +1,12 @@
 <?php
 session_start();
-include dirname(__FILE__) . "/../laf-config.php";
-include API_PATH . "/classes/connect.php";
-include API_PATH . "/classes/APITools.php";
-include API_PATH . '/classes/Forum.php';
-include API_PATH . '/classes/ThreadOperation.php';
-include API_PATH . '/classes/Thread.php';
-include API_PATH . '/classes/ThreadValidator.php';
-include API_PATH . '/classes/UserRoles.php';
-include API_PATH . '/../vendor/HTMLPurifier.standalone.php';
+include_once dirname(__FILE__) . '/../autoload.php';
+include LAF_ROOT_PATH . '/vendor/HTMLPurifier.standalone.php';
 
 
 $apitools = new APITools();
-
 $forum = new Forum($pdoconnect);
+
 $config = HTMLPurifier_Config::createDefault();
 $config->set('HTML.SafeIframe', true);
 $config->set('URI.SafeIframeRegexp', '%^(https?:)?(\/\/www\.youtube(?:-nocookie)?\.com\/embed\/|\/\/player\.vimeo\.com\/)%');

@@ -1,14 +1,36 @@
 <?php
 //Temp classes
+include dirname(__FILE__) . '/../../autoload.php';
 
-if(!isset($_POST['id']) || !isset($_POST['password'])){
-    return false;
+$apitools = new APITools();
+
+if(!isset($_SESSION['id'])){
+    $data['data']['error'] = 'Please login before continue';
+}
+if(!isset($_POST['id'])){
+    $data['data']['error'] = 'Please specify a userid';
+}
+if(!isset($_POST['password'])){
+    $data['data']['error'] = 'Please specify a password to be changed';
 }
 
-include dirname(__FILE__) . '/../classes/connect.php';
-include dirname(__FILE__) . '/../classes/Users.php';
+
+$userroles = new UserRoles($pdoconnect);
+$roles = $userroles->getUserRole($_SESSION['id']);
+
+if($roles['rights'] <  90){
+    $data['data']['error'] = 'Please login before continue';
+}
+
 
 $users = new Users($pdoconnect, '');
+
+if(!$users->getUserPropById($userid))
+
+if(!empty($data)){
+    $apitools->outputContent($data);
+}
+
 
 $id = @$_POST['id'];
 $password = @$_POST['password'];

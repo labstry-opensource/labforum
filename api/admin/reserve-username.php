@@ -1,56 +1,46 @@
 <?php
 
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-session_start();
+include_once dirname(__FILE__) . '/../../autoload.php';
 
 $data = array();
-header('Content-Type: application/json');
-include  dirname(__FILE__ ) . '/../../laf-config.php';
-include  dirname(__FILE__)  . "/../classes/connect.php";
-include  dirname(__FILE__)  . "/../classes/UserRoles.php";
-include  dirname(__FILE__)  . "/../classes/Users.php";
-
+$apitools = new APITools();
 
 //1. Check if user logged in
-if(!@$_SESSION['id']){
+if(!isset($_SESSION['id']) || empty($_SESSION['id'])){
     $data["error"] = "Please login before proceeding.";
-    echo json_encode($data);
+    $apitools->outputContent($data);
     exit;
 }
 
 $users = new Users($pdoconnect, "");
 $userprop = new UserRoles($pdoconnect);
-$right_info = $userprop->getUserRole(@$_SESSION['id']);
-
-
+$right_info = $userprop->getUserRole(isset($_SESSION['id']));
 
 
 if($right_info["rights"] < 90){
-	$data["error"] = "Make sure you have sufficient permission before proceeding.";
-	echo json_encode($data);
+	$data["error"] = "You don't have sufficient right to reserve username.";
+	$apitools->outputContent($data);
 	exit;
 }
 
 //All restriction cleared. Now we accept post contents
-
-if(!@$_POST["action"]){
+if(!isset($_POST["action"])){
 	$data["error"] = "Please specify action required.";
-	echo json_encode($data);
+    $apitools->outputContent($data);
 	exit;
 }
 
-if(@$_POST['action'] == 'useradd'){
-	$username = @$_POST["reserve_username"];
 
-	if(!$username){
+if($_POST['action'] === 'useradd'){
+	$username = $_POST["reserve_username"];
+
+	if(!isset($username)){
 		$data["error"] = "Please input a username";
-		echo json_encode($data);
+		$apitools->outputContent($data);
 		exit;
 	}
 
-	$result = $users->reserveUsername(@$_SESSION["id"], $username);
+	$result = $users->reserveUsername($_SESSION["id"], $username);
 
 	switch ($result) {
 		case 0:
@@ -62,23 +52,19 @@ if(@$_POST['action'] == 'useradd'){
 			break;
 	}
 
-	echo json_encode($data);
+	$apitools->outputContent($data);
 }
 
-if(@$_POST["action"] == "userdelete"){
-	$username = @$_POST["reserve_username"];
-	if(!$username){
+if($_POST["action"] === "userdelete"){
+	$username = isset($_POST["reserve_username"]) ? $_POST['reserve_username'] : '';
+	if(empty($username)){
 		$data["error"] = "Please specify a username to remove";
-		echo json_encode($data);
+        $apitools->outputContent($data);
 		exit;
 	}
 
 	$users->deleteReservedUsername($username);
 	$data["success"] = "The reserved username is deleted";
-	echo json_encode($data);
+    $apitools->outputContent($data);
 	
 }
-
-
-
-

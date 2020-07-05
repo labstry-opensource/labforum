@@ -1,6 +1,6 @@
 <?php
 
-include dirname(__FILE__) . '/../classes/APITools.php';
+include dirname(__FILE__) . '/../../autoload.php';
 
 if(!isset($_GET['keep_files'])){
     //These files can be removed after installation
@@ -17,3 +17,6 @@ if(!isset($_GET['keep_files'])){
 }
 
 $data['success'] = true;
+
+$apitools = new APITools();
+$apitools->outputContent($data);

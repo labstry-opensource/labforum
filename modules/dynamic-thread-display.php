@@ -1,5 +1,5 @@
 <div data-title="" id="forum-threads-wrapper" class="pushed-el-cards">
-    <div class="row no-gutters featured-thread-wrapper">
+    <div class="row no-gutters gx-0 featured-thread-wrapper">
         <?php include dirname(__FILE__)."/../widgets/loading-circle.php" ?>
     </div>
 </div>

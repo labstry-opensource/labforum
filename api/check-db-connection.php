@@ -1,8 +1,12 @@
 <?php
 
-include dirname(__FILE__) . '/classes/APITools.php';
+include dirname(__FILE__) . '/../autoload.php';
 
 $apitools = new APITools();
+$lang = (isset($_GET['lang']) && checkTranslationExists($_GET['lang'], '/api/api-check-db-connection.php')) ? $_GET['lang'] : 'en';
+
+loadTranslation();
+
 
 //This is an api for checking whether the db connection is functional
 $host = empty($_POST['serveraddr'])?  '127.0.0.1' : $_POST['serveraddr'];

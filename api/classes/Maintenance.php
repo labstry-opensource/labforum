@@ -1,5 +1,8 @@
 <?php
 
+//Deprecation Notice.
+// Calling classes file within api folder is deprecated and no longer actively supported
+include_once dirname(__FILE__) . '/deprecated.php';
 
 class Maintenance
 {
@@ -30,4 +33,5 @@ class Maintenance
     public function setMaintenance($reason, $from_time, $to_time){
 
     }
+
 }

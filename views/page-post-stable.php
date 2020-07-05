@@ -195,3 +195,7 @@ if(isset($_GET['reply'])){
 </script>
 
 
+<?php
+$essentials->show_footer = false;
+$essentials->getFooter();
+

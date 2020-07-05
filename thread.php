@@ -1,16 +1,7 @@
 <?php
-require_once dirname(__FILE__). '/laf-config.php';
-include_once dirname(__FILE__)."/api/classes/connect.php";
-include_once dirname(__FILE__)."/classes/Users.php";
-include_once dirname(__FILE__)."/classes/Essentials.php";
-include_once dirname(__FILE__)."/api/classes/UserRoles.php";
-include_once dirname(__FILE__)."/classes/AuthorProp.php";
-include_once dirname(__FILE__)."/classes/ThreadProp.php";
-include_once dirname(__FILE__)."/api/classes/Thread.php";
-
-if(!isset($_SESSION)) session_start();
-
+include_once dirname(__FILE__) .'/autoload.php';
 $roles = new UserRoles($pdoconnect);
+
 $roles_arr = $roles->getUserRole(@$_SESSION['id']);
 
 

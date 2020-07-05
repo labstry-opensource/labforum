@@ -1,9 +1,5 @@
 <?php
-include dirname(__FILE__) . "/../laf-config.php";
-include API_PATH . "/classes/connect.php";
-include API_PATH . "/classes/Thread.php";
-include API_PATH . "/classes/APITools.php";
-include API_PATH . "/classes/UserRoles.php";
+include_once dirname(__FILE__) . '/../autoload.php';
 
 if(!isset($_SESSION)) session_start();
 

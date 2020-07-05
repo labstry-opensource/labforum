@@ -73,7 +73,7 @@ class Users{
 	}
 
 	public function checkIfUsernameReserved($username){
-		$stmt = $this->pdoconnect->prepare("SELECT * FROM reserved_usernames WHERE reserved_username = ?");
+		$stmt = $this->pdoconnect->prepare("SELECT COUNT(*) FROM reserved_usernames WHERE reserved_username = ?");
 		$stmt->bindValue(1, $username);
 
 		$stmt->execute();

@@ -1,5 +1,9 @@
 <?php
 
+//Deprecation Notice.
+// Calling classes file within api folder is deprecated and no longer actively supported
+include_once dirname(__FILE__) . '/deprecated.php';
+
 class AddReply{
 	public $pdoconnect;
 	public $pdotoolkit;

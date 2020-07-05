@@ -104,7 +104,7 @@ class Thread
         $stmt = $this->pdoconnect->prepare("SELECT * FROM threads WHERE topic_name LIKE ? ORDER BY topic_id DESC");
         $stmt->bindValue(1, '%' . $tname . '%', PDO::PARAM_STR);
         $stmt->execute();
-        return json_encode($stmt->fetchAll(PDO::FETCH_ASSOC));
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public function getThreadsByFid($fid, $from_limit = 0, $to_limit = 10){

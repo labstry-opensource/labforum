@@ -22,15 +22,18 @@ if(!isset($user_details) || !@$_SESSION['username']) {
     $display_links = array(
         array(
             'href'=> 'forumlist.php',
-            'description' => 'Forum Lists'
+            'description' => 'Forum Lists',
+            'image' => '/forum/images/menu/discussion.png'
         ),
         array(
             'href'=> 'account.php',
-            'description' => 'Account Settings'
+            'description' => 'Account Settings',
+            'image' => '/forum/images/menu/discussion.png'
         ),
         array(
             'href'=> 'post.php',
             'description' => 'Post new thread',
+            'image' => '/forum/images/menu/discussion.png'
         )
     );
     if($user_details && $roles_arr['rights'] >=90){

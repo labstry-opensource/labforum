@@ -10,6 +10,7 @@ class Essentials
     public $opt_in_script;
     public $opt_in_css;
     public $footer_details;
+    public $show_footer = true;
 
     public function __construct($meta, $module_list = null, $opt_in_script = null, $footer_details = null, $opt_in_css = null)
     {
@@ -44,7 +45,9 @@ class Essentials
     }
     public function getFooter(){
         $footer_details = $this->footer_details;
+        $show_footer = $this->show_footer;
         $home_url = $this->home_url;
+
         return include LAF_PATH . '/modules/footer.php';
     }
 

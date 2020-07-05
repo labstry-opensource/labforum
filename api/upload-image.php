@@ -1,14 +1,10 @@
 <?php
-include dirname(__FILE__) . "/../laf-config.php";
-include dirname(__FILE__) . "/classes/connect.php";
-include dirname(__FILE__) . "/classes/APITools.php";
-include dirname(__FILE__) . "/classes/UserRoles.php";
+include_once dirname(__FILE__) . '/../autoload.php';
+
 $apitools = new APITools();
 
 $allowed_format = array();
 
-
-session_start();
 if(!isset($_SESSION['id'])){
     http_response_code(403);
     print_r('403 Forbidden');
@@ -36,8 +32,14 @@ if(!in_array($ext, $allowed_format, true)){
     $apitools->outputContent($data);
 }
 
+
 if($_FILES['file']['error'] != UPLOAD_ERR_OK){
-    $data['error']['msg'] = "The file cannot be uploaded";
+    if($_FILES['file']['error'] == '1' || $_FILES['file']['error'] == '2'){
+        $data['error']['msg'] = "The file cannot be uploaded. The file exceeded file limit.";
+    }
+    if($_FILES['file']['error'] == '4'){
+        $data['error']['msg'] = "The file cannot be uploaded";
+    }
     $apitools->outputContent($data);
 }
 

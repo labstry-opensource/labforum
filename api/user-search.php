@@ -1,24 +1,22 @@
 <?php
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
 
-include @$_SERVER["DOCUMENT_ROOT"]."/api/forum/classes/Users.php";
-include @$_SERVER["DOCUMENT_ROOT"]."/api/forum/classes/connect.php";
+include_once dirname(__FILE__) . '/../autoload.php';
 
-header('Content-Type: application/json');
+$apitools = new APITools($pdoconnect);
+
 
 $data = array();
 
-$username = @$_POST["username"];
+$username = isset($_POST['username']) ? $_POST['username'] : '';
 
-if(!$username){
+if(empty($username)){
 	$data["error"] = "No username is provided";
 }else{
 	$users = new Users($pdoconnect, "");
 	$data = $users->searchUsername($username);
 }
-echo json_encode($data);
+
+$apitools->outputContent($data);
 
 
 

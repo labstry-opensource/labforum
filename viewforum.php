@@ -1,14 +1,6 @@
 <?php
-require_once dirname(__FILE__) . '/laf-config.php';
-include_once API_PATH . "/classes/connect.php";
-include_once API_PATH . "/classes/Essentials.php";
-include_once dirname(__FILE__) . '/maintenance.php';
-include_once dirname(__FILE__) . "/classes/Users.php";
-include_once dirname(__FILE__) . '/api/classes/UserRoles.php';
-include_once dirname(__FILE__) . "/classes/Essentials.php";
-include_once dirname(__FILE__) . "/api/classes/Forum.php";
-include_once dirname(__FILE__) . '/classes/Moderator.php';
-include_once dirname(__FILE__) . "/classes/RedirectToolkit.php";
+
+include_once dirname(__FILE__) . '/autoload.php';
 
 if(!isset($_SESSION)) session_start();
 

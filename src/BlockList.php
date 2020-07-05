@@ -1,6 +1,5 @@
 <?php
 
-include_once "connect.php";
 
 class BlockList{
 

@@ -1,20 +1,14 @@
 <?php
 
-ini_set('display_errors', 1); ini_set('display_startup_errors', 1); error_reporting(E_ALL);
-include "classes/connect.php";
-include "classes/Thread.php";
+include_once dirname(__FILE__) . '/../autoload.php';
 
-header('Content-Type: application/json; charset=utf-8');
+$apitools = new APITools();
 
 if(!isset($_GET['keyword'])){
-    print_r(json_encode('')); exit;
+    $apitools->outputContent(''); exit;
 }
 
 $thread = new Thread($pdoconnect);
-$search_thread = $thread->searchThreadByName($_GET['keyword']);
+$search_thread['data'] = $thread->searchThreadByName($_GET['keyword']);
 
-ob_start('ob_gzhandler');
-echo $search_thread;
-ob_end_flush();
-
-exit;
+$apitools->outputContent($search_thread);

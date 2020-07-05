@@ -1,9 +1,5 @@
 <?php
-session_start();
-include dirname(__FILE__) . '/classes/connect.php';
-include dirname(__FILE__) . '/classes/Forum.php';
-include dirname(__FILE__) . '/classes/UserRoles.php';
-include dirname(__FILE__) . '/classes/APITools.php';
+include_once dirname(__FILE__) . '/../autoload.php';
 
 $userid = isset($_SESSION['id']) ? $_SESSION['id'] : 0;
 

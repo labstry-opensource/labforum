@@ -1,46 +1,40 @@
 <?php
 
-session_start();
-include_once @$_SERVER["DOCUMENT_ROOT"]."/api/forum/classes/connect.php";
-include_once @$_SERVER["DOCUMENT_ROOT"]."/api/forum/classes/UserRoles.php";
-include_once @$_SERVER["DOCUMENT_ROOT"]."/api/forum/classes/Users.php";
-include_once @$_SERVER["DOCUMENT_ROOT"]."/api/forum/classes/BlockList.php";
+include_once dirname(__FILE__) . '/../../autoload.php';
 
-$users = new Users($pdoconnect, "");
+
+$msg = include LAF_ROOT_PATH .'/locale/' . LANGUAGE . '/admin/api-add-banned-user.php';
+
+$users = new Users($pdoconnect, '');
 $roles = new UserRoles($pdoconnect);
 $bl = new BlockList($pdoconnect);
-
-$userrights = $roles->getUserRole(@$_SESSION['id']);
-
-$data =array();
+$apitools = new APITools();
 
 
-if(!@$_SESSION["id"] || $userrights["rights"] < 90 ){
 
+$userrights = isset($_SESSION['id']) ? $roles->getUserRole($_SESSION['id']) : array();
+
+$data['data'] = array();
+
+if(!isset($_SESSION['id']) || $userrights['rights'] < 90 ){
 	//Forbid users with rights lower than 90 from accessing to this api
-
-    header("HTTP/2.0 403 Forbidden");
+    http_response_code(403);
     die('403 Forbidden');
 }
 
-header('Content-Type: application/json; charset=utf-8');
-
-if(!@$_POST["id"]){
-	$data["error"] = "Please provide an id";
-	echo json_encode($data);
+if(!isset($_POST["id"])){
+	$data['data']["error"] = "Please provide an id";
+	$apitools->outputContent($data);
 	die();
 }
 
-if(!@$_POST["end_date"]) $end_date = null;
-else $end_date = @$_POST["end_date"];
-
-if(!@$_POST["reason"]) $reason = null;
-else $reason = @$_POST["reason"];
+$end_date = isset($_POST['end_date']) ? $_POST['end_date'] : null;
+$reason = isset($_POST['reason']) ? $_POST['reason'] : null;
 
 
-$bl->addToBlockList(@$_POST["id"], $end_date, $reason);
+$bl->addToBlockList($_POST["id"], $end_date, $reason);
 
-$data["success"] = "Added user to banned list";
+$data['data']["success"] = "Added user to banned list";
 
-echo json_encode($data);
+$apitools->outputContent($data);
 

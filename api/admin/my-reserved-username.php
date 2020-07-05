@@ -1,14 +1,8 @@
 <?php
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
 
 session_start();
 $data = array();
-header("Content-Type: application/json");
-include_once  dirname(__FILE__) . '/../../laf-config.php';
-include_once  dirname(__FILE__) . "/../classes/connect.php";
-include_once  dirname(__FILE__) . "/../classes/Users.php";
+include_once  dirname(__FILE__) . '/../../autoload.php';
 
 if(!@$_SESSION['id']){
 	//$data["error"] = "Please login before proceeding.";

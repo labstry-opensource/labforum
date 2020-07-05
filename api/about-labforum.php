@@ -1,7 +1,6 @@
 <?php
 
-include dirname(__FILE__) . '/classes/connect.php';
-include dirname(__FILE__) . '/classes/LabforumUpdater.php';
+include dirname(__FILE__) . '/../autoload.php';
 
 $updater = new LabforumUpdater($pdoconnect);
 

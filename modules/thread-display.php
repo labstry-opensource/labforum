@@ -51,7 +51,7 @@ $thread_url  = $thread_details['thread-url'];
         <div class="text-center h1" style="color: hotpink"><large><?php echo $thread_details['title']?></large></div>
     </div>
 
-    <div class="row no-gutters featured-thread-wrapper">
+    <div class="row no-gutters gx-0 featured-thread-wrapper">
         <?php
 
         include dirname(__FILE__)."/../widgets/loading-circle.php" ?>
