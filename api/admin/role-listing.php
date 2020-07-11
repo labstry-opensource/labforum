@@ -1,12 +1,6 @@
 <?php
 
-session_start();
-header('Content-Type: application/json');
-
-include dirname(__FILE__) . '/../../laf-config.php';
-include dirname(__FILE__) ."/../classes/Users.php";
-include dirname(__FILE__) ."/../classes/connect.php";
-include dirname(__FILE__) ."/../classes/UserRoles.php";
+include_once dirname(__FILE__) . '/../../autoload.php';
 
 //1. Check if user logged in
 if(!@$_SESSION['id']){

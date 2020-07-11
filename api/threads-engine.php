@@ -4,6 +4,13 @@ include_once dirname(__FILE__) . '/../autoload.php';
 $api_tools = new APITools();
 $thread = new Thread($pdoconnect);
 $forum = new Forum($pdoconnect);
+$roles = new UserRoles($pdoconnect);
+
+$page = isset($_GET['page']) ? $_GET['page'] : '';
+$fid = isset($_GET['fid']) ? $_GET['fid'] : '';
+
+//No rights for guests
+$rights = (isset($_SESSION['username'])) ? $roles->getUserRole($_SESSION['username']) : 0;
 
 if(!isset($_GET['fid']) && !isset($_GET['page']) && !isset($_GET['id'])){
     $data['error'] = 'Please specify a page or fid to get data';
@@ -11,7 +18,7 @@ if(!isset($_GET['fid']) && !isset($_GET['page']) && !isset($_GET['id'])){
 }
 
 
-if(@$_GET['page'] === 'home'){
+if(!empty($page)){
     $thread_arr = array();
     foreach ($thread->getStickyThreadId(2) as $thread_item) {
         $thread_item['number_of_replies'] = $thread->getNumberOfReplies($thread_item['topic_id']);
@@ -25,8 +32,12 @@ if(@$_GET['page'] === 'home'){
 
     $api_tools->outputContent($thread_arr);
 
-}else if(@$_GET['fid']){
-    $fid = $_GET['fid'];
+}
+else if(!empty($fid)){
+    if(!$forum->hasRightsToViewForum($fid, $rights)){
+        $data['data']['error'] = 'You have no rights to view this forum';
+        $api_tools->outputContent($data);
+    }
     $forum_thread_count = $forum->countThreads($fid);
 
     $page = isset($_GET['page']) ? (int) $_GET['page'] : 1;
