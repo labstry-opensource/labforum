@@ -1,11 +1,7 @@
 <?php
 if(!isset($_SESSION)) session_start();
 
-include_once dirname(__FILE__ ) . '/../laf-config.php';
-include_once LAF_ROOT_PATH . '/classes/connect.php';
-include_once LAF_ROOT_PATH . '/classes/UserRoles.php';
-include_once LAF_ROOT_PATH . '/classes/Essentials.php';
-include_once LAF_ROOT_PATH . '/classes/Forum.php';
+include_once dirname(__FILE__) . '/../autoload.php';
 
 $opt_in_script = array(
     'https://unpkg.com/quill@1.3.7/dist/quill.min.js',

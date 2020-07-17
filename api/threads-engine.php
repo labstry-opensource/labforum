@@ -18,7 +18,8 @@ if(!isset($_GET['fid']) && !isset($_GET['page']) && !isset($_GET['id'])){
 }
 
 
-if(!empty($page)){
+if(!$fid && $page === 'home'){
+    //Getting homepage contents
     $thread_arr = array();
     foreach ($thread->getStickyThreadId(2) as $thread_item) {
         $thread_item['number_of_replies'] = $thread->getNumberOfReplies($thread_item['topic_id']);
@@ -53,7 +54,6 @@ else if(!empty($fid)){
     foreach($data['data'] as $key => $thread_item){
         $data['data'][$key]['number_of_replies'] = $thread->getNumberOfReplies($thread_item['topic_id']);
     }
-
 
     $api_tools->outputContent($data);
 

@@ -51,7 +51,7 @@ if(!isset($opt_in_css)){
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
     <!-- css -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://unpkg.com/bootstrap@5.0.0-alpha1/dist/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="<?php echo BASE_URL . '/../css/stylesheets/admin.css'?>">
     <link rel="stylesheet" href="https://unpkg.com/@simonwep/pickr@1.5.1/dist/themes/nano.min.css">
     <?php foreach ($opt_in_css as $css){ ?>
@@ -60,7 +60,6 @@ if(!isset($opt_in_css)){
 
     <!-- js -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.1/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jsrender/1.0.5/jsrender.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/js/fontawesome.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/js/solid.min.js"></script>

@@ -1,9 +1,11 @@
 <?php
-
+/*
 include dirname(__FILE__ ) . '/../../laf-config.php';
 include API_PATH . '/classes/connect.php';
 include API_PATH . '/classes/LabforumUpdater.php';
+*/
 
+include_once dirname(__FILE__) . '/../../autoload.php';
 
 $tables_stmt = $pdoconnect->prepare("SHOW TABLES");
 $tables_stmt->execute();

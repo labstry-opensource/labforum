@@ -1,156 +1,159 @@
 <?php
-if(!isset($_SESSION)) session_start();
-$fid = @$_GET['id'];
-$roles = new UserRoles($pdoconnect);
-$roles->getUserRole(@$_SESSION['id']);
-$forum = new Forum($pdoconnect);
 
-$forum_arr = $forum->getSubformByFid($fid);
-$forumname = $forum_arr['fname'];
-$rules = $forum_arr['rules'];
-?>
+$page = isset($_GET['page'])? $_GET['page'] : 1;
+$fid = isset($_GET['id']) ? $_GET['id'] : 1;
 
-<html>
-<meta name='viewport' content='width=device-width, initial-scale=1.0'>
-<meta name='description' content='Labstry 論壇是一個全方位的論壇。用戶可以在此討論多方面的話題。話題涵蓋用戶的生活方式到有關電腦程式開發等相關的話題'/>
-<meta name='keywords' content='Labstry, 論壇, AI, Android ROM, 生活方式, 分享, 討論, 電腦, 程式開發'>
-<style type="text/css">
-    .header{
-        float:left;
-    }
-    .titleshow{
-        margin-left: 40px;
-    }
-    a{
-        text-decoration: none;
-    }
-    .moderator{
-        clear:both;
-        margin-left:40px;
-    }
-</style>
-<link rel="stylesheet" href="menu/dynamicmenu.css"/>
-<link rel="stylesheet" href="css/threadliststyle.css"/>
-<head>
-    <?php
-    echo "<Title>$forumname</Title>\n";
-    ?>
-</head>
-<body>
-<?php
-include("menu/header.php");
-$viewpage = "viewforum";
-//The only subheader in use is in the root one
+if (! isset($meta)) {
+    $meta = array(
+        'keywords' => 'Labstry, 論壇, AI, Android ROM, 生活方式, 分享, 討論, 電腦, 程式開發',
+        'description' => 'Find topics that you are interested on.',
+        'viewport' => 'width=device-width, initial-scale=1.0'
+    );
+}
+
+if (! isset($opt_in_script)) {
+    $opt_in_script = array(
+        'https://cdnjs.cloudflare.com/ajax/libs/jquery-timeago/1.6.7/jquery.timeago.min.js',
+        'https://cdnjs.cloudflare.com/ajax/libs/color-thief/2.3.0/color-thief.min.js',
+    );
+}
+if(!isset($_SESSION['id'])){
+    $is_user_moderator = false;
+}else{
+    $moderator = new Moderator($pdoconnect);
+    $is_user_moderator = $moderator->isUserForumModerator($_SESSION['id'], $fid);
+    $has_right_to_author = $forum->hasRightsToAuthorInForum($_GET['id'], $roles_arr['rights']);
+}
+
+
+$essentials = new Essentials($meta, '', $opt_in_script);
+$essentials->setTitle('Forum - Labstry Forum');
+$essentials->getHeader();
 
 ?>
-<div class="fakesubheader">
-    <div class="searchbarwrapper">
-        <div class="search" id="close" style="display:inline-block;vertical-align: middle" >
-            <img src="../menu/images/cross.png" style="width:40px; height:40px" class="buttonimg"/>
+    <div class="container">
+        <div class="position-relative">
+            <div class="embed-responsive embed-responsive-16by6">
+                <div class="embed-responsive-item forum-hero" style="
+                        background-image: url(<?php echo BASE_URL?>/images/system/forum-placeholder-banner.png);
+                        background-position: center center;
+                        background-size: cover;
+                        background-repeat: no-repeat;">
+                    <div class="position-absolute d-none d-md-flex align-items-center p-2 px-md-5" style="bottom: 0; height: 100px;left:0; right:0">
+                        <h1 class="h3 text-white forum-name">Loading...</h1>
+                        <div class="ml-auto">
+                            <?php if(@$has_right_to_author){?>
+                                <a href="post.php?posting_forum=<?php echo $_GET['id']?>" class="btn btn-call-to-action" style="border-radius: 24px">Post New Thread</a>
+                            <?php } ?>
+                            <?php if($is_user_moderator === true){?>
+                                <a href="forum-manage.php" class="btn btn-primary"  style="border-radius: 24px">Manage</a>
+                            <?php } ?>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-</div>
-<div class="searchresultprovider">
-    <?php
-    if(!is_null($rules)){
-        echo $rules;
-    }else{
-        echo "暫未設定板塊";
-    }
-    ?>
-</div>
+    <div class="container">
+        <div class="d-block d-md-none py-3">
+            <h1 class="h3 forum-name">Loading...</h1>
+            <?php if(@$has_right_to_author){ ?>
+                <a href="post3.php" class="btn btn-call-to-action" style="border-radius: 24px">Post New Thread</a>
+            <?php } ?>
+            <?php if($is_user_moderator === true){?>
+                <a href="forum-manage.php" class="btn btn-primary" style="border-radius: 24px">Manage</a>
+            <?php } ?>
+        </div>
+        <div class="row align-items-center" style="min-height: 200px">
+            <div class="col-12 col-md-6 my-4 px-md-5">
+                <b>Rules :</b>
+                <div class="forum-rules"></div>
+            </div>
+            <div class="col-12 col-md-6 my-4">
+                <b>Moderators:</b>
+                <div class="moderator-wrapper"></div>
+                <?php include LAF_PATH. '/modules/moderator-display.php'?>
+            </div>
+        </div>
+    </div>
+    </div>
+    <div class="">
+        <?php include LAF_PATH. '/modules/dynamic-thread-display.php'?>
+    </div>
 
+    <script>
+        var thread_data;
+        var max_page;
+        var current_page = <?php echo isset($_GET['page'])? json_encode(htmlspecialchars($_GET['page'])) : 1;?>;
+        var fid = <?php echo $fid ;?>;
+        var thread_api = <?php echo json_encode(htmlspecialchars(BASE_URL . '/api/threads-engine.php?'));?>;
+        var forum_api = <?php echo json_encode(htmlspecialchars(BASE_URL . '/api/forum-engine.php?'));?>;
+        var count = 10;
+        var base_dir = <?php echo json_encode(BASE_ROOT_URL); ?>;
+
+        <?php //Get forum details ?>
+        $.ajax({
+            url: forum_api + 'fid=' + fid,
+            method: 'GET',
+            success: function(d){
+                $('.forum-name').text(d.fname);
+                $('#forum-threads-wrapper').data('title', d.fname);
+                $('.forum-hero').css('background-image', 'url(' + base_dir + '/images/system/' + d.forum_banner + ')');
+                if(!d.rules){
+                    $('.forum-rules').html('The lazy moderator haven\'t setup any rules. Follow rules in generic forum rules');
+                }else{
+                    $('.forum-rules').html(d.rules);
+                }
+                var tmpl = $.templates('#moderator-show');
+                $('.moderator-wrapper').html(tmpl.render(d.moderators));
+            }
+        });
+
+        <?php //Get forum threads by page ?>
+        var page = {
+            'page' : current_page,
+            'fid' : fid,
+            'count' : count,
+        };
+        $.ajax({
+            url: thread_api + $.param(page),
+            method: 'GET',
+            success: function(d){
+                thread_data = d.data;
+                var tmpl = $.templates('#thread_viewer');
+                $('.featured-thread-wrapper').html(tmpl.render(thread_data));
+                $('time.timeago').timeago();
+                current_page = d.current_page;
+                max_page = d.pages;
+            }
+        });
+
+        $('.next-btn').on('click', function(e){
+            e.preventDefault();
+            if(current_page === max_page) return;
+            var next_page = {
+                'page' : current_page + 1,
+                'count' : count,
+                'fid' : fid,
+            }
+            $.ajax({
+                url: thread_api +  $.param(next_page),
+                method: 'GET',
+                success: function(d){
+                    $.merge(thread_data, d.data);
+                    var tmpl = $.templates('#thread_viewer');
+                    $('.featured-thread-wrapper').html(tmpl.render(thread_data));
+                    $('time.timeago').timeago();
+                    current_page = d.current_page;
+                    if(current_page === max_page){
+                        $('.next-btn').addClass('disabled').text('Showed all threads. Phew~');
+                    }
+                }
+            });
+        });
+    </script>
 <?php
-echo "\n<div class='titleshow'>";
-echo "\n<h1 class='header'>$forumname</h1><h4 class='header'>&emsp;(fid: $fid)</h4>";
-echo "\n</div>";
-//We show all the moderators in this forum
 
-if($mods = $forum->getModerators($fid)){
-    echo "\n<div class='moderator'>本版版主: ";
-    $counter = 0;
-    $mod_arr = array();
-    foreach($mods as $key => $mod){
-        $mod_arr[] = $mod['username'];
-    }
-    echo implode(', ', $mod_arr);
-    echo "</div>\n";
-
-}
-else{
-    echo "<div class='moderator'>版主位置空置</div>";
-}
+$essentials->getFooter();
 
 ?>
-<div id='wrapper' style='clear: both'>
-    <br/>
-    <br/>
-    <div style="" id="postshow">
-        <?php
-        $rights = $roles->rights;
-        $connect = mysqli_connect('localhost', 'playground', 'plyg2043', 'php_forum');
-        //We should first display the sticky threads
-        $stickyquery = mysqli_query($connect, "SELECT * FROM threads t, subforum s WHERE draft=0 AND stickyness<>0 AND s.fid = t.fid AND s.fid='$fid' AND t.rights <= '$rights' ORDER BY stickyness DESC,  topic_name ASC");
-        while($stickythread = mysqli_fetch_assoc($stickyquery)){
-            /* You will also get the highlight colors of thread, as well as sticky valid date */
-            $forumid = $stickythread['fid'];
-            $date = $stickythread['date'];
-            $topicid = $stickythread['topic_id'];
-            $topic_name = $stickythread['topic_name'];
-            $views = $stickythread['views'];
-            $topicauthor = $stickythread['author'];
-            $highlightcolor = $stickythread['highlightcolor'];
-            $url = $stickythread['url'];
-            $fname = $stickythread['fname'];
-
-            echo "<div class='amazeui' style='background-color:".$highlightcolor."'>";
-
-            echo "\n\t\t<a class='refreshable' href='thread.php?id=$topicid'style='width:400px;display:block;background-color:"
-                .$highlightcolor."' >
-                            <div class='topic'>".$topic_name."</h1><br/>
-             <div class='description'>".$fname."| ".$topicauthor."| 閱讀次數:".$views.
-                " |&nbsp;";
-            echo          $date;
-            echo "</div></div>";
-            echo "</a>";
-            echo "</div>";
-
-        }
-
-
-        $threadcheck = mysqli_query($connect, "SELECT * FROM threads t, subforum s WHERE draft = 0 AND stickyness =0 AND s.fid=".$fid." 
-        								 		AND s.fid = t.fid ORDER BY topic_id DESC ");
-        if(mysqli_num_rows($threadcheck) != 0){
-            while($threadrow = mysqli_fetch_assoc($threadcheck)) {
-                /* This is where you got all the thread items,
-                 * from that it will help us to display amaze ui contents
-                 *
-                 */
-
-                /* Unnecessary. We have already got the forum name
-                $forumid = $row['fid'];
-                $fname = (mysqli_fetch_assoc($checkforumname))['fname'];
-                */
-                $id = $threadrow['topic_id'];
-                //The code below is the dynamic content filler
-
-                echo "<div class='amazeui'>";
-
-                echo "\n\t\t<a class='refreshable' href='thread.php?id=$id'style='width:400px;display:block;' >
-                            <div class='topic'>" . $threadrow['topic_name'] . "</h1><br/>
-			    <div class='description'>" . $forumname . "| " . $threadrow['author'] . "| 閱讀次數:" . $threadrow['views'] .
-                    " |&nbsp;";
-                echo $threadrow['date'];
-                echo "</div></div>";
-                echo "</a>";
-                echo "</div>";
-            }
-        }
-        echo "\n\t</div>";
-        //End of thread links
-        echo "\n</div>\n";
-        ?>
-</body>
-
-
-</html>

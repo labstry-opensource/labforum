@@ -14,7 +14,7 @@ $page_title = array(
     'description' => '管理用戶特權：防止用戶搶註帳戶',
 );
 
-include dirname(__FILE__) . '/../modules/header3.php';
+include dirname(__FILE__) . '/../modules/header.php';
 
 ?>
 
@@ -101,3 +101,6 @@ include dirname(__FILE__) . '/../modules/header3.php';
         });
     })
 </script>
+
+<?php
+include_once dirname(__FILE__) . '/../modules/footer.php';

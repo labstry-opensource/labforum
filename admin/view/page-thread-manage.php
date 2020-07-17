@@ -5,7 +5,7 @@ if(!defined('LAF_PATH')) {
 
 if(!isset($_SESSION)) session_start();
 
-include dirname(__FILE__) . '/../modules/header3.php';
+include dirname(__FILE__) . '/../modules/header.php';
 
 $token = isset($_SESSION['operation_token']) ? $_SESSION['operation_token'] : "";
 
@@ -174,4 +174,7 @@ include LAF_PATH . '/modules/module-thread-operation-dialog.php';
     })
 
 </script>
+
+<?php
+include_once dirname(__FILE__) . '/../modules/footer.php';
 

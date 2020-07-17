@@ -11,7 +11,7 @@ $page_title = array(
 );
 
 
-include dirname(__FILE__) . '/../modules/header3.php';
+include dirname(__FILE__) . '/../modules/header.php';
 ?>
 <style>
     .ql-container {
@@ -188,4 +188,5 @@ include dirname(__FILE__) . '/../modules/header3.php';
 
 </script>
 
-
+<?php
+include_once dirname(__FILE__) . '/../modules/footer.php';

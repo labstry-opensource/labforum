@@ -1,6 +1,6 @@
 <?php
-include dirname(__FILE__) . '/../laf-config.php';
-$table_struct = json_decode(file_get_contents(API_PATH . '/installer/laf-structure.json'), true);
+include dirname(__FILE__) . '/../autoload.php';
+$table_struct = json_decode(file_get_contents(LAF_ROOT_PATH . '/assets/laf-structure.json'), true);
 ?>
 <!doctype html>
 <html lang="en">
@@ -156,7 +156,7 @@ $table_struct = json_decode(file_get_contents(API_PATH . '/installer/laf-structu
     var updater = new Vue({
         el: '.update-form',
         data:{
-            table_struct: <?php echo json_encode($table_struct); ?>,
+            table_struct: <?php echo json_encode($table_struct['struct']); ?>,
             db_version: '',
         },
         mounted: function(){

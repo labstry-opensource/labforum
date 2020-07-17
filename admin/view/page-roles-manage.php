@@ -1,6 +1,8 @@
 <?php
-include_once dirname(__FILE__) . '/../../laf-config.php';
-include_once dirname(__FILE__ ) . '/../../classes/Essentials.php';
+
+if(!defined('LAF_PATH')) {
+    die('Direct access not permitted');
+}
 
 if(!isset($right)){
     $essential = new Essentials('');
@@ -8,7 +10,7 @@ if(!isset($right)){
     die;
 }
 
-include dirname(__FILE__) . '/../modules/header3.php';
+include dirname(__FILE__) . '/../modules/header.php';
 
 $page_title = array(
     'title' => 'Roles Management',
@@ -41,3 +43,6 @@ $page_title = array(
         });
     }
 </script>
+
+<?php
+include_once dirname(__FILE__) . '/../modules/footer.php';

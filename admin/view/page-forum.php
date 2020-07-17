@@ -1,6 +1,9 @@
 <?php
-include_once dirname(__FILE__) . '/../../laf-config.php';
-include_once dirname(__FILE__ ) . '/../../classes/Essentials.php';
+
+if(!defined('LAF_PATH')) {
+    die('Direct access not permitted');
+}
+
 
 if(!isset($right)){
     $essential = new Essentials('');
@@ -13,7 +16,7 @@ $page_title = array(
     'description' => '查看和管理你管理的版塊',
 );
 
-include dirname(__FILE__) . '/../modules/header3.php';
+include dirname(__FILE__) . '/../modules/header.php';
 
 
 
@@ -50,3 +53,6 @@ include dirname(__FILE__) . '/../modules/header3.php';
        }
     });
 </script>
+
+<?php
+include_once dirname(__FILE__) . '/../modules/footer.php';

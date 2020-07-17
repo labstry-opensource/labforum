@@ -3,9 +3,8 @@
 header('Content-Type: application/json; charset=utf-8');
 
 session_start();
-include @$_SERVER["DOCUMENT_ROOT"]."/forum/classes/connect.php";
-include @$_SERVER["DOCUMENT_ROOT"]."/forum/classes/UserRoles.php";
-include @$_SERVER["DOCUMENT_ROOT"]."/forum/classes/Users.php";
+
+include dirname(__FILE__) . '/../autoload.php';
 
 $users = new Users($pdoconnect, "");
 $roles = new UserRoles($pdoconnect);

@@ -1,5 +1,4 @@
 <?php
-session_start();
 include_once dirname(__FILE__) . '/../autoload.php';
 include LAF_ROOT_PATH . '/vendor/HTMLPurifier.standalone.php';
 

@@ -1,14 +1,7 @@
 <?php
 if(!isset($_SESSION)) session_start();
 
-include dirname(__FILE__) . '/../../laf-config.php';
-include API_PATH . '/classes/connect.php';
-include API_PATH . '/classes/APITools.php';
-include API_PATH . '/classes/UserRoles.php';
-include API_PATH . '/classes/Users.php';
-include API_PATH . '/classes/ThreadOperation.php';
-include API_PATH . '/classes/Thread.php';
-include API_PATH . '/classes/Forum.php';
+include dirname(__FILE__) . '/../../autoload.php';
 
 
 $msg = include LAF_ROOT_PATH .'/locale/' . LANGUAGE . '/admin/api-thread-operation.php';
