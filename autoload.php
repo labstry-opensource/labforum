@@ -2,6 +2,7 @@
 require_once dirname(__FILE__) . '/laf-config.php';
 include_once LAF_ROOT_PATH . '/src/connect.php';
 include_once LAF_ROOT_PATH . '/functions.php';
+include_once LAF_ROOT_PATH . '/maintenance.php';
 
 if(!isset($_SESSION)){
     session_start();

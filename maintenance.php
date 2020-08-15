@@ -1,15 +1,11 @@
 ﻿<?php
-if(!isset($_SESSION)) session_start();
 
-include_once dirname(__FILE__)."/laf-config.php";
-include_once API_PATH . '/classes/connect.php';
-include_once API_PATH . "/classes/UserRoles.php";
-include_once API_PATH . '/classes/Maintenance.php';
-
+//We suppose you got the autoload function.
 
 $userrole = new UserRoles($pdoconnect);
 $roles_arr = $userrole->getUserRole(@$_SESSION["id"]);
 $maintenance = new Maintenance($pdoconnect);
+
 if(($maintenance->checkIfMaintaining() === false) || $roles_arr['rights'] >= $maintenance->getMinUserRights()){
     return;
 }
