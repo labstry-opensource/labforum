@@ -1,17 +1,26 @@
 ﻿<?php
 
 //We suppose you got the autoload function.
-
 $userrole = new UserRoles($pdoconnect);
 $roles_arr = $userrole->getUserRole(@$_SESSION["id"]);
 $maintenance = new Maintenance($pdoconnect);
 
 if(($maintenance->checkIfMaintaining() === false) || $roles_arr['rights'] >= $maintenance->getMinUserRights()){
-    return;
+    //return;
 }
 
 $maintain_arr = $maintenance->getMaintenance();
+
+if(file_exists(get_template_dir() . '/page-maintenance.php')){
+    include get_template_dir() . '/page-maintenance.php';
+    die;
+}
+
+
 ?>
+
+
+<!--
     <html>
     <head>
         <style>
@@ -46,6 +55,6 @@ $maintain_arr = $maintenance->getMaintenance();
     <a href="../login.php?target=forum">以特別身份登入...</a>
     </body>
     </html>
-
+-->
 <?php
 die;

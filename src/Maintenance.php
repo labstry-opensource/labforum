@@ -9,7 +9,7 @@ class Maintenance
         $this->connection = $connection;
     }
     public function checkIfMaintaining(){
-        $stmt = $this->connection->prepare("SELECT COUNT(*) 'cnt' FROM laf_maintennance WHERE 
+        $stmt = $this->connection->prepare("SELECT COUNT(*) 'cnt' FROM laf_maintenance WHERE 
         s_date < NOW() AND e_date > NOW()");
         $stmt->execute();
         $resultset = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -23,7 +23,7 @@ class Maintenance
         return $resultset["min_right"];
     }
     public function getMaintenance(){
-        $stmt = $this->connection->prepare("SELECT * FROM maintainance");
+        $stmt = $this->connection->prepare("SELECT * FROM laf_maintenance");
         $stmt->execute();
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
