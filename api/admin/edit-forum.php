@@ -22,8 +22,11 @@ $user_arr = $users->getUserPropById($_SESSION['id']);
 
 $validator->validatePassword($user_arr, @$_POST['password'], @$_POST['repassword']);
 
-$forum_edit_validator = new ForumEditValidator($apitools);
-$forum_edit_validator->validateImage($_FILE[]);
-
+if(!$_FILES['forum-hero-image'])
+$path = pathinfo($_FILES['forum-hero-image']['name'], PATHINFO_EXTENSION);
+if(!in_array($path, $this->accepted_types)){
+    $data['error'] = 'Not an image';
+    $this->apitools->outputContent($data);
+}
 $forum = new Forum($pdoconnect);
 

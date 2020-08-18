@@ -1,8 +1,10 @@
 <?php
 if(!isset($_SESSION)) session_start();
 
+include dirname(__FILE__) . '/';
+
 include dirname(__FILE__) . '/../../laf-config.php';
-include dirname(__FILE__) . '/../classes/connect.php';
+include dirname(__FILE__) . '/classes/connect.php';
 include dirname(__FILE__) . '/../classes/APITools.php';
 include dirname(__FILE__) . '/../classes/UserRoles.php';
 

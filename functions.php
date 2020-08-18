@@ -14,6 +14,10 @@ function get_template_dir(){
     return LAF_ROOT_PATH . '/template';
 }
 
+function get_template_dir_uri(){
+    return BASE_URL . '/template';
+}
+
 function load_view($view_name, $data){
     extract($data);
     if(file_exists(LAF_ROOT_PATH . "/views/{$view_name}.php")){
