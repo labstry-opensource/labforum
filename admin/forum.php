@@ -5,8 +5,8 @@ include_once dirname(__FILE__ ) . '/../autoload.php';
 
 $userroles = new UserRoles($pdoconnect);
 $essential = new Essentials($pdoconnect);
-$userroles->getUserRole(@$_SESSION['id']);
-$right = $userroles->rights;
+$roles_arr = $userroles->getUserRole(@$_SESSION['id']);
+$right = $roles_arr['rights'];
 
 $essential->imposeRestrictAccess($right, 90);
 

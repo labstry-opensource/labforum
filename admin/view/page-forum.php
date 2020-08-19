@@ -49,7 +49,7 @@ include dirname(__FILE__) . '/../modules/header.php';
        method: 'GET',
        success: function(data){
            var tmpl = $.templates('#board-template');
-           $('.board-display-wrapper').html(tmpl.render(data));
+           $('.board-display-wrapper').html(tmpl.render(data.data));
        }
     });
 </script>

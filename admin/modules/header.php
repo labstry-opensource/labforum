@@ -1,8 +1,9 @@
 <?php
+
 if(!isset($top_link)){
     $top_link = array(
         array(
-            'title' => 'Labfroum Homepage',
+            'src' =>  BASE_URL .'/../assets/product_logo.svg',
             'link' => BASE_URL . '/../index.php',
         ),
         array(
@@ -86,7 +87,12 @@ if(!isset($opt_in_css)){
             <i class="fas fa-bars text-white"></i>
         </button>
         <?php foreach($top_link as $link_item){?>
-            <a class="header-link" href="<?php echo $link_item['link']?>"><?php echo $link_item['title']?></a>
+            <a class="header-link" href="<?php echo $link_item['link']?>">
+                <?php if(!empty($link_item['title'])){ echo $link_item['title']; }
+                      else if(!empty($link_item['src'])){ ?>
+                          <img class="svg" src="<?php echo $link_item['src']?>" alt=""/>
+                <?php }?>
+            </a>
         <?php } ?>
     </div>
 </div>
@@ -103,6 +109,34 @@ if(!isset($opt_in_css)){
 <script>
     $(document).on('click', '.menu-btn', function(e){
         $('.sidebar').toggleClass('sidebar-active');
+    });
+    $('img.svg').each(function(){
+        var $img = jQuery(this);
+        var imgID = $img.attr('id');
+        var imgClass = $img.attr('class');
+        var imgURL = $img.attr('src');
+
+        $.get(imgURL, function(data) {
+            // Get the SVG tag, ignore the rest
+            var $svg = jQuery(data).find('svg');
+
+            // Add replaced image's ID to the new SVG
+            if(typeof imgID !== 'undefined') {
+                $svg = $svg.attr('id', imgID);
+            }
+            // Add replaced image's classes to the new SVG
+            if(typeof imgClass !== 'undefined') {
+                $svg = $svg.attr('class', imgClass+' replaced-svg');
+            }
+
+            // Remove any invalid XML tags as per http://validator.w3.org
+            $svg = $svg.removeAttr('xmlns:a');
+
+            // Replace image with new SVG
+            $img.replaceWith($svg);
+
+        }, 'xml');
+
     });
 </script>
 <div style="height:  50px"></div>
