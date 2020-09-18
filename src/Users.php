@@ -50,7 +50,7 @@ class Users{
 			]);
 			$page_counts = ceil($max_records / $count);
 			$limit_arr = array(
-				'LIMIT' => [$page*$count, ($page+1)*$count],
+				'LIMIT' => [$page*$count, $count],
 			);
 		}
 		$where_clause = array_merge(array($type.'[~]' => $variable), $limit_arr);
