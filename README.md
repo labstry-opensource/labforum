@@ -1,7 +1,12 @@
-# Labforum 3.0 Documentation
-Labforum is the core part that Labstry Forum is based on. It is a forum program that is written in php for personal interactive webpages.
+<p align="center">
+<img width="300" style="display:block" src="https://gitlab.com/api/v4/projects/15599976/repository/files/assets%2Fproduct_logo.svg/raw?ref=master"/>
+</p>
 
-**Learn more about Labstry Forum [here](https://www.labstry.com/forum)**
+# Labforum
+A lightweight, API powered forum engine that deploys quickly and have cross-platform support.
+
+**Learn more about Labstry Forum [here](https://www.labstry.com/forum)**  
+  
 
 ## No excess framework used
 We used a simplicity first approach when building the forum. No excess framework is used so that the page loading speed is guaranteed.
