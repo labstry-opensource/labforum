@@ -1,5 +1,33 @@
 {
+    "name": "labstry/labforum",
+    "description": "A lightweight, front-back separation PHP forum engine",
+    "type": "project",
+    "license": [
+        "LGPL-2.1-only"
+    ],
+    "authors": [
+        {
+            "name": "Chow Raynold",
+            "email": "raynold_chow@hotmail.com",
+            "homepage": "https://www.labstry.com/",
+            "role": "Developer"
+        }
+    ],
+    "funding": [
+        {
+            "type": "patreon",
+            "url": "https://www.patreon.com/phpdoctrine"
+        },
+        {
+            "type": "tidelift",
+            "url": "https://tidelift.com/subscription/pkg/packagist-doctrine_doctrine-bundle"
+        },
+        {
+            "type": "other",
+            "url": "https://www.doctrine-project.org/sponsorship.html"
+        }
+    ],
     "require": {
-        "phpmailer/phpmailer": "^6.1"
+        "phpmailer/phpmailer": "^6.1",
+        "catfan/medoo": "^1.7"
     }
-}
