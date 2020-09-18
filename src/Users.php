@@ -1,6 +1,6 @@
 <?php
 class Users{
-	public  $pdoconnect;
+	public  $connect;
 	public  $pdotoolkit;
 
 	public  $userid;
@@ -10,77 +10,84 @@ class Users{
 	public  $replies;
 	public  $profilepic;
 
-	public function __construct($pdoconnect, $pdotoolkit = null){
-		$this->pdoconnect = $pdoconnect;
+	public function __construct($connect, $pdotoolkit = null){
+		$this->connect = $connect;
 		$this->pdotoolkit = $pdotoolkit;
 	}
 	public function getUserPropById($userid){
 		//Check database
 		$this->userid = $userid;
-		$stmt = $this->pdoconnect->prepare("SELECT * FROM `userspace`.users WHERE id= ?");
-		$stmt->bindValue(1, $userid, PDO::PARAM_INT);
-		$stmt->execute();
 
-		return $stmt->fetch(PDO::FETCH_ASSOC);
+		return $this->connect->select('users', '*', [
+			'id[=]' => $this->userid,
+		]);
 	}
 	public function getSafeUserPropById($userid){
 		//Check database
 		$this->userid = $userid;
-		$stmt = $this->pdoconnect->prepare("SELECT id, username, email, profile_pic FROM `userspace`.users WHERE id= ?");
-		$stmt->bindValue(1, $userid, PDO::PARAM_INT);
-		$stmt->execute();
 
-		return $stmt->fetch(PDO::FETCH_ASSOC);
+		return $this->connect->select('users', [
+			'id', 'username', 'email', 'profile_pic'
+		], [
+			'id' => $this->userid,
+		]);
 	}
 	public function getUserPropByUname($username){
 		//Check database
 		$this->username = $username;
-		$stmt = $this->pdoconnect->prepare("SELECT * FROM `userspace`.users WHERE username= ?");
-		$stmt->bindValue(1, $username, PDO::PARAM_STR);
-		$stmt->execute();
 
-		$result = $stmt->fetch(PDO::FETCH_ASSOC);
-
-		return $result;
+		return $this->connect->select('users', '*', [
+			'username' => $username,
+		]);
 	}
-	public function searchUsername($uname){
+	public function searchUsername($variable, $type='username', $page=null, $count=null){
 		//Check database
-		$this->username = $uname;
-		$stmt = $this->pdoconnect->prepare("SELECT id, username, email, profile_pic FROM `userspace`.users WHERE username LIKE ?");
-		$stmt->bindValue(1, '%'.$uname.'%', PDO::PARAM_STR);
-		$stmt->execute();
-		$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+		$limit_arr = array();
 
+		if(strlen($page) && strlen($count)){
+			$max_records = $this->connect->count('users', '*', [
+				$type.'[~]' => $variable,
+			]);
+			$page_counts = ceil($max_records / $count);
+			$limit_arr = array(
+				'LIMIT' => [$page*$count, ($page+1)*$count],
+			);
+		}
+		$where_clause = array_merge(array($type.'[~]' => $variable), $limit_arr);
+
+		$result = $this->connect->select('users', [
+			'id', 'username', 'email', 'profile_pic',
+		], $where_clause);
+
+		if(strlen($page) && strlen($count)){
+			return array(
+				'data' => $result,
+				'max_records' => $max_records,
+				'page_counts' => $page_counts,
+			);
+		}
 		return $result;
+
 	}
 	public function reserveUsername($userid, $username){
 		//Check if it is reserved
 		if($this->checkIfUsernameReserved($username)) return 0;
 
-		$stmt = $this->pdoconnect->prepare("INSERT INTO reserved_usernames VALUES (?, ?)");
-		$stmt->bindValue(1, $username);
-		$stmt->bindValue(2, $userid);
-
-		$stmt->execute();
-		return 1;
-
+		return $this->connect->insert('reserved_usernames', [
+			'reserved_username' => $username,
+			'reserved_by_id' => $userid,
+		]);
 	}
 	public function deleteReservedUsername($username){
-		$stmt = $this->pdoconnect->prepare("DELETE FROM reserved_usernames WHERE reserved_username = ?");
-		$stmt->bindValue(1, $username);
-
-		$stmt->execute();
+		return $this->connect->delete('reserved_usernames',  [
+			'reserved_username' => $username,
+		]);
 	}
 
 	public function checkIfUsernameReserved($username){
-		$stmt = $this->pdoconnect->prepare("SELECT COUNT(*) FROM reserved_usernames WHERE reserved_username = ?");
-		$stmt->bindValue(1, $username);
-
-		$stmt->execute();
-
-		if($stmt->fetchAll(PDO::FETCH_ASSOC)) return true;
-		else return false;
-
+		return $this->connect->count('reserved_usernames', '*', [
+			'reserved_username' => $username,
+		]);
 	}
 
 	public function getReservedUsername($id){
