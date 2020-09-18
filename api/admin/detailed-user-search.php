@@ -2,7 +2,7 @@
 
 include_once dirname(__FILE__) . '/../../autoload.php';
 
-$users = new Users($pdoconnect, "");
+$users = new Users($connection);
 $roles = new UserRoles($pdoconnect);
 $apitools = new APITools();
 

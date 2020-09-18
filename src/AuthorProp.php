@@ -1,7 +1,7 @@
 <?php
 
 class AuthorProp{
-	public $pdoconnect;
+	public $connect;
 	public $pdotoolkit;
 
 	public $threadid;
@@ -13,9 +13,9 @@ class AuthorProp{
 	public $color;
 	public $right;
 
-	public function __construct($pdoconnect, $pdotoolkit, $threadid){
+	public function __construct($connect, $pdotoolkit, $threadid){
 		$this->threadid = $threadid;
-		$this->pdoconnect = $pdoconnect;
+		$this->connect = $connect;
 		$this->pdotoolkit = $pdotoolkit;
 
 
@@ -24,44 +24,46 @@ class AuthorProp{
 
 	}
 	public function checkUserBySpecialTeam(){
-		$stmt = $this->pdoconnect->prepare("SELECT 
-			`userspace`.`users`.`id`,
-			`userspace`.`users`.`username`,
-			`php_forum`.`specialteam`.role_id, 
-			`php_forum`.`roles`.role_name, 
-			`php_forum`.`roles`.tagcolor, 
-			`php_forum`.`roles`.rights
+	    if(!$this->connect->count('users', '*', [
+	        'id' => $this->connect->select('specialteam', [
+	            '[>]users' => ['specialteam.id', 'id'],
+	            '[>]threads' => ['specialteam.id', 'author'],
+            ], 'specialteam.id', [
+                'threads.topic_id' => $this->threadid,
+            ]),
+        ])){
+	        return false;
+        };
 
-			 FROM 
-			 `php_forum`.`threads`, 
-			 `php_forum`.`specialteam`, 
-			 `php_forum`.`roles`,
-			 `userspace`.`users`
+	    $user_arr = $this->connect->get('users', [
+	        '[>]threads' => ['id', 'author'],
+            '[>]specialteam' => ['threads.author', 'id'],
+            '[>]roles' => ['specialteam.role_id', 'role_id'],
+        ],[
+            'user.id', 'user.username', 'specialteam.role_id', 'roles.role_name', 'tagcolor', 'rights',
+            'profile_invisible',
+        ],[
+            'threads.topic_id' => $this->threadid,
+        ]);
 
-			 WHERE 
-			 `php_forum`.`specialteam`.`role_id` = `php_forum`.`roles`.`role_id` AND
-			 `php_forum`.`threads`.`topic_creator` = `php_forum`.`specialteam`.`username` AND 
-			 `userspace`.`users`.`username` = `php_forum`.`threads`.`topic_creator` AND 
-			 `php_forum`.`threads`.topic_id = ?"
-		);
+		$this->userid = $user_arr['id'];
+        $this->username= $user_arr['username'];
+        $this->roleid = $user_arr['role_id'];
+        $this->rolename = $user_arr['role_name'];
+        $this->color = $user_arr['tagcolor'];
+        $this->right = $user_arr['rights'];
 
-		$stmt->bindValue(1, $this->threadid, PDO::PARAM_INT);
-		$stmt->execute();
-
-		if($getdbdata = $stmt->fetch(PDO::FETCH_ASSOC)){
-			$this->userid = $getdbdata['id'];
-			$this->username= $getdbdata['username'];
-			$this->roleid = $getdbdata['role_id'];
-			$this->rolename = $getdbdata['role_name'];
-			$this->color = $getdbdata['tagcolor'];
-			$this->right = $getdbdata['rights'];
-			return true;
-		}
-		return false;
+        return true;
 	}
 
 	public function checkUserByNormalUser(){
 		//Get user property first
+        $user_arr = $this->connect->select('users', [
+            '[>]threads' => ['id', 'author'],
+        ],[
+           'id', 'username'
+        ]);
+
 		$stmt = $this->pdoconnect->prepare("SELECT 
 			`userspace`.`users`.`id`,
 			`userspace`.`users`.`username` 

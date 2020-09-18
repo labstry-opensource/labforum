@@ -10,15 +10,14 @@ class Users{
 	public  $replies;
 	public  $profilepic;
 
-	public function __construct($connect, $pdotoolkit = null){
+	public function __construct($connect){
 		$this->connect = $connect;
-		$this->pdotoolkit = $pdotoolkit;
 	}
 	public function getUserPropById($userid){
 		//Check database
 		$this->userid = $userid;
 
-		return $this->connect->select('users', '*', [
+		return $this->connect->get('users', '*', [
 			'id[=]' => $this->userid,
 		]);
 	}
@@ -26,7 +25,7 @@ class Users{
 		//Check database
 		$this->userid = $userid;
 
-		return $this->connect->select('users', [
+		return $this->connect->get('users', [
 			'id', 'username', 'email', 'profile_pic'
 		], [
 			'id' => $this->userid,
@@ -36,10 +35,21 @@ class Users{
 		//Check database
 		$this->username = $username;
 
-		return $this->connect->select('users', '*', [
-			'username' => $username,
+		return $this->connect->get('users', '*', [
+			'username' => $this->username,
 		]);
 	}
+	public function getUserPropByEmail($email){
+		//Check database
+		$this->email = $email;
+		return $this->connect->get('users', '*' , [
+			'email' => $email,
+		]);
+	}
+
+	/* From 3.0.5.
+	   This function accepts pagination parameters.
+	*/
 	public function searchUsername($variable, $type='username', $page=null, $count=null){
 		//Check database
 		$limit_arr = array();
@@ -72,11 +82,11 @@ class Users{
 	public function reserveUsername($userid, $username){
 		//Check if it is reserved
 		if($this->checkIfUsernameReserved($username)) return 0;
-
-		return $this->connect->insert('reserved_usernames', [
+		$this->connect->insert('reserved_usernames', [
 			'reserved_username' => $username,
 			'reserved_by_id' => $userid,
 		]);
+		return 1;
 	}
 	public function deleteReservedUsername($username){
 		return $this->connect->delete('reserved_usernames',  [
@@ -91,26 +101,9 @@ class Users{
 	}
 
 	public function getReservedUsername($id){
-		$stmt = $this->pdoconnect->prepare("SELECT reserved_username FROM reserved_usernames WHERE reserved_by_id = ?");
-		$stmt->bindValue(1, $id);
-
-		$stmt->execute();
-
-		$resultset = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-		return $resultset;
-	}
-
-	public function getUserPropByEmail($email){
-		//Check database
-		$this->email = $email;
-		$stmt = $this->pdoconnect->prepare("SELECT * FROM `userspace`.users WHERE email= ?");
-		$stmt->bindValue(1, $this->email, PDO::PARAM_STR);
-		$stmt->execute();
-
-		$result = $stmt->fetch(PDO::FETCH_ASSOC);
-
-		return $result;
+		return $this->connect->select('reserved_usernames', 'reserved_username' , [
+			'reserved_by_id' => $id,
+		]);
 	}
 
 	public function getUsername(){
@@ -124,29 +117,30 @@ class Users{
 	}
 	public function getNewestUser(){
 		//Getting the new user and current user count
-		$stmt = $this->pdoconnect->prepare("SELECT * FROM `userspace`.users ORDER BY id DESC");
-		$stmt->execute();
-		$user = $stmt->fetch(PDO::FETCH_ASSOC);
-		$this->username = $user['username'];
-		$this->userid = $user['id'];
+		$user_arr = $this->connect->get('users', [
+			'username', 'id'
+		] , [
+			'ORDER' => [
+				'id' => "DESC"
+			]
+		]);
+		$this->username = $user_arr['username'];
+		$this->userid = $user_arr['id'];
 	}
 	public function getUserCount(){
-		$stmt = $this->pdoconnect->query("SELECT COUNT(*) FROM `userspace`.users")->fetch(PDO::FETCH_ASSOC);
-		return $stmt['COUNT(*)'];
+		return $this->connect->count('users' , '*' );
 	}
 	public function isUsernameExists($uname){
-		$stmt = $this->pdoconnect->prepare("SELECT COUNT(*) FROM `userspace`.users WHERE username=?");
-		$stmt->bindValue(1, $uname, PDO::PARAM_STR);
-		$stmt->execute();
-		return ($stmt->fetchColumn() > 0) ? true: false;
+		return $this->connect->count('users', '*', [
+			'username' => $uname,
+		]);
 	}
 	public function isEmailValid($email){
-		$stmt = $this->pdoconnect->prepare("SELECT COUNT(*) FROM `userspace`.users WHERE email=?");
-		$stmt->bindValue(1, $email, PDO::PARAM_STR);
-		$stmt->execute();
-		return ($stmt->fetchColumn() > 0) ? true: false;
+		return $this->connect->count('users', '*', [
+			'email' => $email
+		]);
 	}
-	public function registerUser($user){
+	public function registerUser($user_arr){
 
 	}
 	public function setPassword($userid, $password, $repassword = null){
@@ -155,11 +149,11 @@ class Users{
 		}else{
 			return false;
 		}
-		$stmt = $this->pdoconnect->prepare('UPDATE `userspace`.users SET password = ? WHERE id = ?');
-		$stmt->bindValue(1, $password, PDO::PARAM_STR);
-		$stmt->bindValue(2, $userid, PDO::PARAM_INT);
-		$stmt->execute();
-		$this->password = $password;
+		$this->connect->update('users', [
+			'password' => $password,
+		],[
+			'id' => $userid,
+		]);
 	}
 	public function validatePassword($userid, $password){
 		$user_arr = $this->getUserPropById($userid);

@@ -35,7 +35,7 @@ if(empty($_POST['password']) || ($_POST['password'] !== $_POST['repassword'])){
     $apitools->outputContent($data);
 }
 
-$users = new Users($pdoconnect);
+$users = new Users($connection);
 if(!$users->validatePassword($_SESSION['id'], $_POST['password'])){
     $data['error']['repassword'] = $msg['password-incorrect'];
     $apitools->outputContent($data);

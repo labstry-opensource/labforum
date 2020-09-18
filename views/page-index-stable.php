@@ -1,6 +1,6 @@
 <?php
 
-$users = new Users($pdoconnect, "");
+$users = new Users($connection);
 $role = new UserRoles($pdoconnect);
 $sign = new Sign($pdoconnect);
 //Modules
@@ -48,8 +48,8 @@ $thread_details = array(
     'thread-url' => 'api/threads-engine.php?page=home',
     'title' => 'Featured',
 );
-$latest_user = new Users($pdoconnect, '');
-$users = new Users($pdoconnect, '');
+$latest_user = new Users($connection);
+$users = new Users($connection);
 $latest_user->getNewestUser();
 
 $footer_details = array(

@@ -9,7 +9,7 @@ if(!@$_SESSION['id']){
     exit;
 }
 
-$users = new Users($pdoconnect, "");
+$users = new Users($connection);
 $roles = new UserRoles($pdoconnect);
 
 $data = array();

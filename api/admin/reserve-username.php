@@ -12,7 +12,7 @@ if(!isset($_SESSION['id']) || empty($_SESSION['id'])){
     exit;
 }
 
-$users = new Users($pdoconnect, "");
+$users = new Users($connection);
 $userprop = new UserRoles($pdoconnect);
 $right_info = $userprop->getUserRole(isset($_SESSION['id']));
 

@@ -13,7 +13,7 @@ $roles_arr = $roles->getUserRole($_SESSION['id']);
 
 $validator->validateAdmin($roles_arr['rights']);
 
-$users = new Users($pdoconnect);
+$users = new Users($connection);
 $user_arr = $users->getUserPropById($_SESSION['id']);
 
 $validator->validatePassword($user_arr, @$_POST['password'], @$_POST['repassword']);

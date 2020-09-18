@@ -17,9 +17,9 @@ class AuthorProp{
 	public $color;
 	public $right;
 
-	public function __construct($pdoconnect, $pdotoolkit, $threadid){
+	public function __construct($connection, $pdotoolkit, $threadid){
 		$this->threadid = $threadid;
-		$this->pdoconnect = $pdoconnect;
+		$this->pdoconnect = $connection;
 		$this->pdotoolkit = $pdotoolkit;
 
 
@@ -119,16 +119,16 @@ class ReplyAuthorProp extends AuthorProp{
 	public $users;
 	
 
-	public function __construct($pdoconnect, $pdotoolkit, $threadid, $replyid){
+	public function __construct($connection, $pdotoolkit, $threadid, $replyid){
 		$this->threadid = $threadid;
 		$this->replyid = $replyid;
-		$this->pdoconnect = $pdoconnect;
+		$this->pdoconnect = $connection;
 		$this->pdotoolkit = $pdotoolkit;
 
 
 		//Check database by a connecting query
 		if(!$this->checkUserBySpecialTeam()) $this->checkUserByNormalUser();
-		$users = new Users($pdoconnect, $pdotoolkit);
+		$users = new Users($connection);
 		$users->getUserPropById($this->userid);
 
 		$this->profilepic = $users->profilepic;
