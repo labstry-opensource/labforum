@@ -36,7 +36,7 @@ $reply = array(
     'author' => $_SESSION['id'],
 );
 
-$operation = new ThreadOperation($pdoconnect, '', '');
+$operation = new ThreadOperation($connection);
 $operation->postReply($reply);
 
 $data['success'] = true;

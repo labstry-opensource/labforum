@@ -26,5 +26,7 @@ return array(
 
     //Successful
     'success-promote-demote' => 'Thread promoted / demoted.',
+    'hide-success' => ' The thread is hidden.',
+    'unhide-success' =>  'The thread is unhidden',
 
 );

@@ -85,7 +85,7 @@ else if(!empty($fid)){
         $thread_arr['replies'][$index]['tag_color'] = isset($role_arr['tagcolor'])? $role_arr['tagcolor'] : '#000';
     }
 
-    $operation = new ThreadOperation($pdoconnect);
+    $operation = new ThreadOperation($connection);
     $thread_arr['history'] = $operation->getThreadLog($thread_id);
 
     $api_tools->outputContent($thread_arr);
