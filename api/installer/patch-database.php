@@ -1,8 +1,8 @@
 <?php
 include dirname(__FILE__) . '/../../laf-config.php';
-include LAF_ROOT_PATH . '/api/classes/connect.php';
+include LAF_ROOT_PATH . '/src/Connect.php';
 include LAF_ROOT_PATH . '/api/classes/LabforumUpdater.php';
-include LAF_ROOT_PATH . '/api/classes/APITools.php';
+include LAF_ROOT_PATH . '/src/APITools.php';
 
 $updater = new LabforumUpdater($pdoconnect);
 $apitools = new APITools();

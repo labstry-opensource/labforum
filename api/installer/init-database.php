@@ -3,7 +3,6 @@
 session_start();
 
 include dirname(__FILE__ ) . '/../../autoload.php';
-include API_PATH . '/classes/connect.php';
 
 if(!isset($_SESSION['username']) || $_SESSION['username'] !== 'LabforumInstaller'){
     $data['error'] = 'Not installing, thus not initializing db';

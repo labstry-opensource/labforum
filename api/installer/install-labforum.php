@@ -3,7 +3,7 @@
 //We can't depend on laf-config here as it has supposed not been initialised AT THIS POINT.
 //WARNING: DON'T EXECUTE THIS CODE CROSS DOMAIN. OTHERWISE SQL INJECTION WILL HAPPENS.
 
-include dirname(__FILE__) . '/../classes/APITools.php';
+include dirname(__FILE__) . '/../../src/APITools.php';
 
 //Setting up SESSION
 $_SESSION['username'] = 'LabforumInstaller';

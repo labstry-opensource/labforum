@@ -7,7 +7,7 @@ $msg = include LAF_ROOT_PATH .'/locale/' . LANGUAGE . '/admin/api-add-banned-use
 
 $users = new Users($connection);
 $roles = new UserRoles($pdoconnect);
-$bl = new BlockList($pdoconnect);
+$bl = new BlockList($connection);
 $apitools = new APITools();
 
 

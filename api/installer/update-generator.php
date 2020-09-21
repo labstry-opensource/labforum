@@ -2,7 +2,7 @@
 
 include dirname(__FILE__) . '/../../laf-config.php';
 include LAF_ROOT_PATH . '/api/classes/connect.php';
-include LAF_ROOT_PATH . '/api/classes/APITools.php';
+include LAF_ROOT_PATH . '/src/APITools.php';
 include LAF_ROOT_PATH . '/api/classes/LabforumUpdater.php';
 
 //Note: The post array could be very large. That's why we use json to send it :D

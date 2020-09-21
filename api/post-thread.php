@@ -33,7 +33,7 @@ if(!isset($_GET['action']) || $_GET['action'] === 'compose'){
 
     $draft_mode = isset($_POST['draft']) ? '1' : '0';
 
-    $operation = new ThreadOperation($pdoconnect, '', '');
+    $operation = new ThreadOperation($connection, '');
 
 
     $thread = array(
