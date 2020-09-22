@@ -1,7 +1,7 @@
 <?php
 
 class Forum{
-	public $pdoconnect;
+	public $connection;
 	public $fid;
 	public $tid;
 	public $tname;
@@ -9,56 +9,32 @@ class Forum{
 	public $author_name;
 	public $date;
 
-	public function __construct($pdoconnect){
-		$this->pdoconnect = $pdoconnect;
+	public function __construct($connection)
+    {
+		$this->connection = $connection;
 	}
 
-	public function getForumListId(){
-		$stmt = $this->pdoconnect->prepare("SELECT gid FROM laf_forum_listing");
-		$stmt->execute();
-
-		$gids = array();
-
-		$resultsetarr = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-
-		foreach ($resultsetarr as $resultset) {
-			array_push($gids, $resultset['gid']);
-		}
-		return $gids;
+	public function getForumListId()
+    {
+        return $this->connection->select('laf_forum_listing', 'gid');
 	}
 
-	public function getForumName($fid){
-        $stmt = $this->pdoconnect->prepare("SELECT gname FROM laf_forum_listing WHERE gid = ?");
-        $stmt->bindValue(1, $fid, PDO::PARAM_INT);
-        $stmt->execute();
-
-        $resultset = $stmt->fetch(PDO::FETCH_ASSOC);
-
-        if(!empty($resultset)){
-            return $resultset['gname'];
-        }else{
-            return false;
-        }
+	public function getForumName($fid)
+    {
+        return $this->connection->select('laf_forum_listing', 'gname', [
+            'gid[=]' => $fid,
+        ]);
 	}
 
 	public function getSubforumIds($gid){
 		//Return an array with all the subforum ids
 		//Deprecated: It's usage is not guaranteed
 
-		$stmt = $this->pdoconnect->prepare("SELECT fid FROM subforum WHERE gid = ? ORDER BY fid ASC");
-		$stmt->bindValue(1, $gid, PDO::PARAM_INT);
-		$stmt->execute();
-
-		$resultsetarr = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-		$fids = array();
-
-		foreach ($resultsetarr as $resultset) {
-			array_push($fids, $resultset['fid']);
-		}
-
-		return $fids;
+        return $this->connection->select('subforum', 'fid', [
+            'gid[=]' => $gid,
+        ], [
+            'ORDER' => 'fid',
+        ]);
 	}
 	public function getSubforums($gid){
 		$stmt = $this->pdoconnect->prepare('SELECT * FROM subforum WHERE gid = ? ORDER BY fid ASC');
