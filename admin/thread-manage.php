@@ -15,7 +15,7 @@ $thread = new Thread($pdoconnect);
 $thread_arr = $thread->getThreadProp($threadid);
 
 
-$forum = new Forum($pdoconnect);
+$forum = new Forum($connection);
 
 $forum_arr = array();
 $board_ids = $forum->getForumListId();

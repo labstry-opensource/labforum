@@ -28,7 +28,7 @@ function errHandle($errNo, $errStr, $errFile, $errLine) {
 
 set_error_handler('errHandle');
 
-$maintenance = new Maintenance($pdoconnect);
+$maintenance = new Maintenance($connection);
 $roles = new UserRoles($pdoconnect);
 $roles_arr = $roles->getUserRole(@$_SESSION["id"]);
 

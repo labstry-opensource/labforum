@@ -4,7 +4,7 @@ include LAF_ROOT_PATH . '/vendor/HTMLPurifier.standalone.php';
 
 
 $apitools = new APITools();
-$forum = new Forum($pdoconnect);
+$forum = new Forum($connection);
 
 $config = HTMLPurifier_Config::createDefault();
 $config->set('HTML.SafeIframe', true);
@@ -82,7 +82,7 @@ if(!isset($_GET['action']) || $_GET['action'] === 'compose'){
     $validator->validateReadPermission($read_permission);
 
 
-    $operation = new ThreadOperation($pdoconnect, '', '');
+    $operation = new ThreadOperation($connection, '');
     $thread = array(
         'id' => $_GET['id'],
         'thread_topic' => $purifier->purify($_POST['thread_topic']),

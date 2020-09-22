@@ -28,5 +28,5 @@ if(!in_array($path, $this->accepted_types)){
     $data['error'] = 'Not an image';
     $this->apitools->outputContent($data);
 }
-$forum = new Forum($pdoconnect);
+$forum = new Forum($connection);
 

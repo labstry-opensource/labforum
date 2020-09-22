@@ -23,7 +23,7 @@ if(empty($_POST['fid'])){
     $apitools->outputContent($data);
 }
 
-$forum = new Forum($pdoconnect);
+$forum = new Forum($connection);
 if(!$forum->checkHasForum($_POST['fid'])){
     $data["error"]['fid'] = "Forum specified doesn't exists.";
     $apitools->outputContent($data);

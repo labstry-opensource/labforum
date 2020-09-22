@@ -3,7 +3,7 @@ include_once dirname(__FILE__) . '/../autoload.php';
 
 $api_tools = new APITools();
 $thread = new Thread($pdoconnect);
-$forum = new Forum($pdoconnect);
+$forum = new Forum($connection);
 $roles = new UserRoles($pdoconnect);
 
 $page = isset($_GET['page']) ? $_GET['page'] : '';

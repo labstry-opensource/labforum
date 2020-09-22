@@ -3,7 +3,7 @@
 //We suppose you got the autoload function.
 $userrole = new UserRoles($pdoconnect);
 $roles_arr = $userrole->getUserRole(@$_SESSION["id"]);
-$maintenance = new Maintenance($pdoconnect);
+$maintenance = new Maintenance($connection);
 
 if(($maintenance->checkIfMaintaining() === false) || $roles_arr['rights'] >= $maintenance->getMinUserRights()){
     //return;

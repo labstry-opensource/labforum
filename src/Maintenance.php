@@ -8,15 +8,17 @@ class Maintenance
     {
         $this->connection = $connection;
     }
-    public function checkIfMaintaining(){
-        $stmt = $this->connection->prepare("SELECT COUNT(*) 'cnt' FROM laf_maintenance WHERE 
-        s_date < NOW() AND e_date > NOW()");
-        $stmt->execute();
-        $resultset = $stmt->fetch(PDO::FETCH_ASSOC);
-        if(isset($resultset['cnt']) && $resultset['cnt'] >= 1 ) return true;
-        else return false;
+
+    public function checkIfMaintaining()
+    {
+        $counter = $this->connection->count('laf_maintenance', '*',  [
+            's_date[<]' => date('Y-m-d H:i:s'),
+            'e_date[>]' => date('Y-m-d H:i:s'),
+        ]);
+        return (isset($counter) && $counter >= 1);
     }
-    public function getMinUserRights(){
+    public function getMinUserRights()
+    {
         $stmt = $this->connection->prepare("SELECT min_right FROM laf_maintenance");
         $stmt->execute();
         $resultset = $stmt->fetch(PDO::FETCH_ASSOC);

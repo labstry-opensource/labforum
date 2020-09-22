@@ -7,7 +7,7 @@ if(!isset($_SESSION)) session_start();
 $roles = new UserRoles($pdoconnect);
 $roles_arr = $roles->getUserRole(@$_SESSION['id']);
 
-$forum = new Forum($pdoconnect);
+$forum = new Forum($connection);
 
 if(!$forum->hasRightsToViewForum($_GET['id'], $roles_arr['rights'])){
     http_response_code(403);

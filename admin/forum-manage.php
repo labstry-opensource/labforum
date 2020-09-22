@@ -28,7 +28,7 @@ $right = $right_arr['rights'];
 
 $essential->imposeRestrictAccess($right, 90);
 
-$forum = new Forum($pdoconnect);
+$forum = new Forum($connection);
 
 $forum_arr = $forum->getSubformByFid(@$_GET['id']);
 

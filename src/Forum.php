@@ -26,142 +26,119 @@ class Forum{
         ]);
 	}
 
-	public function getSubforumIds($gid){
-		//Return an array with all the subforum ids
-		//Deprecated: It's usage is not guaranteed
-
-        return $this->connection->select('subforum', 'fid', [
-            'gid[=]' => $gid,
-        ], [
+	public function getSubforums($gid)
+    {
+        return $this->connection->select('subforum', '*', [
+            'gid[=]' =>  $gid,
             'ORDER' => 'fid',
         ]);
 	}
-	public function getSubforums($gid){
-		$stmt = $this->pdoconnect->prepare('SELECT * FROM subforum WHERE gid = ? ORDER BY fid ASC');
-		$stmt->bindValue(1, $gid, PDO::PARAM_INT);
-		$stmt->execute();
 
-		return $stmt->fetchAll(PDO::FETCH_ASSOC);
-	}
-
-	public function getSubformByFid($fid){
-        $stmt = $this->pdoconnect->prepare("SELECT * FROM subforum WHERE fid = ?");
-        $stmt->bindValue(1, $fid, PDO::PARAM_INT);
-        $stmt->execute();
-        return $stmt->fetch(PDO::FETCH_ASSOC);
+	public function getSubformByFid($fid)
+    {
+        return $this->connection->get('subforum', '*', [
+            'fid[=]' => $fid,
+        ]);
     }
 
-	protected function getSubforumViewRights($fid){
-		$stmt = $this->pdoconnect->prepare("SELECT rights FROM subforum WHERE fid = ?");
-		$stmt->bindValue(1, $fid, PDO::PARAM_INT);
-
-		$stmt->execute();
-
-		$resultset = $stmt->fetch(PDO::FETCH_ASSOC);
-
-		return $resultset['rights'];
+	protected function getSubforumViewRights($fid)
+    {
+        return $this->connection->get('subforum', 'rights', [
+            'fid[=]' => $fid,
+        ]);
 	}
 
-	public function hasRightsToViewForum($fid, $rights){
+	public function hasRightsToViewForum($fid, $rights)
+    {
 		$minimumrights = $this->getSubforumViewRights($fid);
 
 		return ($rights >= $minimumrights) ? true: false;
 	}
 
-	public function getModerators($fid){
-	    $stmt = $this->pdoconnect->prepare("SELECT 
-                    moderator_id, username, profile_pic 
-                    FROM laf_moderators m, `userspace`.`users` u WHERE
-                    fid = ? AND u.id = m.moderator_id");
-        $stmt->bindValue(1, $fid, PDO::PARAM_INT);
-        $stmt->execute();
-
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+	public function getModerators($fid)
+    {
+        return $this->connection->select('laf_moderators', [
+            '[>]users' => ['moderator_id' => 'id'],
+        ], [
+            'moderator_id', 'username', 'profile_pic',
+        ], [
+            'fid[=]' => $fid,
+        ]);
     }
 
-    public function addModerator($fid, $userid){
-        $stmt = $this->pdoconnect->prepare('INSERT INTO laf_moderators (fid, moderator_id)
-            VALUES(:fid, :userid)');
-        $stmt->bindValue(':fid', $fid, PDO::PARAM_INT);
-        $stmt->bindValue(':userid', $userid, PDO::PARAM_INT);
-        $stmt->execute();
+    public function addModerator($fid, $userid)
+    {
+        return $this->connection->insert('laf_moderators', [
+            'fid' => $fid,
+            'moderator_id' => $userid,
+        ]);
     }
 
-    public function isModerator($fid, $userid){
-        $stmt = $this->pdoconnect->prepare('SELECT COUNT(*) \'count\'
-                    FROM laf_moderators m, `userspace`.`users` u WHERE
-                    fid = :fid AND moderator_id = :userid');
-        $stmt->bindValue(':fid', $fid, PDO::PARAM_INT);
-        $stmt->bindValue(':userid', $userid, PDO::PARAM_INT);
-        $stmt->execute();
+    public function isModerator($fid, $userid)
+    {
+        return $this->connection->count('laf_moderator', '*', [
+            'fid[=]' => $fid,
+            'moderator_id[=]' => $userid,
+        ]);
     }
 
-	public function getSubforumName($fid){
-		$stmt = $this->pdoconnect->prepare("SELECT fname FROM subforum WHERE fid = ?");
-		$stmt->bindValue(1, $fid, PDO::PARAM_INT);
-
-		$stmt->execute();
-
-		$resultset = $stmt->fetch(PDO::FETCH_ASSOC);
-
-		return $resultset['fname'];
+	public function getSubforumName($fid)
+    {
+        return $this->connection->get('subforum', 'fname', [
+            'fid[=]' => $fid,
+        ]);
 	}
 
-	public function getThreads($fid){
-		$stmt = $this->pdoconnect->prepare("SELECT topic_id FROM thread WHERE fid = ?");
-		$stmt->bindValue(1, $fid, PDO::PARAM_INT);
-		$stmt->execute();
-
-		$resultsetarr = $stmt->fetchAll(PDO::FETCH_ASSOC);
-		
-		$tids = array();
-		
-		foreach($resultsetarr as $resultset){
-				array_push($tids, $resultset['topic_id']);
-		}
-		return $tids;
+	public function getThreads($fid)
+    {
+        return $this->connection->select('thread', 'topic_id', [
+            'fid[=]' => $fid,
+        ]);
 	}
 	
-	public function getThreadContent($tid){
+	public function getThreadContent($tid)
+    {
 		$this->tid = $tid;
-		
-		$stmt = $this->pdoconnect->prepare("SELECT topic_name, topic_content, author_name, date FROM thread WHERE topic_id = ?");
-		$stmt->bindValue(1, $tid, PDO::PARAM_INT);
-		$stmt->execute();
-		
-		$resultset = $stmt->fetch(PDO::FETCH_ASSOC);
-		
+		return $this->connection->select('thread', [
+		    'topic_name', 'topic_content', 'author_name', 'date',
+        ], [
+            'topic_id[=]' => $tid,
+        ]);
 	}
-	public function countThreads($fid){
-	    $stmt = $this->pdoconnect->prepare('SELECT COUNT(*) \'count\' FROM threads WHERE fid = :fid');
-	    $stmt->bindValue(':fid', $fid, PDO::PARAM_INT);
-	    $stmt->execute();
-	    return $stmt->fetch(PDO::FETCH_ASSOC)['count'];
+
+	public function countThreads($fid)
+    {
+        return $this->connection->count('threads', '*' ,  [
+            'fid[=]' => $fid,
+        ]);
     }
 
-    public function checkHasForum($fid){
-        $stmt = $this->pdoconnect->prepare('SELECT COUNT(*) \'count\' FROM subforum WHERE fid = :fid');
-        $stmt->bindParam(':fid', $fid, PDO::PARAM_INT);
-        $stmt->execute();
-        return ($stmt->fetch(PDO::FETCH_ASSOC)['count']) ? true : false;
+    public function checkHasForum($fid)
+    {
+        return $this->connection->count('subforum', '*', [
+            'fid[=]' => $fid,
+        ]);
     }
 
-    public function hasRightsToAuthorInForum($fid, $rights){
+    public function hasRightsToAuthorInForum($fid, $rights)
+    {
 	    if($rights === 0) return false;
-        $stmt = $this->pdoconnect->prepare("SELECT min_author_rights FROM subforum WHERE fid = :fid");
-        $stmt->bindParam(':fid', $fid, PDO::PARAM_INT);
-        $stmt->execute();
-        $min_author_right = $stmt->fetch(PDO::FETCH_ASSOC);
-        return ($rights >= $min_author_right['min_author_rights']) ? true: false;
+	    if($rights >= $this->connection->get('subforum', 'min_author_rights', [
+	        'fid[=]' => $fid,
+        ])){
+	        return true;
+        }
+	    return false;
     }
 
-    public function editForum($forum){
-	    $stmt = $this->pdoconnect->prepare('UPDATE 
-            subforum SET rights = :rights, rules = :rules, forum_banner = :forum_banner WHERE fid= :fid');
-	    $stmt->bindParam(':rights', $forum['rights'], PDO::PARAM_INT);
-	    $stmt->bindParam(':rules', $forum['rules'], PDO::PARAM_INT);
-	    $stmt->bindParam(':forum_banner', $forum['forum_banner'], PDO::PARAM_INT);
-	    $stmt->bindParam(':fid', $forum['fid'], PDO::PARAM_INT);
-	    $stmt->execute();
+    public function editForum($forum)
+    {
+        $this->connection->update('subforum', [
+            'rights' => $forum['rights'],
+            'rules' => $forum['rules'],
+            'forum_banner' => $forum['forum_banner'],
+        ], [
+            'fid[=]' => $forum['fid'],
+        ]);
     }
 }

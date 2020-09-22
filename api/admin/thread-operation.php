@@ -90,7 +90,7 @@ else if($_POST['action'] === 'show'){
 else if($_POST['action'] === 'property_change'){
     $thread = new Thread($pdoconnect);
     $operation = new ThreadOperation($connection);
-    $forum = new Forum($pdoconnect);
+    $forum = new Forum($connection);
     if(!$thread->checkHasSuchThread($_POST['thread_id'])){
         $data['error']['fid'] = $msg['thread-not-exists'];
         $apitools->outputContent($data);
