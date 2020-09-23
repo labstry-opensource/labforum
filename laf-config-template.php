@@ -14,6 +14,7 @@ defined('DATABASE') || define('DATABASE', ':database');
 defined('DB_SERVER') || define('DB_SERVER',  ':serveraddr');
 defined('DB_USERNAME') || define('DB_USERNAME',  ':username');
 defined('DB_PASSWORD') || define('DB_PASSWORD',  ':password');
+defined('DB_TYPE') || define('DE_TYPE', ':db_type');
 
 if (isset($_SERVER['HTTPS']) &&
     ($_SERVER['HTTPS'] == 'on' || $_SERVER['HTTPS'] == 1) ||

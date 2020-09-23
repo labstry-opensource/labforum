@@ -2,7 +2,7 @@
 
 $users = new Users($connection);
 $role = new UserRoles($pdoconnect);
-$sign = new Sign($pdoconnect);
+$sign = new Sign($connection);
 //Modules
 
 if (! isset($meta)) {

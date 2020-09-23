@@ -1,30 +1,29 @@
 <?php
 
 class Sign{
-	public $pdoconnect;
+	public $connect;
 
-	public function __construct($pdoconnect){
-		$this->pdoconnect = $pdoconnect;
+	public function __construct($connection)
+    {
+		$this->connection = $connection;
 	}
 
-	public function checkIfSigned($id){
-		$stmt = $this->pdoconnect->prepare("SELECT COUNT(*) 'cnt' FROM checkin WHERE id = ? AND DATE(checkindate) = DATE(NOW())");
-		$stmt->bindValue(1, $id, PDO::PARAM_INT);
-		$stmt->execute();
-
-		$resultset = $stmt->fetch(PDO::FETCH_ASSOC);
-
-		return ($resultset['cnt'] == 0) ? false : true;
+	public function checkIfSigned($id)
+    {
+        return $this->connection->count('checkin', '*', [
+            'id[=]' => $id,
+            'checkindate[><]' => [
+                date('Y-m-d 00:00:00'),
+                date('+1 day', strtotime('Y-m-d 00:00:00')),
+            ]
+        ]);
 	}
 
-	public function checkContinousSign($id){
-		$stmt = $this->pdoconnect->prepare("SELECT times FROM continuouscheckin WHERE id= ?");
-		$stmt->bindValue(1, $id, PDO::PARAM_INT);
-		$stmt->execute();
-	
-		$resultset = $stmt->fetch(PDO::FETCH_ASSOC);
-
-		return $resultset['times'];
+	public function checkContinousSign($id)
+    {
+        return $this->connection->select('continuouscheckin', 'times', [
+            'id[=]' => $id,
+        ]);
 	}
 }
 

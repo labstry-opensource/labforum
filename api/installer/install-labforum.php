@@ -23,6 +23,10 @@ if(empty($_POST['password'])){
 if(empty($_POST['superuserpassword'])){
     $data['error']['superuserpassword'] = 'Password can\'t be empty';
 }
+if(empty($_SPOST['db_type'])){
+    $data['error']['db_type'] = 'Please choose a database type to continue';
+}
+
 if(empty($_POST['dbname'])){
     $data['error']['dbname'] = 'Please choose a database name. A name that can be known only to you.';
 }else if(!preg_match('/^[0-9a-zA-Z$_]+$/', $_POST['dbname'])){
@@ -43,8 +47,8 @@ $target_file = dirname(__FILE__) . '/../../laf-config.php';
 
 $laf_config_template = file_get_contents($template_file);
 $laf_config_template = str_replace(
-    array(':language', ':database', ':serveraddr', ':username', ':password'),
-    array($_POST['language'], $_POST['dbname'] , $_POST['serveraddr'], $_POST['username'], $_POST['password']),
+    array(':language', ':database', ':serveraddr', ':username', ':password', ':db_type'),
+    array($_POST['language'], $_POST['dbname'] , $_POST['serveraddr'], $_POST['username'], $_POST['password'], $_POST['db_type']),
     $laf_config_template);
 
 if(!is_writable(dirname($target_file))){

@@ -19,15 +19,16 @@ class Maintenance
     }
     public function getMinUserRights()
     {
-        $stmt = $this->connection->prepare("SELECT min_right FROM laf_maintenance");
-        $stmt->execute();
-        $resultset = $stmt->fetch(PDO::FETCH_ASSOC);
-        return $resultset["min_right"];
+        return $this->connection->get('laf_maintenance', 'min_right');
     }
-    public function getMaintenance(){
-        $stmt = $this->connection->prepare("SELECT * FROM laf_maintenance");
-        $stmt->execute();
-        return $stmt->fetch(PDO::FETCH_ASSOC);
+    public function getMaintenance()
+    {
+        return $this->connection->get('laf_maintenance', '*', [
+            'ORDER' => [
+                's_date',
+                'ASC',
+            ]
+        ]);
     }
     public function setMaintenance($reason, $from_time, $to_time){
 

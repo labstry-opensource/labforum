@@ -2,7 +2,7 @@
 
 class SQLComparer{
     //Note: This class only handle structure changes of the db. Please do the data migration individually !
-    public $pdoconnect;
+    public $connection;
     public $old_test_db_name = 'test_old_db';
     public $new_test_db_name = 'test_new_db';
     public $old_tables_arr;
@@ -18,15 +18,16 @@ class SQLComparer{
     public $old_sql;
     public $new_sql;
 
-    public function __construct($pdoconnect, $old_sql, $new_sql)
+    public function __construct($connection, $old_sql, $new_sql)
     {
-        $this->pdoconnect = $pdoconnect;
+        $this->connection = $connection;
         $this->old_sql = $old_sql;
         $this->new_sql = $new_sql;
     }
     public function __destruct()
     {
         // TODO: Implement __destruct() method.
+
         $this->pdoconnect->query('DROP DATABASE IF EXISTS'. $this->old_test_db_name);
         $this->pdoconnect->query('DROP DATABASE IF EXISTS'. $this->new_test_db_name);
     }
@@ -84,6 +85,8 @@ class SQLComparer{
     }
 
     public function executeOldSql($sql){
+        $this->connection->pdo('CREATE DATABASE IF NOT EXISTS ', $this->old_test_db_name);
+        $this->connection->pdo("USE $this->old_test_db_name");
         $this->pdoconnect->query('CREATE DATABASE IF NOT EXISTS ' . $this->old_test_db_name);
         $this->pdoconnect->query('USE '. $this->old_test_db_name);
         $stmt = $this->pdoconnect->prepare($sql);
