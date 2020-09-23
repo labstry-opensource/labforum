@@ -4,34 +4,18 @@
 //WARNING: DON'T EXECUTE THIS CODE CROSS DOMAIN. OTHERWISE SQL INJECTION WILL HAPPENS.
 
 include dirname(__FILE__) . '/../../src/APITools.php';
+include dirname(__FILE__) . '/../../vendor/autoload.php';
 
 //Setting up SESSION
 $_SESSION['username'] = 'LabforumInstaller';
 session_start();
 
+$supported_db = array('mysql', 'mssql', 'oracle');
+
 $apitools = new APITools();
+$install_validator = new Validators\InstallerValidator($_POST);
+$data['error'] = $install_validator->validate();
 
-if(empty($_POST['username'])){
-    $data['error']['username'] = 'Username can\'t be empty';
-}
-if(empty($_POST['superuser'])){
-    $data['error']['superuser'] = 'Username can\'t be empty';
-}
-if(empty($_POST['password'])){
-    $data['error']['password'] = 'Password can\'t be empty';
-}
-if(empty($_POST['superuserpassword'])){
-    $data['error']['superuserpassword'] = 'Password can\'t be empty';
-}
-if(empty($_SPOST['db_type'])){
-    $data['error']['db_type'] = 'Please choose a database type to continue';
-}
-
-if(empty($_POST['dbname'])){
-    $data['error']['dbname'] = 'Please choose a database name. A name that can be known only to you.';
-}else if(!preg_match('/^[0-9a-zA-Z$_]+$/', $_POST['dbname'])){
-    $data['error']['dbname'] = 'Only digits from 0-9, a-z or A-Z alphabets, $ and _ are allowed for database name. Lower cases are recommended.';
-}
 
 if(!empty($data['error'])){
     $apitools->outputContent($data);
@@ -50,6 +34,12 @@ $laf_config_template = str_replace(
     array(':language', ':database', ':serveraddr', ':username', ':password', ':db_type'),
     array($_POST['language'], $_POST['dbname'] , $_POST['serveraddr'], $_POST['username'], $_POST['password'], $_POST['db_type']),
     $laf_config_template);
+
+$port_replace = (!empty($_POST['db_port'])) ? $_POST['db_port'] : '';
+$laf_config_template = str_replace("'port';" , (empty($port_replace) ? '' :
+    "defined('DB_PORT') || define('DE_PORT', '" . $_POST['db_port'] ."');"),
+    $laf_config_template);
+
 
 if(!is_writable(dirname($target_file))){
     $data = array(
@@ -80,12 +70,37 @@ if(!file_exists($target_file)){
 //LAF CONFIG is ready.
 include $target_file;
 
-$connect = new PDO("mysql:host=" .DB_SERVER .";charset=utf8mb4", $_POST['superuser'] , $_POST['superuserpassword'],  array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
+//Sorry. We can't create database using Medoo. We have to create it our own, using PDO before it is available.
+switch ($_POST['db_type']){
+    case 'mysql':
+    case 'mariadb':
+        $connection = new PDO("mysql:host=$host;charset=utf8", $username, $password);
+        break;
+
+    case 'mssql':
+        $connection = new PDO("sqlsrv:Server=$host;", $username, $password);
+
+
+
+}
+
+if($_POST['db_type'] === 'mysql' || $_POST['db_type'] === 'mariadb')
+{
+
+}
+else if($_POST['db_type'] == 'mssql')
+{
+
+}
+else if($_POST[''])
+
+
 
 try{
     //Check if user has right in creating a database.
     $rand = rand(10000, 99999);
     //fallback for PHP prior to 5.3.6
+    $connection->pdo("CREATE DATABASE #test$rand");
     $connect->exec("SET names utf8mb4");
     $connect->exec('CREATE DATABASE `#test'. $rand.'`');
     $connect->exec('DROP DATABASE `#test' . $rand . '`');
