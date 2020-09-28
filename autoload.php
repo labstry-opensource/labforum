@@ -8,7 +8,7 @@ if(!isset($_SESSION)){
 }
 
 function autoload($class){
-    include LAF_ROOT_PATH . "/src/{$class}.php";
+    include LAF_ROOT_PATH . "/src/". str_replace('\\','/', $class) . ".php";
 }
 
 spl_autoload_register('autoload');

@@ -1,6 +1,5 @@
 <?php
 
-namespace Validators;
 
 class InstallerValidator
 {

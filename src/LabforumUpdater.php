@@ -8,25 +8,26 @@ class LabforumUpdater
     public $update_path;
     public $remote_api_path = 'https://www.labstry.com/forum/api/about-labforum.php';
 
-    public function __construct($pdoconnect){
+    public function __construct($connection){
         //if(preg_match('/DROP(\s+)/ig', $diff_sql)) return;  //Abort if DROP exists
-        $this->pdoconnect = $pdoconnect;
+        $this->pdoconnect = $connection ;
         $this->update_path = dirname(__FILE__) . '/../updates';
         //$this->diff_sql = $diff_sql;
         //$this->migrate_arr = $migrate_arr;
     }
 
-    public function getCurrentVersion(){
-        $stmt = $this->pdoconnect->prepare('SELECT * FROM `laf_settings`');
-        $stmt->execute();
-        return $stmt->fetch(PDO::FETCH_ASSOC);
+    public function getCurrentVersion()
+    {
+        return $this->connection->get('laf_settings', '*');
     }
 
-    public function getServerLatestVersion(){
+    public function getServerLatestVersion()
+    {
         return json_decode(file_get_contents($this->remote_api_path), true);
     }
 
-    public function checkUpdate(){
+    public function checkUpdate()
+    {
         $current_version_data = $this->getCurrentVersion();
         $remote_version_data = $this->getServerLatestVersion();
 

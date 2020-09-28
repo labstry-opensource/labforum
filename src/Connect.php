@@ -58,7 +58,7 @@ global $connection;
 
 $pdoconnect = $attribute->startPDOConnection(DB_SERVER, DB_USERNAME, DB_PASSWORD, DATABASE);
 
-$connection = $attribute->connectDB(DB_SERVER, DB_USERNAME, DB_PASSWORD, DATABASE, DATABASE_TYPE);
+$connection = $attribute->connectDB(DB_SERVER, DB_USERNAME, DB_PASSWORD, DATABASE, DB_TYPE);
 
 
 /* mysqli connection part ends here...

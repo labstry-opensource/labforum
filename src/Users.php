@@ -21,6 +21,11 @@ class Users{
 			'id[=]' => $this->userid,
 		]);
 	}
+	public function getUsernameById($userid){
+		return $this->connect->get('users', 'username', [
+			'id[=]' => $userid,
+		]);
+	}
 	public function getSafeUserPropById($userid){
 		//Check database
 		$this->userid = $userid;
