@@ -21,7 +21,7 @@ if(!isset($_GET['id'])){
     die;
 };
 
-$userroles = new UserRoles($pdoconnect);
+$userroles = new UserRoles($connection);
 $essential = new Essentials($pdoconnect);
 $right_arr = $userroles->getUserRole(@$_SESSION['id']);
 $right = $right_arr['rights'];

@@ -13,7 +13,7 @@ $purifier = new HTMLPurifier($config);
 
 
 if(!isset($_GET['action']) || $_GET['action'] === 'compose'){
-    $roles = new UserRoles($pdoconnect);
+    $roles = new UserRoles($connection);
     $role_detail = $roles->getUserRole($_SESSION['id']);
     $read_permission = isset($_POST['read_permission']) ? $_POST['read_permission'] : 0;
 
@@ -62,7 +62,7 @@ if(!isset($_GET['action']) || $_GET['action'] === 'compose'){
     $read_permission = isset($_POST['read_permission']) ? $_POST['read_permission'] : 0;
     $draft_mode = isset($_POST['draft']) ? true: false;
 
-    $roles = new UserRoles($pdoconnect);
+    $roles = new UserRoles($connection);
 
     $draft_mode = isset($_POST['draft']) ? '1' : '0';
 

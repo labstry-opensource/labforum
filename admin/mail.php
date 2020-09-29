@@ -6,8 +6,8 @@ session_start();
 
 include dirname(__FILE__) . '/../autoload.php';
 
-$users = new Users($pdoconnect, "");
-$roles = new UserRoles($pdoconnect);
+$users = new Users($connection, "");
+$roles = new UserRoles($connection);
 $roles->getUserRole(@$_SESSION['id']);
 
 

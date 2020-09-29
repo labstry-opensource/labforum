@@ -4,7 +4,7 @@ include_once dirname(__FILE__) . '/../autoload.php';
 $userid = isset($_SESSION['id']) ? $_SESSION['id'] : 0;
 
 $forum = new Forum($connection);
-$roles = new UserRoles($pdoconnect);
+$roles = new UserRoles($connection);
 $api_tools = new APITools();
 
 

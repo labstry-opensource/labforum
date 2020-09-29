@@ -6,7 +6,7 @@ $validator = new Validator($apitools);
 
 //Validate user logged in . Only admin can use this ajax.
 $validator->validateLoggedIn(@$_SESSION['id']);
-$roles = new UserRoles($pdoconnect);
+$roles = new UserRoles($connection);
 $roles_arr = $roles->getUserRole($_SESSION['id']);
 $validator->validateAdmin($roles_arr['rights']);
 

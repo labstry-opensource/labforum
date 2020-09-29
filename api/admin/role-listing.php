@@ -10,7 +10,7 @@ if(!@$_SESSION['id']){
 }
 
 $users = new Users($connection);
-$roles = new UserRoles($pdoconnect);
+$roles = new UserRoles($connection);
 
 $data = array();
 

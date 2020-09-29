@@ -4,34 +4,13 @@ session_start();
 
 include dirname(__FILE__ ) . '/../../autoload.php';
 
+$apitools = new APITools();
+
+
 if(!isset($_SESSION['username']) || $_SESSION['username'] !== 'LabforumInstaller'){
     $data['error'] = 'Not installing, thus not initializing db';
     $apitools->outputContent($data);
 }
-
-//Sorry. We can't create database using Medoo. We have to create it our own, using PDO before it is available.
-try{
-    switch ($_POST['db_type']){
-        case 'mysql':
-        case 'mariadb':
-            $connection = new PDO("mysql:host=$host;charset=utf8", $username, $password);
-            break;
-
-        case 'mssql':
-            $connection = new PDO("sqlsrv:Server=$host;", $username, $password);
-            $connection->setAttribute(PDO::SQLSRV_ATTR_ENCODING, PDO::SQLSRV_ENCODING_UTF8);
-            break;
-
-        case 'oracle':
-            //We still can't support oracle DB.
-    }
-}catch (PDOException $e){
-    $data['error']['db_type'] = 'Can\'t connect to this DB. Check if DB is running';
-    $apitools->outputContent($data);
-}
-
-
-$pdoconnect->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
 $apitools = new APITools();
 $table_struct = json_decode(file_get_contents(LAF_ROOT_PATH . '/assets/laf-structure.json'), true);
@@ -44,6 +23,8 @@ if(!isset($table_struct['laf_settings'])){
 
 foreach ($table_struct['struct'] as $table){
     $table_name = $table['table'];
+
+
     $primary_key = array();
     $sql_builder = 'CREATE TABLE `'. $table_name . '` (';
     foreach($table['cols'] as $index => $col){

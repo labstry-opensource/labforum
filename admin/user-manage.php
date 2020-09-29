@@ -4,7 +4,7 @@ if(!isset($_SESSION)) session_start();
 
 include_once dirname(__FILE__) . '/../autoload.php';
 
-$userroles = new UserRoles($pdoconnect);
+$userroles = new UserRoles($connection);
 $essential = new Essentials($pdoconnect);
 
 $role_arr = $userroles->getUserRole(@$_SESSION['id']);

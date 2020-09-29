@@ -29,7 +29,7 @@ if(!isset($footer_details)){
 $validator = new Validator($pdoconnect);
 $userid = isset($_SESSION['id']) ? $_SESSION['id'] : null;
 if($userid !== null){
-    $roles = new UserRoles($pdoconnect);
+    $roles = new UserRoles($connection);
     $roles_arr = $roles->getUserRole($userid);
 }
 $show_footer = isset($show_footer) ? $show_footer : true;

@@ -17,7 +17,7 @@ if(!$thread->checkHasSuchThread($_GET['id'])){
     $apitools->outputContent($data);
 }
 
-$roles = new UserRoles($pdoconnect);
+$roles = new UserRoles($connection);
 $roles_arr = $roles->getUserRole(@$_SESSION['id']);
 
 $data = $thread->getThreadProp($_GET['id']);

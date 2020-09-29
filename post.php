@@ -27,7 +27,7 @@ if(!isset($_SESSION['id'])){
 
 $thread = new Thread($pdoconnect);
 $validator = new ThreadValidator($pdoconnect, null);
-$roles = new UserRoles($pdoconnect);
+$roles = new UserRoles($connection);
 $roles_arr = $roles->getUserRole(@$_SESSION['id']);
 
 

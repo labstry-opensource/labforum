@@ -7,7 +7,7 @@ include dirname(__FILE__) . '/../../autoload.php';
 $msg = include LAF_ROOT_PATH .'/locale/' . LANGUAGE . '/admin/api-thread-operation.php';
 
 $apitools = new APITools();
-$user_role = new UserRoles($pdoconnect);
+$user_role = new UserRoles($connection);
 
 //Integrity check
 

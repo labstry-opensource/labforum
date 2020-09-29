@@ -15,7 +15,7 @@ if(!isset($_POST['password'])){
 }
 
 
-$userroles = new UserRoles($pdoconnect);
+$userroles = new UserRoles($connection);
 $roles = $userroles->getUserRole($_SESSION['id']);
 
 if($roles['rights'] <  90){

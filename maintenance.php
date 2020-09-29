@@ -1,7 +1,7 @@
 ﻿<?php
 
 //We suppose you got the autoload function.
-$userrole = new UserRoles($pdoconnect);
+$userrole = new UserRoles($connection);
 $roles_arr = $userrole->getUserRole(@$_SESSION["id"]);
 $maintenance = new Maintenance($connection);
 

@@ -1,7 +1,7 @@
 <?php
 
 $users = new Users($connection);
-$role = new UserRoles($pdoconnect);
+$role = new UserRoles($connection);
 $sign = new Sign($connection);
 //Modules
 

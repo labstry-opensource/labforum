@@ -15,7 +15,7 @@ if(empty($_FILES)){
     $data['error']['msg'] = "No files has been posted";
     $apitools->outputContent($data);
 }
-$roles = new UserRoles($pdoconnect);
+$roles = new UserRoles($connection);
 $roles->getUserRole($_SESSION['id']);
 
 if($roles->rights >= 90){

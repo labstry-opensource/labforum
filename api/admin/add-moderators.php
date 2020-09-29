@@ -8,7 +8,7 @@ $validator = new Validator($apitools);
 //Never trust user input
 $validator->validateLoggedIn(@$_SESSION['id']);
 
-$roles = new UserRoles($pdoconnect);
+$roles = new UserRoles($connection);
 $roles_arr = $roles->getUserRole($_SESSION['id']);
 
 $validator->validateAdmin($roles_arr['rights']);

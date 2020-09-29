@@ -8,8 +8,8 @@ include_once dirname(__FILE__) . '/../../src/InstallerValidator.php';
 include_once dirname(__FILE__) . '/../../vendor/autoload.php';
 
 //Setting up SESSION
-$_SESSION['username'] = 'LabforumInstaller';
 session_start();
+$_SESSION['username'] = 'LabforumInstaller';
 
 $supported_db = array('mysql', 'mssql', 'oracle');
 
@@ -163,5 +163,7 @@ try{
 }
 
 $data['success'] = true;
+
+
 
 $apitools->outputContent($data);

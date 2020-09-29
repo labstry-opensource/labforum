@@ -16,7 +16,7 @@ $data["is_logged_in"] = true;
 
 $userid = $_SESSION["id"];
 $users = new Users($pdoconnect, "");
-$userole = new UserRoles($pdoconnect);
+$userole = new UserRoles($connection);
 
 $data["user"] = $users->getSafeUserPropById($userid);
 $data["user"]["roles"] = $userole->getUserRole($userid);

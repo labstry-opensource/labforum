@@ -7,7 +7,7 @@ include LAF_ROOT_PATH . '/vendor/HTMLPurifier.standalone.php';
 $apitools = new APITools();
 $msg = include LAF_ROOT_PATH .'/locale/' . LANGUAGE . '/api-post-reply.php';
 
-$roles = new UserRoles($pdoconnect);
+$roles = new UserRoles($connection);
 $validator = new ThreadValidator($apitools, '');
 $thread = new Thread($pdoconnect);
 $config = HTMLPurifier_Config::createDefault();

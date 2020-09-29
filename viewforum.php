@@ -4,7 +4,7 @@ include_once dirname(__FILE__) . '/autoload.php';
 
 if(!isset($_SESSION)) session_start();
 
-$roles = new UserRoles($pdoconnect);
+$roles = new UserRoles($connection);
 $roles_arr = $roles->getUserRole(@$_SESSION['id']);
 
 $forum = new Forum($connection);
