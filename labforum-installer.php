@@ -42,8 +42,27 @@ defined('BASE_ROOT_API_URL') || define('BASE_ROOT_API_URL', BASE_ROOT_URL . '/ap
                     </select>
                 </div>
                 <div class="form-group">
-                    <label for="addr">What's your server address ?</label>
-                    <input type="text" name="serveraddr" id="addr" class="form-control serveraddr" value="127.0.0.1">
+                    Type of your DB
+                    <select name="db_type" id="" class="form-control">
+                        <option value="mysql">MySQL / MariaDB</option>
+                        <option value="mssql">SQL Server</option>
+                        <option value="oracle">Oracle DB</option>
+                    </select>
+                    <div class="invalid-feedback db_type-invalid-feedback"></div>
+                </div>
+                <div class="form-group">
+                    <label for="addr">What's your DB's address and port ?</label>
+                    <div class="form-row">
+                        <div class="col-8">
+                            <input type="text" name="serveraddr" id="addr" class="form-control serveraddr" value="127.0.0.1">
+                        </div>
+                        <div class="col-4">
+                            <input type="text" name="db_port" value="">
+                            <small class="form-text text-muted">Leave it blank if you want to use default configuration.</small>
+                        </div>
+
+                    </div>
+
                     <div class="invalid-feedback serveraddr-invalid-feedback"></div>
                 </div>
                 <div class="form-group">

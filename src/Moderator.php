@@ -1,21 +1,17 @@
 <?php
 
 class Moderator{
-    public $pdoconnect;
+    public $connection;
 
-    public function __construct($pdoconnect)
+    public function __construct($connection)
     {
-        $this->pdoconnect = $pdoconnect;
+        $this->connection = $connection;
     }
-    public function isUserForumModerator($user_id, $fid){
-        $stmt = $this->pdoconnect->prepare('SELECT COUNT(*) AS `record_count`
-FROM laf_moderators
-WHERE fid = :fid
-AND moderator_id = :userid');
-        $stmt->bindParam(':fid', $fid, PDO::PARAM_INT);
-        $stmt->bindParam(':userid', $user_id, PDO::PARAM_INT);
-        $stmt->execute();
-
-        return ($stmt->fetch(PDO::FETCH_ASSOC)['record_count'] > 0);
+    public function isUserForumModerator($user_id, $fid)
+    {
+        return $this->connection->count('laf_moderators', '*', [
+            'fid[=]' => $fid,
+            'moderator_id[=]' => $user_id,
+        ]);
     }
 }

@@ -2,179 +2,174 @@
 
 class Thread
 {
-    public $pdoconnect;
+    public $connection;
 
-    public function __construct($pdoconnect)
+    public function __construct($connection)
     {
-        $this->pdoconnect = $pdoconnect;
+        $this->connection = $connection;
     }
 
     public function getStickyThreadId($stickyness)
     {
-        $threadid = array();
-        $stmt = $this->pdoconnect->prepare("SELECT t.*,
-                                            s.fname 'forum_name',
-                                            u.username
-                                            FROM 
-                                            threads t , 
-                                            subforum s, 
-                                            `userspace`.`users` u WHERE
-											draft = 0 AND 
-											stickyness = ? AND 
-											t.author = u.id AND
-											s.fid = t.fid AND
-											showInIndex = 1 
-                                            ORDER BY 
-											stickyness DESC,
-											topic_name ASC
-			");
-        $stmt->bindValue(1, $stickyness, PDO::PARAM_INT);
-
-        $stmt->execute();
-
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $this->connection->select('threads (t)', [
+            '[>]users' => ['user.id' => 't.author'],
+            '[>]subforums' => ['subforums.fid', 't.fid']
+        ], [
+                't.fid' , 't.topic_id', 't.topic_name', 't.topic_content',
+                't.author', 't.date', 't.views', 't.draft', 't.hiddeni',
+                't.rights', 't.stickyness', 't.stickyuntil', 't.highlightcolor',
+                'users.username'
+        ], [
+            'showInIndex[=]' => 1,
+            'draft[=]' => 0,
+            'ORDER' => [
+                "stickyness" => "DESC",
+                "topic_name" => "ASC",
+            ]
+        ]);
     }
 
     public function getHomepageNormalThreadId()
     {
-        $threadid = array();
-        $stmt = $this->pdoconnect->prepare("SELECT t.*, 
-                                            s.fname 'forum_name',
-                                            u.username,
-                                            FROM 
-                                            threads t, 
-                                            subforum s,  
-                                            `userspace`.`users` u
-                                            WHERE 
-											draft=0 AND stickyness = 0 AND 
-											t.author = u.id AND
-											s.fid = t.fid AND
-											showInIndex = 1 
-											ORDER BY topic_id DESC");
-        $stmt->execute();
-        $resultsetarr = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        return $resultsetarr;
+        return $this->connection->select('threads (t)', [
+            '[>]subforum' => 'fid',
+            '[>]users' => ['author', 'id'],
+        ], [
+            't.fid' , 't.topic_id', 't.topic_name', 't.topic_content',
+            't.author', 't.date', 't.views', 't.draft', 't.hiddeni',
+            't.rights', 't.stickyness', 't.stickyuntil', 't.highlightcolor', 'subforum.fname (forum_name)',
+            'users.username',
+        ], [
+            'draft[=]' => 0,
+            'stickyness[=]' => 0,
+            'showInIndex[=]' => 1,
+            "ORDER" => [
+                'topic_id' => 'DESC'
+            ],
+        ]);
+
     }
 
     public function getThreadProp($threadid)
     {
-        $stmt = $this->pdoconnect->prepare("SELECT 
-			t.fid, fname, topic_id, topic_name, topic_content, highlightcolor,
-			 author, t.date, u.username, u.profile_pic, t.rights, t.draft, t.seo
-			FROM threads t, subforum s, `userspace`.`users` u 
-			WHERE s.fid = t.fid AND 
-			topic_id = ? AND
-			u.id = t.author");
-        $stmt->bindValue(1, $threadid, PDO::PARAM_INT);
-        $stmt->execute();
+        $thread_arr =  $this->connection->select('threads', [
+            '[>]subforum' => 'fid',
+            '[>]user' => ['author' => 'id'],
+        ], [
+            'threads.fid', 'fname', 'topic_id', 'topic_name', 'topic_content',
+            'highlightcolor', 'author', 't.date', 'u.username', 'u.profile_pic',
+            't.rights', 't.draft', 't.seo',
+        ], [
+            'topic_id[=]' => $threadid,
+        ]);
 
-        $thread_arr = $stmt->fetch(PDO::FETCH_ASSOC);
         $thread_arr['draft'] = ($thread_arr['draft'] === '0') ? false: true;
         return $thread_arr;
     }
-    public function getAuthor($threadid){
-        $stmt = $this->pdoconnect->prepare("SELECT author FROM threads WHERE topic_id = ?");
-        $stmt->bindValue(1, $threadid, PDO::PARAM_INT);
-        $stmt->execute();
 
-        return $stmt->fetch(PDO::FETCH_ASSOC);
+    public function getAuthor($threadid)
+    {
+        return $this->connection->select('threads' , 'author', [
+            'topic_id[=]' => $threadid,
+        ]);
     }
+
     public function getDescription($tid)
     {
-        $stmt = $this->pdoconnect->prepare("SELECT topic_name, seo FROM threads WHERE topic_id = ?");
-        $stmt->bindValue(1, $tid, PDO::PARAM_INT);
-        $stmt->execute();
-
-        return json_encode($stmt->fetch(PDO::FETCH_ASSOC));
+        return $this->connection->select('threads', [
+            'topic_name', 'seo'
+        ], [
+            'topic_id[=]' => $tid,
+        ]);
     }
 
     public function getNumberOfReplies($tid)
     {
-        $stmt = $this->pdoconnect->prepare("SELECT COUNT(*) 'reply_count' FROM replies WHERE topic_id = ?");
-        $stmt->bindValue(1, $tid, PDO::PARAM_INT);
-        $stmt->execute();
-
-        $c = $stmt->fetch(PDO::FETCH_ASSOC);
-
-        return $c['reply_count'];
+        return $this->connection->count('replies', '*', [
+            'topic_id[=]' => $tid,
+        ]);
     }
 
-    public function searchThreadByName($tname)
+    public function searchThreadByName($tname, $forum=null, $page=null, $count=null)
     {
-        $stmt = $this->pdoconnect->prepare("SELECT * FROM threads WHERE topic_name LIKE ? ORDER BY topic_id DESC");
-        $stmt->bindValue(1, '%' . $tname . '%', PDO::PARAM_STR);
-        $stmt->execute();
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $this->connection->select('threads', '*', [
+            'topic_name[~]' => $tname,
+            'ORDER' => [
+                'topic_id' => 'DESC',
+            ]
+        ]);
     }
 
-    public function getThreadsByFid($fid, $from_limit = 0, $to_limit = 10){
-        $stmt = $this->pdoconnect->prepare('SELECT t.*, u.`username` AS username FROM 
-                    threads t, `userspace`.`users` u WHERE 
-                    fid = :fid AND 
-                    u.id = t.author AND 
-                    t.draft <> 1 
-                    ORDER BY date DESC
-                    LIMIT :low_limit, :high_limit');
-        $stmt->bindParam(':fid', $fid, PDO::PARAM_INT);
-        $stmt->bindParam(':low_limit', $from_limit, PDO::PARAM_INT);
-        $stmt->bindParam(':high_limit', $to_limit, PDO::PARAM_INT);
-        $stmt->execute();
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    public function getThreadsByFid($fid, $from_limit = 0, $page_limit = 10)
+    {
+        return $this->connection->select('threads', [
+            '[>]users' => ['author', 'id'],
+        ], [
+            't.fid' , 't.topic_id', 't.topic_name', 't.topic_content',
+            't.author', 't.date', 't.views', 't.draft', 't.hiddeni',
+            't.rights', 't.stickyness', 't.stickyuntil', 't.highlightcolor',
+            'u.username'
+        ], [
+            't.draft[!]' => 1,
+            'ORDER' => ['date' => 'DESC'],
+            'LIMIT' => [$from_limit, $page_limit],
+        ]);
     }
 
-    public function checkHasSuchThread($thread_id){
-        $stmt = $this->pdoconnect->prepare('SELECT COUNT(*) \'count\' FROM `threads` WHERE `topic_id` = :id');
-        $stmt->bindValue(':id', $thread_id, PDO::PARAM_INT);
-        $stmt->execute();
-
-        $number_count = $stmt->fetch(PDO::FETCH_ASSOC)['count'];
-        return ($number_count === '0') ? false : true;
+    public function checkHasSuchThread($thread_id)
+    {
+        return $this->connection->count('threads', '*', [
+            'topic_id' => $thread_id,
+        ]);
     }
 
-    public function getReplies($thread_id){
-        $stmt = $this->pdoconnect->prepare('SELECT 
-            reply_id, reply_topic, reply_content, u.username, u.profile_pic, author, r.date FROM replies r, `userspace`.`users` u 
-            WHERE u.id = r.author AND hiddeni <> 1 AND topic_id = :thread_id');
-        $stmt->bindParam(':thread_id', $thread_id, PDO::PARAM_INT);
-        $stmt->execute();
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    public function getReplies($thread_id)
+    {
+        return $this->connection->select('replies', [
+            '[>]users' => ['author', 'id'],
+        ], [
+            'reply_id', 'reply_topic', 'reply_content', 'username',
+            'profile_pic', 'author', 'replies.date'
+        ], [
+            'hiddeni[!]' =>  1,
+            'topic_id[=]' => $thread_id,
+        ]);
     }
 
-    public function getReplyPropById($thread_id, $reply_id){
-        $stmt = $this->pdoconnect->prepare('SELECT 
-            reply_id, reply_topic, reply_content FROM replies  
-            WHERE topic_id = :thread_id AND reply_id = :reply_id');
-        $stmt->bindParam(':thread_id', $thread_id, PDO::PARAM_INT);
-        $stmt->bindParam(':reply_id', $reply_id, PDO::PARAM_INT);
-        $stmt->execute();
-
-        return $stmt->fetch(PDO::FETCH_ASSOC);
+    public function getReplyPropById($thread_id, $reply_id)
+    {
+        return $this->connection->select('replies', [
+            'reply_id', 'reply_topic', 'reply_content',
+        ], [
+            'topic_id[=]' => $thread_id,
+            'reply_id[=]' => $reply_id,
+        ]);
     }
 
-    public function addViews($thread_id){
-        $stmt = $this->pdoconnect->prepare('
-            UPDATE threads SET views = views + 1 WHERE topic_id = :thread_id');
+    public function addViews($thread_id)
+    {
+        return $this->connection->update('threads', [
+            'views' => ($this->connection->select('threads', 'views', ['topic_id[=]' => $thread_id])) + 1,
+        ], [
+            'topic_id[=]' => $thread_id,
+        ]);
 
-        $stmt->bindParam(':thread_id', $thread_id, PDO::PARAM_INT);
-        $stmt->execute();
     }
 
-    public function isThreadAuthor($thread_id, $id){
-        $stmt = $this->pdoconnect->prepare('
-            SELECT COUNT(*) \'count\' FROM `threads` WHERE topic_id = :thread_id AND author = :id');
-        $stmt->bindParam(":thread_id", $thread_id, PDO::PARAM_INT);
-        $stmt->bindParam(":id", $id , PDO::PARAM_INT);
-        $stmt->execute();
-        return ($stmt->fetch(PDO::FETCH_ASSOC)['count']) ? false: true;
+    public function isThreadAuthor($thread_id, $id)
+    {
+        return $this->connection->count('threads', '*', [
+            'topic_id[=]' => $thread_id,
+            'author[=]' => $id,
+        ]);
     }
 
-    public function checkHasRightToViewThisThread($thread_id, $read_permission){
-        $stmt = $this->pdoconnect->prepare('
-            SELECT COUNT(*) \'count\' FROM `threads` WHERE `topic_id` = :id AND `rights` <= :read_permission');
-        $stmt->bindParam(":id", $thread_id, PDO::PARAM_INT);
-        $stmt->bindParam(":read_permission", $read_permission, PDO::PARAM_INT);
-        $stmt->execute();
-        return ($stmt->fetch(PDO::FETCH_ASSOC)['count'] === '0' ) ? false: true;
+    public function checkHasRightToViewThisThread($thread_id, $read_permission)
+    {
+        return $this->connection->count('threads', '*', [
+            'topic_id[=]' => $thread_id,
+            'rights[=]' => $read_permission,
+        ]);
     }
 }
 

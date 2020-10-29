@@ -3,14 +3,14 @@
 session_start();
 
 include dirname(__FILE__ ) . '/../../autoload.php';
-include API_PATH . '/classes/connect.php';
+
+$apitools = new APITools();
+
 
 if(!isset($_SESSION['username']) || $_SESSION['username'] !== 'LabforumInstaller'){
     $data['error'] = 'Not installing, thus not initializing db';
     $apitools->outputContent($data);
 }
-
-$pdoconnect->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
 $apitools = new APITools();
 $table_struct = json_decode(file_get_contents(LAF_ROOT_PATH . '/assets/laf-structure.json'), true);
@@ -23,6 +23,8 @@ if(!isset($table_struct['laf_settings'])){
 
 foreach ($table_struct['struct'] as $table){
     $table_name = $table['table'];
+
+
     $primary_key = array();
     $sql_builder = 'CREATE TABLE `'. $table_name . '` (';
     foreach($table['cols'] as $index => $col){

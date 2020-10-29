@@ -1,17 +1,15 @@
 <?php
 
-session_start();
-include dirname(__FILE__) . '/../laf-config.php';
-include @$_SERVER["DOCUMENT_ROOT"]."/forum/classes/connect.php";
-include @$_SERVER["DOCUMENT_ROOT"]."/forum/classes/UserRoles.php";
-include @$_SERVER["DOCUMENT_ROOT"]."/forum/classes/Users.php";
+if(!isset($_SESSION)) session_start();
 
-$users = new Users($pdoconnect, "");
-$roles = new UserRoles($pdoconnect);
-$roles->getUserRole(@$_SESSION['id']);
+include_once dirname(__FILE__) . '/../autoload.php';
+
+$users = new Users($connection, "");
+$roles = new UserRoles($connection);
+$roles_arr = $roles->getUserRole(@$_SESSION['id']);
 
 
-if(!@$_SESSION["id"] || $roles->rights < 90 || !@$_GET["id"]){
+if(!@$_SESSION["id"] || $roles_arr['rights'] < 90 || !@$_GET["id"]){
     http_response_code(403);
     die('403 Forbidden');
     exit;
@@ -46,7 +44,7 @@ $users->getUserPropById(@$_GET["id"]);
 
 </head>
 <body>
-<?php include_once "header.php"?>
+<?php include_once dirname(__FILE__) . "/modules/header.php"?>
 
 <div class="user-manage-wrapper">
     <div class="user-card">

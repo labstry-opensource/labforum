@@ -7,7 +7,7 @@ include LAF_ROOT_PATH . '/vendor/HTMLPurifier.standalone.php';
 $apitools = new APITools();
 $msg = include LAF_ROOT_PATH .'/locale/' . LANGUAGE . '/api-post-reply.php';
 
-$roles = new UserRoles($pdoconnect);
+$roles = new UserRoles($connection);
 $validator = new ThreadValidator($apitools, '');
 $thread = new Thread($pdoconnect);
 $config = HTMLPurifier_Config::createDefault();
@@ -36,7 +36,7 @@ $reply = array(
     'author' => $_SESSION['id'],
 );
 
-$operation = new ThreadOperation($pdoconnect, '', '');
+$operation = new ThreadOperation($connection);
 $operation->postReply($reply);
 
 $data['success'] = true;

@@ -1,6 +1,7 @@
 <?php
 require_once dirname(__FILE__) . '/laf-config.php';
-include_once LAF_ROOT_PATH . '/src/connect.php';
+include_once LAF_ROOT_PATH . '/vendor/autoload.php';
+include_once LAF_ROOT_PATH . '/src/Connect.php';
 include_once LAF_ROOT_PATH . '/functions.php';
 
 if(!isset($_SESSION)){
@@ -8,7 +9,7 @@ if(!isset($_SESSION)){
 }
 
 function autoload($class){
-    include LAF_ROOT_PATH . "/src/{$class}.php";
+    include LAF_ROOT_PATH . "/src/". str_replace('\\','/', $class) . ".php";
 }
 
 spl_autoload_register('autoload');
@@ -28,8 +29,8 @@ function errHandle($errNo, $errStr, $errFile, $errLine) {
 
 set_error_handler('errHandle');
 
-$maintenance = new Maintenance($pdoconnect);
-$roles = new UserRoles($pdoconnect);
+$maintenance = new Maintenance($connection);
+$roles = new UserRoles($connection);
 $roles_arr = $roles->getUserRole(@$_SESSION["id"]);
 
 if($maintenance->checkIfMaintaining()){

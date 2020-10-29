@@ -3,6 +3,7 @@
 include_once dirname(__FILE__) . '/../../autoload.php';
 
 $data = array();
+$apitools = new APITools();
 
 $error_msg = array(
     'input-username' => 'Please input a username',
@@ -14,28 +15,21 @@ $username = @$_GET['username'];
 
 if(!@$_GET['username']){
     $data['error'] = $error_msg['input-username'];
-    header('Content-Type: application/json');
-    echo json_encode($data);
-    exit;
+    $apitools->outputContent($data);
 }
 $username = @$_GET['username'];
 
-$users = new Users($pdoconnect, '');
+$users = new Users($connection);
 if($users->isUsernameExists($username) || $users->checkIfUsernameReserved($username)){
     $data['error']['username'] = $error_msg['conflict-names'];
-    header('Content-Type: application/json');
-    echo json_encode($data);
-    exit;
+    $apitools->outputContent($data);
 }
 
 if(strlen($username) < 3 || strlen($username) > 15){
     $data['error']['username'] = $error_msg['length-exceeded'] ;
-    header('Content-Type: application/json');
-    echo json_encode($data);
-    exit;
+    $apitools->outputContent($data);
 }
 
 
 $data['success'] = 'Hooray. Let\'s proceed';
-header('Content-Type: application/json');
-echo json_encode($data);
+$apitools->outputContent($data);

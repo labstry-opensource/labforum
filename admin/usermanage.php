@@ -9,7 +9,7 @@ include_once "../classes/Users.php";
 include_once "../classes/UserRoles.php";
 
 
-  $roles = new UserRoles($pdoconnect);
+  $roles = new UserRoles($connection);
   $roles->getUserRole(@$_SESSION['id']);
 
   if(!@$_SESSION["id"] || $roles->rights < 255) header("Location:/index.php");

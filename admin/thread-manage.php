@@ -2,14 +2,9 @@
 ini_set('display_errors', 1); ini_set('display_startup_errors', 1); error_reporting(E_ALL);
 if(!isset($_SESSION)) session_start();
 
-include_once dirname(__FILE__ ) . '/../laf-config.php';
-include_once dirname(__FILE__ ) . '/../api/classes/connect.php';
-include_once dirname(__FILE__ ) . '/../api/classes/UserRoles.php';
-include_once dirname(__FILE__ ) . '/../classes/Essentials.php';
-include_once dirname(__FILE__ ) . '/../api/classes/Forum.php';
-include_once dirname(__FILE__ ) . '/../api/classes/Thread.php';
+include_once dirname(__FILE__ ) . '/../autoload.php';
 
-$userroles = new UserRoles($pdoconnect);
+$userroles = new UserRoles($connection);
 $essential = new Essentials($pdoconnect);
 $roles_arr = $userroles->getUserRole(@$_SESSION['id']);
 
@@ -20,7 +15,7 @@ $thread = new Thread($pdoconnect);
 $thread_arr = $thread->getThreadProp($threadid);
 
 
-$forum = new Forum($pdoconnect);
+$forum = new Forum($connection);
 
 $forum_arr = array();
 $board_ids = $forum->getForumListId();

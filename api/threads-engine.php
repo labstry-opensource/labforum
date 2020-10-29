@@ -3,8 +3,8 @@ include_once dirname(__FILE__) . '/../autoload.php';
 
 $api_tools = new APITools();
 $thread = new Thread($pdoconnect);
-$forum = new Forum($pdoconnect);
-$roles = new UserRoles($pdoconnect);
+$forum = new Forum($connection);
+$roles = new UserRoles($connection);
 
 $page = isset($_GET['page']) ? $_GET['page'] : '';
 $fid = isset($_GET['fid']) ? $_GET['fid'] : '';
@@ -67,7 +67,7 @@ else if(!empty($fid)){
     $thread_arr = $thread->getThreadProp($thread_id);
 
     //Get user roles and tag color
-    $roles = new UserRoles($pdoconnect);
+    $roles = new UserRoles($connection);
     $role_arr = $roles->getUserRole($thread_arr['author']);
 
     if($thread_arr['rights'] > $role_arr['rights']){
@@ -85,7 +85,7 @@ else if(!empty($fid)){
         $thread_arr['replies'][$index]['tag_color'] = isset($role_arr['tagcolor'])? $role_arr['tagcolor'] : '#000';
     }
 
-    $operation = new ThreadOperation($pdoconnect);
+    $operation = new ThreadOperation($connection);
     $thread_arr['history'] = $operation->getThreadLog($thread_id);
 
     $api_tools->outputContent($thread_arr);

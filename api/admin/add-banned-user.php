@@ -5,9 +5,9 @@ include_once dirname(__FILE__) . '/../../autoload.php';
 
 $msg = include LAF_ROOT_PATH .'/locale/' . LANGUAGE . '/admin/api-add-banned-user.php';
 
-$users = new Users($pdoconnect, '');
-$roles = new UserRoles($pdoconnect);
-$bl = new BlockList($pdoconnect);
+$users = new Users($connection);
+$roles = new UserRoles($connection);
+$bl = new BlockList($connection);
 $apitools = new APITools();
 
 

@@ -6,7 +6,7 @@ include_once "../classes/Users.php";
 include_once "../classes/UserRoles.php";
 
 $user = new Users($pdoconnect, "");
-$roles = new UserRoles($pdoconnect);
+$roles = new UserRoles($connection);
 $roles->getUserRole(@$_SESSION["id"]);
 
 if(!@$_SESSION["id"] || $roles->rights < 90) {

@@ -7,7 +7,7 @@ include dirname(__FILE__) . '/../../autoload.php';
 $msg = include LAF_ROOT_PATH .'/locale/' . LANGUAGE . '/admin/api-thread-operation.php';
 
 $apitools = new APITools();
-$user_role = new UserRoles($pdoconnect);
+$user_role = new UserRoles($connection);
 
 //Integrity check
 
@@ -35,7 +35,7 @@ if(empty($_POST['password']) || ($_POST['password'] !== $_POST['repassword'])){
     $apitools->outputContent($data);
 }
 
-$users = new Users($pdoconnect);
+$users = new Users($connection);
 if(!$users->validatePassword($_SESSION['id'], $_POST['password'])){
     $data['error']['repassword'] = $msg['password-incorrect'];
     $apitools->outputContent($data);
@@ -52,7 +52,7 @@ if($_POST['action'] === 'promote' || $_POST['action'] === 'demote'){
         $data['error']['level'] = $msg['promote-level-not-specified'];
         $apitools->outputContent($data);
     }
-    $operation = new ThreadOperation($pdoconnect);
+    $operation = new ThreadOperation($connection);
     switch ($_POST['level']){
         case '1':
             if($user_role_arr['rights'] < 91){
@@ -72,14 +72,25 @@ if($_POST['action'] === 'promote' || $_POST['action'] === 'demote'){
     $data['success'] = $msg['success-promote-demote'];
     $apitools->outputContent($data);
 
-}else if($_POST['action'] === 'hidden'){
-    $operation = new ThreadOperation($pdoconnect);
+}else if($_POST['action'] === 'hiddeni'){
+    $operation = new ThreadOperation($connection);
     $operation->setHiddeni($_POST['thread_id']);
 
-}else if($_POST['action'] === 'property_change'){
+    $data['success'] = $msg['hide-success'];
+    $apitools->outputContent($data);
+
+}
+else if($_POST['action'] === 'show'){
+    $operation = new ThreadOperation($connection);
+    $operation->setShowThread($_POST['thread_id']);
+    $data['success'] = $msg['unhide-success'];
+    $apitools->outputContent($data);
+}
+
+else if($_POST['action'] === 'property_change'){
     $thread = new Thread($pdoconnect);
-    $operation = new ThreadOperation($pdoconnect);
-    $forum = new Forum($pdoconnect);
+    $operation = new ThreadOperation($connection);
+    $forum = new Forum($connection);
     if(!$thread->checkHasSuchThread($_POST['thread_id'])){
         $data['error']['fid'] = $msg['thread-not-exists'];
         $apitools->outputContent($data);

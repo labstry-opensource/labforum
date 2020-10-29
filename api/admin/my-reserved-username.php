@@ -10,7 +10,7 @@ if(!@$_SESSION['id']){
 	//exit;
 }
 
-$users = new Users($pdoconnect, "");
+$users = new Users($connection);
 
 //casting to new name
 $reserved_username = $users->getReservedUsername(@$_SESSION['id']);

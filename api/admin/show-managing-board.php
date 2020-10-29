@@ -5,7 +5,7 @@ include dirname(__FILE__) . '/../../autoload.php';
 
 
 $apitools = new APITools();
-$user_role = new UserRoles($pdoconnect);
+$user_role = new UserRoles($connection);
 
 if(!isset($_SESSION['id'])){
     $data['error'] = 'Pleas login to continue';

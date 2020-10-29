@@ -15,7 +15,7 @@ if(!isset($_POST['password'])){
 }
 
 
-$userroles = new UserRoles($pdoconnect);
+$userroles = new UserRoles($connection);
 $roles = $userroles->getUserRole($_SESSION['id']);
 
 if($roles['rights'] <  90){
@@ -23,9 +23,11 @@ if($roles['rights'] <  90){
 }
 
 
-$users = new Users($pdoconnect, '');
+$users = new Users($connection);
 
-if(!$users->getUserPropById($userid))
+if(!$users->getUserPropById($userid)){
+
+}
 
 if(!empty($data)){
     $apitools->outputContent($data);

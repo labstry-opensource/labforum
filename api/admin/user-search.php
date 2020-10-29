@@ -7,8 +7,8 @@ $apitools = new APITools();
 $data = array();
 
 if(isset($_POST['type']) && $_POST['type'] === 'individual'){
-    $users = new Users($pdoconnect, "");
-    $roles = new UserRoles($pdoconnect);
+    $users = new Users($connection);
+    $roles = new UserRoles($connection);
     $right_data = $roles->getUserRole(@$_SESSION["id"]);
 
     if(empty($_POST['id']) || $right_data["rights"] < 90 || isset($_SESSION["id"])){
@@ -27,7 +27,7 @@ $username = @$_POST["username"];
 if(!$username){
 	$data["error"] = "No username is provided";
 }else{
-	$users = new Users($pdoconnect, "");
+	$users = new Users($connection);
 	$data = $users->searchUsername($username);
 }
 

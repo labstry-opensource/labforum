@@ -2,16 +2,13 @@
 
 if(!isset($_SESSION)) session_start();
 
-include_once dirname(__FILE__ ) . '/../laf-config.php';
-include_once dirname(__FILE__ ) . '/../classes/connect.php';
-include_once dirname(__FILE__ ) . '/../classes/UserRoles.php';
-include_once dirname(__FILE__ ) . '/../classes/Essentials.php';
+include_once dirname(__FILE__) . '/../autoload.php';
 
-$userroles = new UserRoles($pdoconnect);
+$userroles = new UserRoles($connection);
 $essential = new Essentials($pdoconnect);
 
-$userroles->getUserRole(@$_SESSION['id']);
-$right = $userroles->rights;
+$role_arr = $userroles->getUserRole(@$_SESSION['id']);
+$right = $role_arr['rights'];
 
 $essential->imposeRestrictAccess($right, 90);
 

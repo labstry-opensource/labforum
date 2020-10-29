@@ -8,12 +8,12 @@ $validator = new Validator($apitools);
 //Never trust user input
 $validator->validateLoggedIn(@$_SESSION['id']);
 
-$roles = new UserRoles($pdoconnect);
+$roles = new UserRoles($connection);
 $roles_arr = $roles->getUserRole($_SESSION['id']);
 
 $validator->validateAdmin($roles_arr['rights']);
 
-$users = new Users($pdoconnect);
+$users = new Users($connection);
 $user_arr = $users->getUserPropById($_SESSION['id']);
 
 $validator->validatePassword($user_arr, @$_POST['password'], @$_POST['repassword']);
@@ -23,7 +23,7 @@ if(empty($_POST['fid'])){
     $apitools->outputContent($data);
 }
 
-$forum = new Forum($pdoconnect);
+$forum = new Forum($connection);
 if(!$forum->checkHasForum($_POST['fid'])){
     $data["error"]['fid'] = "Forum specified doesn't exists.";
     $apitools->outputContent($data);

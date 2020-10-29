@@ -15,10 +15,17 @@
     ],
     "funding": [
         {
-            "type": "github",
-            "url": "https://github.com/sponsors/littlephone"
+            "type": "patreon",
+            "url": "https://www.patreon.com/phpdoctrine"
+        },
+        {
+            "type": "tidelift",
+            "url": "https://tidelift.com/subscription/pkg/packagist-doctrine_doctrine-bundle"
+        },
+        {
+            "type": "other",
+            "url": "https://www.doctrine-project.org/sponsorship.html"
         }
-      
     ],
     "require": {
         "phpmailer/phpmailer": "^6.1",
