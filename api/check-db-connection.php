@@ -2,8 +2,8 @@
 
 //Please define the configurations here. We have got no laf-config files.
 defined('LAF_PATH') || define('LAF_PATH', dirname($_SERVER['SCRIPT_FILENAME']));
-defined('LAF_ROOT_PATH') || define('LAF_ROOT_PATH', dirname(__FILE__));
-include LAF_ROOT_PATH . "/src/APITools.php";
+defined('INSTALL_API_ROOT_PATH') || define('INSTALL_API_ROOT_PATH', dirname(__FILE__));
+include INSTALL_API_ROOT_PATH . "../src/APITools.php";
 
 $apitools = new APITools();
 $lang = (isset($_GET['lang']) && checkTranslationExists($_GET['lang'], '/api/api-check-db-connection.php')) ? $_GET['lang'] : 'en';
