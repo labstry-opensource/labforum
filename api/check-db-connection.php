@@ -1,6 +1,7 @@
 <?php
 
-include dirname(__FILE__) . '/../autoload.php';
+include dirname(__FILE__) . '/../functions.php';
+include LAF_ROOT_PATH . "/src/APITools.php";
 
 $apitools = new APITools();
 $lang = (isset($_GET['lang']) && checkTranslationExists($_GET['lang'], '/api/api-check-db-connection.php')) ? $_GET['lang'] : 'en';
