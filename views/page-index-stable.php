@@ -18,7 +18,7 @@ if (! isset($opt_in_script)) {
     );
 }
 
-if (@$_SESSION['username']) {
+if (isset($_SESSION['username'])){
     $users->getUserPropById(@$_SESSION['id']);
     $user_details = array(
         'profile' => $users->profilepic,

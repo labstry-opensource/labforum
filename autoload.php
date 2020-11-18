@@ -31,7 +31,10 @@ set_error_handler('errHandle');
 
 $maintenance = new Maintenance($connection);
 $roles = new UserRoles($connection);
-$roles_arr = $roles->getUserRole(@$_SESSION["id"]);
+if(isset($_SESSION['id'])){
+    $roles_arr = $roles->getUserRole(@$_SESSION["id"]);
+}
+
 
 if($maintenance->checkIfMaintaining()){
     if($roles_arr['rights'] < $maintenance->getMinUserRights()){
